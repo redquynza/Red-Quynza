@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+
+// TODO: pon aquí el enlace a la comunidad/repositorio de la red en Zenodo.
+const ZENODO = '';
+---
+<Base
+  title="Publicaciones · RED Quynza"
+  description="Libros, documentos y el repositorio abierto de la RED Quynza: bases de datos y publicaciones de la red sobre violencia urbana y paz en Colombia."
+>
+  <main>
+    <section class="block" id="publicaciones">
+      <div class="wrap">
+        <div class="sec-head"><p class="kicker">Publicaciones</p><h2>Libros y documentos</h2></div>
+        <div class="pubs">
+          <article class="pub">
+            <div class="cover"><img src="/img/libro-construir-la-paz.jpg" alt="Portada del libro Construir la paz y cuidar la vida" /></div>
+            <h3>Construir la paz y cuidar la vida</h3>
+            <p class="sub">Recomendaciones para el Plan Nacional de Desarrollo 2022-2026</p>
+            <p>Propuestas para que el Plan Nacional de Desarrollo sirva a un nuevo pacto de nación en torno a la paz. Coordinación académica de Carlos Mario Perea y Socorro Ramírez Vargas. Editorial Universidad Nacional de Colombia.</p>
+            <a class="go" href="https://portaldelibros.unal.edu.co/gpd-construir-la-paz-y-cuidar-la-vida-9789584983725-682b47c64f7e7.html" target="_blank" rel="noopener">Ver el libro</a>
+          </article>
+          <article class="pub">
+            <div class="cover made c1" aria-hidden="true">
+              <div><div class="bar"></div><div class="ct">Un renovado imaginario</div><div class="cs">El derecho de la ciudad a la paz</div></div>
+              <div class="cf"><span>Propuesta política</span><img src="/img/pajaro.png" alt="" /></div>
+            </div>
+            <h3>Un renovado imaginario</h3>
+            <p class="sub">El derecho de la ciudad a la paz</p>
+            <p>La propuesta política de la red: por qué la ciudad tiene que entrar en la agenda de la paz.</p>
+            <a class="go" href="https://docs.google.com/document/d/1yssSov4juOO9YGkE86LgucL5dJqbhKNl/edit?usp=sharing&amp;ouid=106186130985956628274&amp;rtpof=true&amp;sd=true" target="_blank" rel="noopener">Leer la propuesta</a>
+          </article>
+          <article class="pub">
+            <div class="cover made c2" aria-hidden="true">
+              <div><div class="bar"></div><div class="ct">La RED Quynza</div><div class="cs">Quiénes somos y cómo trabajamos</div></div>
+              <div class="cf"><span>Documento orgánico</span><img src="/img/pajaro.png" alt="" /></div>
+            </div>
+            <h3>Documento orgánico</h3>
+            <p class="sub">Quiénes somos y cómo trabajamos</p>
+            <p>Qué es la RED Quynza, qué la mueve y cómo se organiza.</p>
+            <a class="go" href="https://drive.google.com/file/d/1-Lh_lXeB1owqcAKhCjpyKl_hAii-_XzP/view?usp=sharing" target="_blank" rel="noopener">Leer el documento</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block tint-teal" id="repositorio">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Repositorio abierto</p>
+          <h2>Las bases de datos y documentos de la red</h2>
+        </div>
+        <div>
+          <p class="intro" style="max-width:52ch">La RED publica en <b>Zenodo</b> un repositorio abierto que se irá alimentando con las bases de datos, informes y documentos de trabajo de la red. Acceso libre, citable y con DOI.</p>
+          {ZENODO
+            ? <p style="margin-top:1.4rem"><a class="btn solid" href={ZENODO} target="_blank" rel="noopener">Ver el repositorio en Zenodo</a></p>
+            : <div class="dir-empty" style="margin-top:1.4rem"><p>El repositorio en Zenodo estará enlazado aquí muy pronto.</p></div>
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

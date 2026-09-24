@@ -1,0 +1,134 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'RED Quynza · El derecho de la ciudad a la paz',
+  description = 'RED Quynza: más de cien profesores de más de 25 universidades que piensan la violencia urbana y la paz desde las ciudades de Colombia. Podcast, documentales, boletín y publicaciones.',
+} = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const nav = [
+  { href: '/podcast', label: 'Podcast' },
+  { href: '/videos', label: 'Videos' },
+  { href: '/documentales', label: 'Documentales' },
+  { href: '/boletin', label: 'Boletín' },
+  { href: '/publicaciones', label: 'Publicaciones' },
+  { href: '/la-red', label: 'La RED' },
+];
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="/img/logo-red-quynza.png" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/png" href="/img/pajaro.png" />
+  <meta name="theme-color" content="#0E3A42" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Zilla+Slab:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <header class="top">
+    <div class="wrap" style="position:relative">
+      <a class="brand" href="/"><img src="/img/pajaro.png" alt="" /><span style="color:var(--ink)">RED <span>QUYNZA</span></span></a>
+      <button class="menu-btn" aria-expanded="false" aria-controls="menu">Menú</button>
+      <nav id="menu" aria-label="Principal">
+        <ul>
+          {nav.map((item) => (
+            <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <slot />
+
+  <footer>
+    <div class="wrap">
+      <div><img class="flogo" src="/img/logo-red-quynza-crema.png" alt="RED Quynza" /><span class="tag">Un contrapeso mediático.</span></div>
+      <ul>
+        <li><a href="https://www.youtube.com/@REDQuynza" target="_blank" rel="noopener">YouTube</a></li>
+        <li><a href="https://www.instagram.com/redquynza/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@red.quynza" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=61591393226166" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="mailto:redquynza@gmail.com">redquynza@gmail.com</a></li>
+      </ul>
+      <span class="note">© 2026 RED Quynza</span>
+    </div>
+  </footer>
+
+  <script is:inline>
+    (function () {
+      // --- Menú móvil: abrir/cerrar + cerrar al hacer clic afuera ---
+      var btn = document.querySelector('.menu-btn');
+      var nav = document.getElementById('menu');
+      if (btn && nav) {
+        var close = function () {
+          nav.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        };
+        btn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = nav.classList.toggle('open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        // Cerrar al elegir un enlace
+        nav.addEventListener('click', function (e) {
+          if (e.target.tagName === 'A') close();
+        });
+        // Cerrar al hacer clic en cualquier otra zona de la página
+        document.addEventListener('click', function (e) {
+          if (!nav.classList.contains('open')) return;
+          if (nav.contains(e.target) || btn.contains(e.target)) return;
+          close();
+        });
+        // Cerrar con la tecla Escape
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') close();
+        });
+      }
+
+      // --- Formulario de boletín (si existe en la página) ---
+      var signup = document.getElementById('signup');
+      if (signup) {
+        signup.addEventListener('submit', function (e) {
+          // Si el form apunta a Buttondown (tiene action), dejamos que envíe normal.
+          if (signup.getAttribute('action')) return;
+          e.preventDefault();
+          var msg = document.getElementById('signup-msg');
+          if (msg) msg.textContent = 'El boletín todavía no está activo. El primer número sale pronto.';
+        });
+      }
+
+      // --- Reproductor de YouTube embebido al hacer clic (si hay videos) ---
+      document.querySelectorAll('.video[data-yt]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var t = a.querySelector('.thumb');
+          if (!t || t.querySelector('iframe')) return;
+          e.preventDefault();
+          var f = document.createElement('iframe');
+          f.src = 'https://www.youtube-nocookie.com/embed/' + a.dataset.yt + '?autoplay=1&rel=0';
+          f.title = 'Video de RED Quynza';
+          f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+          f.allowFullscreen = true;
+          t.innerHTML = '';
+          t.appendChild(f);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

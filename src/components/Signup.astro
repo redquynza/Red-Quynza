@@ -1,0 +1,23 @@
+---
+// Formulario de suscripción al boletín (Buttondown).
+// >>> Pon aquí el usuario de Buttondown (buttondown.com/<usuario>). <<<
+// Mientras esté vacío, el formulario muestra un aviso amable en vez de enviar.
+const BUTTONDOWN = '';
+const action = BUTTONDOWN ? `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN}` : undefined;
+const popup = BUTTONDOWN ? `window.open('https://buttondown.com/${BUTTONDOWN}', 'popupwindow')` : undefined;
+---
+<form
+  class="signup embeddable-buttondown-form"
+  id="signup"
+  method="post"
+  action={action}
+  target={BUTTONDOWN ? 'popupwindow' : undefined}
+  onsubmit={popup}
+  novalidate={!BUTTONDOWN}
+>
+  <label for="email">Correo electrónico</label>
+  <input id="email" name="email" type="email" placeholder="tu@correo.com" autocomplete="email" />
+  {BUTTONDOWN && <input type="hidden" value="1" name="embed" />}
+  <button type="submit">Suscribirme</button>
+</form>
+<div id="signup-msg" role="status" aria-live="polite"></div>

@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import MapaColombia from '../components/MapaColombia.astro';
+---
+<Base
+  title="Podcast · RED Quynza"
+  description="Un viaje por Colombia, conversación a conversación. Cada episodio recorre un territorio, desde sus violencias urbanas hasta sus procesos de paz, hasta cubrir el país entero."
+>
+  <main>
+    <section class="hero" id="podcast">
+      <div class="wrap">
+        <div>
+          <p class="tagline">Un viaje por Colombia</p>
+          <h1>Conversación a conversación</h1>
+          <p class="lede">Cada temporada recorre el país. Con cada episodio el mapa se llena un poco más, hasta cubrirlo entero: los territorios que hemos explorado, sus violencias urbanas y sus procesos de paz.</p>
+          <p class="lede-2">Conversaciones con calma, de quince minutos o más, en Spotify y en video.</p>
+        </div>
+        <figure class="mapbox" style="margin:0">
+          <MapaColombia />
+        </figure>
+      </div>
+    </section>
+
+    <section class="block" id="metodo">
+      <div class="wrap">
+        <div class="sec-grid">
+          <div>
+            <p class="kicker">El método</p>
+            <h2>Cuatro momentos en cada episodio</h2>
+            <p class="intro">Una estructura que va de la persona al país, y del país a la paz.</p>
+          </div>
+          <ol class="moments" aria-label="Los cuatro momentos de cada episodio">
+            <li><h3>La persona</h3><p>Quién es, de dónde viene y qué la llevó a investigar lo que investiga.</p></li>
+            <li><h3>El territorio</h3><p>Su ciudad o región, y lo que su trabajo ha encontrado allí.</p></li>
+            <li><h3>El país</h3><p>Cómo eso dialoga con la actualidad y con el argumento nacional de la red.</p></li>
+            <li><h3>La paz</h3><p>Qué significa todo esto para salir de la violencia.</p></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="block tint-teal" id="episodios">
+      <div class="wrap">
+        <div class="sec-head"><p class="kicker">Episodios</p><h2>Escúchalo pronto</h2></div>
+        <div class="dir-empty">
+          <p>El primer episodio, grabado en <b>Bogotá</b>, sale muy pronto. Suscríbete al <a href="/boletin">boletín</a> para enterarte apenas esté disponible en Spotify y YouTube.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
