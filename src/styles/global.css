@@ -375,3 +375,8 @@ a.cover.made{ display:flex; }
 .cover.c3 .cs{ font-family:var(--serif); font-size:1.05rem; line-height:1.2; margin-top:.6rem; color:#BFE9EA; }
 .sub-head{ font-family:var(--mono); font-weight:700; font-size:.8rem; letter-spacing:.14em; text-transform:uppercase; color:var(--text-2); border-top:1px solid var(--line-strong); padding-top:1rem; margin:0 0 2rem; }
 .cover.c2 .cf img{ filter:brightness(0) invert(1); }
+
+/* ---------- bienvenida ---------- */
+.welcome-list{ list-style:none; margin:0; padding:0; }
+.welcome-list li{ font-family:var(--serif); font-weight:600; font-size:clamp(1.1rem, 1.7vw, 1.3rem); line-height:1.3; padding:.9rem 0 .9rem 1.6rem; border-top:1.5px solid rgba(10,46,53,.25); position:relative; }
+.welcome-list li::before{ content:"✓"; position:absolute; left:0; top:.9rem; font-family:var(--sans); font-weight:700; }
