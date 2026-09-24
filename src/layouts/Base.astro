@@ -8,19 +8,20 @@ export interface Props {
 
 const {
   title = 'RED Quynza · El derecho de la ciudad a la paz',
-  description = 'RED Quynza: más de cien profesores de más de 25 universidades que piensan la violencia urbana y la paz desde las ciudades de Colombia. Podcast, documentales, boletín y publicaciones.',
+  description = 'RED Quynza: más de 80 investigadores e investigadoras de más de 25 universidades que piensan la violencia urbana y la paz desde las ciudades de Colombia. Podcast, documentales, boletín y publicaciones.',
 } = Astro.props;
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
+  { href: '/', label: 'Inicio' },
   { href: '/podcast', label: 'Podcast' },
   { href: '/videos', label: 'Videos' },
   { href: '/documentales', label: 'Documentales' },
-  { href: '/boletin', label: 'Boletín' },
+  { href: '/boletin', label: 'Boletín', cta: true },
   { href: '/publicaciones', label: 'Publicaciones' },
   { href: '/la-red', label: 'La RED' },
 ];
-const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+const isActive = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
 ---
 <!DOCTYPE html>
 <html lang="es">
@@ -42,12 +43,12 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
 <body>
   <header class="top">
     <div class="wrap" style="position:relative">
-      <a class="brand" href="/"><img src="/img/pajaro.png" alt="" /><span style="color:var(--ink)">RED <span>QUYNZA</span></span></a>
+      <a class="brand" href="/" aria-label="RED Quynza, inicio"><img src="/img/pajaro.png" alt="" /><span>RED <span>QUYNZA</span></span></a>
       <button class="menu-btn" aria-expanded="false" aria-controls="menu">Menú</button>
       <nav id="menu" aria-label="Principal">
         <ul>
           {nav.map((item) => (
-            <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
+            <li><a href={item.href} class={item.cta ? 'nav-cta' : undefined} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
           ))}
         </ul>
       </nav>
@@ -101,17 +102,16 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
         });
       }
 
-      // --- Formulario de boletín (si existe en la página) ---
-      var signup = document.getElementById('signup');
-      if (signup) {
-        signup.addEventListener('submit', function (e) {
+      // --- Formularios de boletín (puede haber más de uno por página) ---
+      document.querySelectorAll('form.signup').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
           // Si el form apunta a Buttondown (tiene action), dejamos que envíe normal.
-          if (signup.getAttribute('action')) return;
+          if (form.getAttribute('action')) return;
           e.preventDefault();
-          var msg = document.getElementById('signup-msg');
+          var msg = document.getElementById(form.id + '-msg');
           if (msg) msg.textContent = 'El boletín todavía no está activo. El primer número sale pronto.';
         });
-      }
+      });
 
       // --- Reproductor de YouTube embebido al hacer clic (si hay videos) ---
       document.querySelectorAll('.video[data-yt]').forEach(function (a) {

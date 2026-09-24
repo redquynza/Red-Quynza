@@ -5,19 +5,26 @@
 const BUTTONDOWN = 'red_quynza';
 const action = BUTTONDOWN ? `https://buttondown.com/api/emails/embed-subscribe/${BUTTONDOWN}` : undefined;
 const popup = BUTTONDOWN ? `window.open('https://buttondown.com/${BUTTONDOWN}', 'popupwindow')` : undefined;
+
+export interface Props {
+  // id único por formulario (permite más de uno en la misma página)
+  id?: string;
+  cta?: string;
+}
+const { id = 'signup', cta = 'Suscribirme' } = Astro.props;
 ---
 <form
   class="signup embeddable-buttondown-form"
-  id="signup"
+  id={id}
   method="post"
   action={action}
   target={BUTTONDOWN ? 'popupwindow' : undefined}
   onsubmit={popup}
   novalidate={!BUTTONDOWN}
 >
-  <label for="email">Correo electrónico</label>
-  <input id="email" name="email" type="email" placeholder="tu@correo.com" autocomplete="email" />
+  <label for={`${id}-email`}>Correo electrónico</label>
+  <input id={`${id}-email`} name="email" type="email" placeholder="tu@correo.com" autocomplete="email" required={!!BUTTONDOWN} />
   {BUTTONDOWN && <input type="hidden" value="1" name="embed" />}
-  <button type="submit">Suscribirme</button>
+  <button type="submit">{cta}</button>
 </form>
-<div id="signup-msg" role="status" aria-live="polite"></div>
+<div id={`${id}-msg`} class="signup-msg" role="status" aria-live="polite"></div>
