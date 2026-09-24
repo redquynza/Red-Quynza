@@ -5,13 +5,17 @@ import Base from '../layouts/Base.astro';
 const ZENODO = 'https://zenodo.org/communities/redquynza/records';
 ---
 <Base
-  title="Publicaciones · RED Quynza"
-  description="Libros, documentos y el repositorio abierto de la RED Quynza: bases de datos y publicaciones de la red sobre violencia urbana y paz en Colombia."
+  title="Repositorio · RED Quynza"
+  description="Repositorio de la RED Quynza: libros, artículos y las bases de datos de sus investigaciones sobre violencia urbana y paz en Colombia. Acceso abierto."
 >
   <main>
     <section class="block" id="publicaciones">
       <div class="wrap">
-        <div class="sec-head"><p class="kicker">Publicaciones</p><h2>Libros y documentos</h2></div>
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Repositorio</p><h2>Publicaciones y datos de la red</h2></div>
+          <p class="intro">Libros y artículos propios de la red, y los archivos con los que investigamos: bases de datos, informes y documentos de trabajo. Todo en acceso abierto.</p>
+        </div>
+        <h3 class="sub-head">Libros y documentos</h3>
         <div class="pubs">
           <article class="pub">
             <div class="cover"><img src="/img/libro-construir-la-paz.jpg" alt="Portada del libro Construir la paz y cuidar la vida" /></div>
@@ -44,14 +48,27 @@ const ZENODO = 'https://zenodo.org/communities/redquynza/records';
       </div>
     </section>
 
+    <section class="block tint-sand" id="articulos">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Artículos</p>
+          <h2>Artículos de la red</h2>
+        </div>
+        <div>
+          <p class="intro" style="max-width:52ch">Artículos académicos y de opinión escritos por integrantes de la red.</p>
+          <div class="dir-empty" style="margin-top:1.4rem"><p>Estamos reuniendo los artículos de la red; se publicarán aquí muy pronto.</p></div>
+        </div>
+      </div>
+    </section>
+
     <section class="block tint-teal" id="repositorio">
       <div class="wrap sec-grid">
         <div>
-          <p class="kicker">Repositorio abierto</p>
-          <h2>Las bases de datos y documentos de la red</h2>
+          <p class="kicker">Datos abiertos</p>
+          <h2>Las bases de datos de nuestras investigaciones</h2>
         </div>
         <div>
-          <p class="intro" style="max-width:52ch">La RED publica en <b>Zenodo</b> un repositorio abierto que se irá alimentando con las bases de datos, informes y documentos de trabajo de la red. Acceso libre, citable y con DOI.</p>
+          <p class="intro" style="max-width:52ch">La RED publica en <b>Zenodo</b> las bases de datos usadas en sus investigaciones, junto con informes y documentos de trabajo. Acceso libre, citable y con DOI.</p>
           {ZENODO
             ? <p style="margin-top:1.4rem"><a class="btn solid" href={ZENODO} target="_blank" rel="noopener">Ver el repositorio en Zenodo</a></p>
             : <div class="dir-empty" style="margin-top:1.4rem"><p>El repositorio en Zenodo estará enlazado aquí muy pronto.</p></div>

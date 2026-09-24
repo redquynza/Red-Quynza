@@ -23,29 +23,20 @@ const porRegion = (id: string) => miembros.filter((m) => m.region === id);
 ---
 <Base>
   <main id="inicio">
-    <!-- HÉROE -->
+    <!-- HÉROE: primero quiénes somos, luego la suscripción -->
     <section class="hero">
-      <!-- Boletín: la acción prioritaria, arriba de todo -->
-      <div class="wrap hero-signup" id="suscribirse">
-        <div>
-          <p class="hs-label"><i>Gratis</i> Boletín mensual</p>
-          <p class="hs-title">Lo que la red piensa y hace, una vez al mes en tu correo.<span>Análisis con criterio sobre violencia urbana y paz, más el podcast, los documentales y la agenda de la red.</span></p>
-        </div>
-        <div>
-          <Signup id="signup" cta="Quiero recibirlo" />
-        </div>
-      </div>
-
       <div class="wrap">
         <div>
           <p class="tagline">Paz y cuidado de la vida</p>
           <h1>La ciudad también tiene <em>derecho a la paz</em></h1>
           <p class="lede">La guerra no se tomó la ciudad. Pero allí ocurren <b>más de la mitad de los homicidios del país</b>, y casi nunca entra en las conversaciones de paz.</p>
-          <p class="lede-2">Somos más de 80 investigadores e investigadoras de más de 25 universidades que pensamos la violencia urbana desde las ciudades de Colombia. Nuestro Centro de Pensamiento Digital la lleva a la conversación pública: boletín, podcast, documentales y publicaciones abiertas.</p>
-          <div class="actions">
-            <a class="btn solid" href="/boletin">Recibir el boletín</a>
-            <a class="text-link" href="#tesis">Leer la tesis ↓</a>
+          <p class="lede-2">Somos más de 80 investigadores e investigadoras de más de 25 universidades que pensamos la violencia urbana desde las ciudades de Colombia, y abrimos lo que investigamos: publicaciones, datos, podcast y documentales.</p>
+          <div class="hero-signup" id="suscribirse">
+            <p class="hs-label"><i>Gratis</i> Boletín mensual</p>
+            <p class="hs-title">Recibe cada mes lo que la red piensa, investiga y publica.</p>
+            <Signup id="signup" cta="Quiero recibirlo" />
           </div>
+          <a class="text-link" href="#tesis">O lee primero la tesis ↓</a>
         </div>
         <aside class="statcard" aria-label="Dato clave">
           <div class="big-num">58%<small>de los homicidios del país ocurren en las ciudades</small></div>
@@ -80,8 +71,45 @@ const porRegion = (id: string) => miembros.filter((m) => m.region === id);
       </div>
     </section>
 
+    <!-- REPOSITORIO -->
+    <section class="block" id="repositorio">
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Repositorio</p><h2>Lo que investigamos, abierto para todos</h2></div>
+          <p class="intro">Libros y artículos de la red, y las bases de datos con las que trabajamos. Acceso libre y citable.</p>
+        </div>
+        <div class="pubs">
+          <article class="pub">
+            <a class="cover" href="/publicaciones"><img src="/img/libro-construir-la-paz.jpg" alt="Portada del libro Construir la paz y cuidar la vida" loading="lazy" /></a>
+            <h3>Construir la paz y cuidar la vida</h3>
+            <p class="sub">Libro · Editorial Universidad Nacional</p>
+          </article>
+          <article class="pub">
+            <a class="cover made c1" href="/publicaciones" aria-label="Un renovado imaginario">
+              <div><div class="bar"></div><div class="ct">Un renovado imaginario</div><div class="cs">El derecho de la ciudad a la paz</div></div>
+              <div class="cf"><span>Propuesta política</span><img src="/img/pajaro.png" alt="" /></div>
+            </a>
+            <h3>Un renovado imaginario</h3>
+            <p class="sub">Propuesta política de la red</p>
+          </article>
+          <article class="pub">
+            <a class="cover made c3" href="https://zenodo.org/communities/redquynza/records" target="_blank" rel="noopener" aria-label="Bases de datos en Zenodo">
+              <div><div class="bar"></div><div class="ct">Bases de datos</div><div class="cs">Informes y documentos de trabajo</div></div>
+              <div class="cf"><span>Zenodo · DOI</span><img src="/img/pajaro.png" alt="" /></div>
+            </a>
+            <h3>Datos abiertos</h3>
+            <p class="sub">Repositorio de la red en Zenodo</p>
+          </article>
+        </div>
+        <div class="actions" style="margin-top:2.5rem">
+          <a class="btn solid" href="/publicaciones">Ver todo el repositorio</a>
+          <a class="text-link" href="https://zenodo.org/communities/redquynza/records" target="_blank" rel="noopener">Ir a Zenodo ↗</a>
+        </div>
+      </div>
+    </section>
+
     <!-- TEASERS -->
-    <section class="block" id="explora">
+    <section class="block tint-sand" id="explora">
       <div class="wrap">
         <div class="sec-grid sec-head">
           <div><p class="kicker">Centro de Pensamiento Digital</p><h2>Investigación que se escucha, se ve y se lee</h2></div>
@@ -94,6 +122,12 @@ const porRegion = (id: string) => miembros.filter((m) => m.region === id);
             <p>Conversación a conversación, un mapa del país que se llena con cada episodio.</p>
             <span class="arrow">Escuchar →</span>
           </a>
+          <a class="teaser" href="/publicaciones">
+            <span class="tk">Repositorio</span>
+            <h3>Publicaciones y datos</h3>
+            <p>Libros, artículos y las bases de datos de nuestras investigaciones.</p>
+            <span class="arrow">Leer →</span>
+          </a>
           <a class="teaser" href="/videos">
             <span class="tk">Videos</span>
             <h3>Empieza por aquí</h3>
@@ -105,12 +139,6 @@ const porRegion = (id: string) => miembros.filter((m) => m.region === id);
             <h3>Historias con tiempo</h3>
             <p>Las piezas mayores de la red, filmadas donde ocurren: Pereira, Barranquilla, Cali.</p>
             <span class="arrow">Descubrir →</span>
-          </a>
-          <a class="teaser" href="/publicaciones">
-            <span class="tk">Publicaciones</span>
-            <h3>Libros y datos abiertos</h3>
-            <p>El libro de la red, la propuesta política y el repositorio abierto en Zenodo.</p>
-            <span class="arrow">Leer →</span>
           </a>
           <a class="teaser" href="/la-red">
             <span class="tk">La RED</span>
@@ -129,7 +157,7 @@ const porRegion = (id: string) => miembros.filter((m) => m.region === id);
     </section>
 
     <!-- BOLETÍN -->
-    <section class="band coral" id="boletin-cta">
+    <section class="block" id="boletin-cta">
       <div class="wrap sec-grid">
         <div>
           <p class="kicker">Boletín</p>

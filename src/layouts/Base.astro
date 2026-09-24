@@ -8,17 +8,17 @@ export interface Props {
 
 const {
   title = 'RED Quynza · El derecho de la ciudad a la paz',
-  description = 'RED Quynza: más de 80 investigadores e investigadoras de más de 25 universidades que piensan la violencia urbana y la paz desde las ciudades de Colombia. Podcast, documentales, boletín y publicaciones.',
+  description = 'RED Quynza: más de 80 investigadores e investigadoras de más de 25 universidades que piensan la violencia urbana y la paz desde las ciudades de Colombia. Podcast, publicaciones y datos abiertos, documentales y boletín.',
 } = Astro.props;
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
   { href: '/', label: 'Inicio' },
   { href: '/podcast', label: 'Podcast' },
+  { href: '/publicaciones', label: 'Repositorio' },
   { href: '/videos', label: 'Videos' },
   { href: '/documentales', label: 'Documentales' },
-  { href: '/boletin', label: 'Boletín', cta: true },
-  { href: '/publicaciones', label: 'Publicaciones' },
+  { href: '/boletin', label: 'Boletín' },
   { href: '/la-red', label: 'La RED' },
 ];
 const isActive = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
@@ -48,7 +48,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
       <nav id="menu" aria-label="Principal">
         <ul>
           {nav.map((item) => (
-            <li><a href={item.href} class={item.cta ? 'nav-cta' : undefined} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
+            <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
           ))}
         </ul>
       </nav>
