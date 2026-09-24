@@ -13,6 +13,8 @@ const {
   description = 'RED Quynza: más de 80 investigadores e investigadoras de más de 25 universidades que piensan la violencia urbana y la paz desde las ciudades de Colombia. Podcast, publicaciones y datos abiertos, documentales y boletín.',
 } = Astro.props;
 
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL('/img/og-redquynza.png', Astro.site).href;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
   { href: '/', label: 'Inicio' },
@@ -33,10 +35,23 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
   <title>{title}</title>
   <meta name="description" content={description} />
   {noindex && <meta name="robots" content="noindex" />}
+  <link rel="canonical" href={canonical} />
+  <!-- Vista previa al compartir (WhatsApp, Instagram, Facebook, X, LinkedIn…) -->
+  <meta property="og:site_name" content="RED Quynza" />
+  <meta property="og:locale" content="es_CO" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content="/img/logo-red-quynza.png" />
-  <meta property="og:type" content="website" />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="RED Quynza: la ciudad también tiene derecho a la paz" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+  <link rel="apple-touch-icon" href="/img/logo-q.png" />
   <link rel="icon" type="image/png" href="/img/pajaro.png" />
   <meta name="theme-color" content="#0E3A42" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
