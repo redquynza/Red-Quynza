@@ -49,13 +49,13 @@ export const integrantes: Integrante[] = [
   {
     id: 'carlos-mario-perea',
     nombre: 'Carlos Mario Perea',
-    rol: 'Profesor del Instituto de Estudios Políticos y Relaciones Internacionales (IEPRI)',
+    rol: 'Coordinador General de la RED Quynza',
     institucion: 'Universidad Nacional de Colombia',
     ciudad: 'Bogotá',
     region: 'centro',
     foto: '/img/integrantes/carlos-mario-perea.webp',
     resena: [
-      'Profesor del Instituto de Estudios Políticos y Relaciones Internacionales (IEPRI) de la Universidad Nacional de Colombia.',
+      'Coordinador General de la RED Quynza. Profesor del Instituto de Estudios Políticos y Relaciones Internacionales (IEPRI) de la Universidad Nacional de Colombia.',
     ],
   },
   {
@@ -206,13 +206,13 @@ export const integrantes: Integrante[] = [
   {
     id: 'gildardo-vanegas',
     nombre: 'Gildardo Vanegas',
-    rol: 'Sociólogo, doctor en Sociología',
+    rol: 'Coordinador editorial de la RED Quynza',
     institucion: 'Universidad del Valle',
     ciudad: 'Popayán · Cali',
     region: 'pacifico',
     foto: '/img/integrantes/gildardo-vanegas.webp',
     resena: [
-      'Sociólogo, magíster en Estudios Políticos y doctor en Sociología. Sus temas de investigación giran alrededor del conflicto violento urbano, el conflicto armado y las políticas públicas, con intereses en la literatura.',
+      'Coordinador editorial de la RED Quynza. Sociólogo, magíster en Estudios Políticos y doctor en Sociología. Sus temas de investigación giran alrededor del conflicto violento urbano, el conflicto armado y las políticas públicas, con intereses en la literatura.',
     ],
   },
 
