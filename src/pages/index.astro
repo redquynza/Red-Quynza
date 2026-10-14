@@ -2,24 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Signup from '../components/Signup.astro';
 
-// Macrorregiones de la red (según el documento orgánico).
-const regiones = [
-  { id: 'caribe', nombre: 'Caribe' },
-  { id: 'oriente', nombre: 'Oriente' },
-  { id: 'centro', nombre: 'Zona Centro' },
-  { id: 'cafetera', nombre: 'Zona Cafetera' },
-  { id: 'pacifico', nombre: 'Pacífico' },
-  { id: 'orinoquia', nombre: 'Orinoquía' },
-  { id: 'amazonia', nombre: 'Amazonía' },
-];
-
-// Directorio de integrantes. Se llenará cuando lleguen los datos.
-// Formato: { nombre, rol, universidad, region: <id>, foto?: '/img/miembros/xxx.jpg' }
-const miembros: { nombre: string; rol: string; universidad: string; region: string; foto?: string }[] = [];
-
-const iniciales = (n: string) =>
-  n.split(' ').filter(Boolean).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
-const porRegion = (id: string) => miembros.filter((m) => m.region === id);
+// Directorio: los datos viven en src/data/integrantes.ts; el directorio completo está en /la-red.
+import { integrantes } from '../data/integrantes';
 ---
 <Base>
   <main id="inicio">
@@ -160,7 +144,7 @@ const porRegion = (id: string) => miembros.filter((m) => m.region === id);
             <p>Una academia comprometida y plural, con la paz como corazón.</p>
             <span class="arrow">Conocer →</span>
           </a>
-          <a class="teaser" href="#directorio">
+          <a class="teaser" href="/la-red#integrantes">
             <span class="tk">Integrantes</span>
             <h3>La red en el territorio</h3>
             <p>Más de 80 investigadores e investigadoras en las siete macrorregiones del país.</p>
@@ -190,61 +174,19 @@ const porRegion = (id: string) => miembros.filter((m) => m.region === id);
       <div class="wrap">
         <div class="sec-grid sec-head">
           <div><p class="kicker">La red en el territorio</p><h2>Directorio de integrantes</h2></div>
-          <p class="intro">Más de 80 investigadores e investigadoras de más de 25 universidades, organizados por las siete macrorregiones del país.</p>
+          <p class="intro">Más de 80 investigadores e investigadoras de más de 25 universidades en las siete macrorregiones del país. Estos son algunos de los rostros de la red.</p>
         </div>
 
-        <nav class="region-nav" aria-label="Regiones de la red">
-          {regiones.map((r) => <a href={`#region-${r.id}`}>{r.nombre}</a>)}
-        </nav>
-
-        {miembros.length === 0 ? (
-          <>
-            <div class="dir-empty">
-              <p><b>Directorio en construcción.</b> Estamos recogiendo los datos —fotografía y una breve reseña— de las y los más de 80 integrantes. Se publicarán aquí, organizados por región. Así se verá:</p>
-            </div>
-            <div class="region" id="region-preview" style="margin-top:2.5rem">
-              <div class="region-head">
-                <h3>Zona Centro <span class="preview-note">vista previa del diseño</span></h3>
-                <span class="count">— integrantes</span>
-              </div>
-              <div class="members">
-                {Array.from({ length: 4 }).map(() => (
-                  <div class="member" aria-hidden="true">
-                    <div class="photo"><span class="initials">·</span></div>
-                    <p class="name">Nombre del integrante</p>
-                    <p class="role">Rol · línea de trabajo</p>
-                    <p class="uni">Universidad</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
-        ) : (
-          regiones.map((r) => {
-            const ms = porRegion(r.id);
-            if (ms.length === 0) return null;
-            return (
-              <div class="region" id={`region-${r.id}`}>
-                <div class="region-head">
-                  <h3>{r.nombre}</h3>
-                  <span class="count">{ms.length} {ms.length === 1 ? 'integrante' : 'integrantes'}</span>
-                </div>
-                <div class="members">
-                  {ms.map((m) => (
-                    <div class="member">
-                      <div class="photo">
-                        {m.foto ? <img src={m.foto} alt={m.nombre} loading="lazy" /> : <span class="initials">{iniciales(m.nombre)}</span>}
-                      </div>
-                      <p class="name">{m.nombre}</p>
-                      <p class="role">{m.rol}</p>
-                      <p class="uni">{m.universidad}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })
-        )}
+        <div class="faces">
+          {integrantes.filter((m) => m.foto).map((m) => (
+            <a href={`/la-red#${m.id}`} title={`${m.nombre} · ${m.ciudad}`}>
+              <img src={m.foto} alt={`${m.nombre}, ${m.ciudad}`} loading="lazy" />
+            </a>
+          ))}
+        </div>
+        <div class="actions">
+          <a class="btn solid" href="/la-red#integrantes">Ver el directorio completo</a>
+        </div>
       </div>
     </section>
   </main>

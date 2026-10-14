@@ -1,0 +1,90 @@
+---
+// Directorio completo: tarjetas por macrorregión; cada tarjeta abre la reseña.
+// Enlace directo a un perfil: /la-red#<id> (abre su ficha al cargar).
+import { regiones, porRegion, integrantes } from '../data/integrantes';
+
+const iniciales = (n: string) =>
+  n.split(' ').filter(Boolean).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
+---
+<nav class="region-nav" aria-label="Regiones de la red">
+  {regiones.filter((r) => porRegion(r.id).length > 0).map((r) => <a href={`#region-${r.id}`}>{r.nombre}</a>)}
+</nav>
+
+{regiones.map((r) => {
+  const ms = porRegion(r.id);
+  if (ms.length === 0) return null;
+  return (
+    <div class="region" id={`region-${r.id}`}>
+      <div class="region-head">
+        <h3>{r.nombre}</h3>
+        <span class="count">{ms.length} {ms.length === 1 ? 'integrante' : 'integrantes'}</span>
+      </div>
+      <div class="members">
+        {ms.map((m) => (
+          <a class="member" id={m.id} href={`#${m.id}`} data-perfil={m.id} aria-haspopup="dialog">
+            <div class="photo">
+              {m.foto ? <img src={m.foto} alt="" loading="lazy" /> : <span class="initials">{iniciales(m.nombre)}</span>}
+            </div>
+            <p class="name">{m.nombre}</p>
+            <p class="role">{m.rol}</p>
+            <p class="uni">{m.institucion}</p>
+            <p class="city">{m.ciudad}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+})}
+
+{integrantes.map((m) => (
+  <dialog class="perfil" id={`perfil-${m.id}`} aria-labelledby={`perfil-${m.id}-t`}>
+    <button class="perfil-close" type="button" data-close aria-label="Cerrar">×</button>
+    <div class="perfil-grid">
+      <div class="photo">
+        {m.foto ? <img src={m.foto} alt={`Fotografía de ${m.nombre}`} loading="lazy" /> : <span class="initials">{iniciales(m.nombre)}</span>}
+      </div>
+      <div class="perfil-body">
+        <p class="kicker">{m.ciudad}</p>
+        <h3 id={`perfil-${m.id}-t`}>{m.nombre}</h3>
+        <p class="perfil-rol">{m.rol} · <span>{m.institucion}</span></p>
+        {m.resena.map((p) => <p>{p}</p>)}
+        {m.otras && <p class="perfil-otras"><b>También trabaja con</b> {m.otras}</p>}
+        {m.enlaces && (
+          <p class="perfil-links">
+            {m.enlaces.map((e) => <a href={e.href} target="_blank" rel="noopener">{e.label} ↗</a>)}
+          </p>
+        )}
+      </div>
+    </div>
+  </dialog>
+))}
+
+<script>
+  const abrir = (id: string) => {
+    const d = document.getElementById(`perfil-${id}`) as HTMLDialogElement | null;
+    if (d && !d.open) d.showModal();
+    return !!d;
+  };
+  document.querySelectorAll<HTMLAnchorElement>('[data-perfil]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (abrir(a.dataset.perfil!)) history.replaceState(null, '', `#${a.dataset.perfil}`);
+    });
+  });
+  document.querySelectorAll<HTMLDialogElement>('dialog.perfil').forEach((d) => {
+    d.addEventListener('click', (e) => {
+      // clic en el fondo o en la X
+      if (e.target === d || (e.target as HTMLElement).closest('[data-close]')) d.close();
+    });
+    d.addEventListener('close', () => {
+      const id = d.id.replace('perfil-', '');
+      if (location.hash === `#${id}`) history.replaceState(null, '', location.pathname);
+      document.getElementById(id)?.focus({ preventScroll: true });
+    });
+  });
+  const inicial = decodeURIComponent(location.hash.slice(1));
+  if (inicial && document.querySelector(`[data-perfil="${CSS.escape(inicial)}"]`)) {
+    document.getElementById(inicial)?.scrollIntoView({ block: 'center' });
+    abrir(inicial);
+  }
+</script>

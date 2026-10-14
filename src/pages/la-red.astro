@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import Directorio from '../components/Directorio.astro';
+import { integrantes } from '../data/integrantes';
 ---
 <Base
   title="La RED · RED Quynza"
@@ -55,11 +57,14 @@ import Base from '../layouts/Base.astro';
       </div>
     </section>
 
-    <section class="block" id="integrantes-cta">
+    <section class="block tint-teal" id="integrantes">
       <div class="wrap">
-        <div class="dir-empty">
-          <p>Somos más de 80 investigadores e investigadoras en las siete macrorregiones del país. Conócelos en el <a href="/#directorio">directorio de la red</a>.</p>
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">La red en el territorio</p><h2>Directorio de integrantes</h2></div>
+          <p class="intro">Más de 80 investigadores e investigadoras de más de 25 universidades, organizados por las siete macrorregiones del país. Haz clic en cada perfil para leer su reseña.</p>
         </div>
+        <p class="dir-note">{integrantes.length} perfiles publicados · el directorio crece a medida que llegan los datos</p>
+        <Directorio />
       </div>
     </section>
   </main>

@@ -226,6 +226,38 @@ main > section:first-child{ border-top:0; }
 .dir-empty{ background:var(--surface); border:1.5px dashed var(--line-strong); border-radius:8px; padding:clamp(1.5rem, 3vw, 2.2rem) clamp(1.3rem, 3vw, 2.4rem); color:var(--text-2); }
 .dir-empty p{ margin:0; max-width:70ch; }
 .dir-empty b{ color:var(--ink); font-family:var(--serif); font-size:1.08em; }
+a.member{ color:inherit; text-decoration:none; border-radius:8px; }
+a.member .photo img{ transition:transform .35s ease; }
+a.member:hover .photo img{ transform:scale(1.035); }
+a.member:hover .name{ color:var(--ink-2); text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:3px; }
+a.member:focus-visible{ outline:2px solid var(--teal-ink); outline-offset:4px; }
+.member .city{ font-family:var(--mono); font-size:.7rem; color:var(--text-2); margin:.15rem 0 0; }
+.dir-note{ font-family:var(--mono); font-size:.76rem; color:var(--text-2); margin:-1.2rem 0 2.2rem; }
+
+/* ficha de integrante (diálogo) */
+dialog.perfil{ border:0; padding:0; border-radius:10px; background:var(--surface); color:var(--ink); width:min(860px, calc(100vw - 2rem)); max-height:calc(100dvh - 2rem); box-shadow:var(--shadow); overflow:auto; }
+dialog.perfil::backdrop{ background:rgba(10,38,44,.62); }
+.perfil-close{ position:sticky; top:.6rem; float:right; margin:.6rem .6rem 0 0; width:2.4rem; height:2.4rem; border-radius:999px; border:1px solid var(--line-strong); background:var(--surface); color:var(--ink); font-size:1.5rem; line-height:1; cursor:pointer; z-index:1; }
+.perfil-close:hover{ background:var(--ink); color:var(--bg); }
+.perfil-grid{ display:grid; grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr); gap:clamp(1.2rem, 3vw, 2.2rem); padding:clamp(1.2rem, 3vw, 2.2rem); }
+.perfil-grid .photo{ aspect-ratio:4/5; border-radius:6px; overflow:hidden; align-self:start; background:var(--tint-teal); display:grid; place-items:center; }
+.perfil-grid .photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.perfil-grid .photo .initials{ font-family:var(--serif); font-weight:700; font-size:3rem; color:var(--ink-2); }
+.perfil-body h3{ font-size:clamp(1.6rem, 3vw, 2.1rem); margin:.2rem 0 .5rem; line-height:1.1; }
+.perfil-body p{ line-height:1.6; margin:0 0 .9rem; }
+.perfil-body .perfil-rol{ color:var(--text-2); margin-bottom:1.3rem; }
+.perfil-body .perfil-rol span{ color:var(--teal-ink); font-weight:700; }
+.perfil-otras{ font-size:.92rem; color:var(--text-2); border-top:1px solid var(--line); padding-top:.9rem; }
+.perfil-otras b{ display:block; font-family:var(--mono); font-size:.72rem; letter-spacing:.04em; color:var(--ink); margin-bottom:.2rem; }
+.perfil-links{ display:flex; flex-wrap:wrap; gap:.5rem 1.2rem; font-family:var(--mono); font-size:.8rem; }
+.perfil-links a{ color:var(--teal-ink); }
+
+/* muro de rostros (portada) */
+.faces{ display:grid; grid-template-columns:repeat(8,minmax(0,1fr)); gap:.6rem; margin-bottom:2.2rem; }
+.faces a{ display:block; aspect-ratio:4/5; border-radius:6px; overflow:hidden; background:var(--surface); }
+.faces img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s ease, filter .35s ease; }
+.faces a:hover img{ transform:scale(1.05); }
+.faces a:focus-visible{ outline:2px solid var(--teal-ink); outline-offset:3px; }
 .preview-note{ font-family:var(--mono); font-size:.7rem; font-weight:400; letter-spacing:.04em; color:var(--teal-ink); border:1px dashed currentColor; border-radius:999px; padding:.15rem .7rem; display:inline-block; margin-left:.6rem; vertical-align:.3em; }
 
 /* ---------- mapa (podcast) ---------- */
@@ -344,6 +376,7 @@ footer .note{ color:#A9BFC2; width:100%; border-top:1px solid rgba(247,244,238,.
   .thesis, .convo{ grid-template-columns:minmax(0,1fr); }
   .teasers, .pubs{ grid-template-columns:repeat(2,minmax(0,1fr)); }
   .members{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+  .faces{ grid-template-columns:repeat(5,minmax(0,1fr)); }
   .docs li{ grid-template-columns:minmax(0,1fr); gap:.5rem; }
   .docs .status{ justify-self:start; }
   .statcard{ max-width:560px; }
@@ -354,6 +387,9 @@ footer .note{ color:#A9BFC2; width:100%; border-top:1px solid rgba(247,244,238,.
   .brand img{ height:30px; }
   .videos, .pubs, .teasers{ grid-template-columns:minmax(0,1fr); }
   .members{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.5rem 1rem; }
+  .faces{ grid-template-columns:repeat(4,minmax(0,1fr)); gap:.45rem; }
+  .perfil-grid{ grid-template-columns:minmax(0,1fr); }
+  .perfil-grid .photo{ max-width:220px; }
   .moments{ grid-template-columns:minmax(0,1fr); }
   .moments li:nth-child(odd){ border-right:0; }
   .moments li:nth-child(even){ padding-left:0; }
