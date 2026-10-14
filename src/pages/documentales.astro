@@ -6,13 +6,16 @@ import Base from '../layouts/Base.astro';
   description="Las piezas mayores de la RED Quynza, filmadas en los lugares donde ocurren: historias de violencia urbana y paz contadas con tiempo."
 >
   <main>
-    <section class="block" id="documentales">
+    <header class="page-head" id="documentales">
       <div class="wrap">
-        <div class="sec-grid sec-head">
-          <div><p class="kicker">Documentales</p><h2>Historias contadas con tiempo</h2></div>
-          <p class="intro">Las piezas mayores de la red, filmadas en los lugares donde ocurren.</p>
-        </div>
+        <div class="crumb"><p class="label">Documentales</p><p class="label">Tres ciudades</p></div>
+        <h1>Historias contadas con <em>tiempo</em></h1>
+        <p class="dek">Las piezas mayores de la red, filmadas en los lugares donde ocurren.</p>
+      </div>
+    </header>
 
+    <section class="sec" style="padding-top:0">
+      <div class="wrap">
         <ul class="docs">
           <li>
             <span class="city">Pereira</span>
@@ -31,7 +34,8 @@ import Base from '../layouts/Base.astro';
           </li>
         </ul>
 
-        <div class="dir-empty" style="margin-top:2.5rem">
+        <div class="notice" style="margin-top:clamp(3rem, 6vw, 4.5rem)">
+          <p class="label">Estrenos</p>
           <p>Cuando cada documental esté listo podrás verlo aquí. Suscríbete al <a href="/boletin">boletín</a> para recibir los estrenos.</p>
         </div>
       </div>

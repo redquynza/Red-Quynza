@@ -7,30 +7,41 @@ import Signup from '../components/Signup.astro';
   description="Una vez al mes, en tu correo: lo que la RED Quynza piensa y hace. Seguimiento a la actualidad política, el podcast, los documentales, eventos y publicaciones."
 >
   <main>
-    <section class="block" id="boletin">
-      <div class="wrap sec-grid">
-        <div>
-          <p class="kicker">Boletín</p>
-          <h2>Lo que la red piensa y hace, cada mes</h2>
-          <p class="intro">Una vez al mes, en tu correo, lo que la red está pensando y haciendo. Sin ruido: análisis con criterio y las novedades que importan.</p>
-        </div>
-        <div>
+    <header class="page-head" id="boletin">
+      <div class="wrap">
+        <div class="crumb"><p class="label">Boletín</p><p class="label">Mensual · gratis</p></div>
+        <h1>Lo que la red piensa y hace, <em>cada mes</em></h1>
+        <p class="dek">Una vez al mes, en tu correo, lo que la red está pensando y haciendo. Sin ruido: análisis con criterio y las novedades que importan.</p>
+      </div>
+    </header>
+
+    <section class="sec" style="padding-top:0">
+      <div class="wrap rail">
+        <p class="label">Qué recibes</p>
+        <div class="body">
           <ul class="benefits">
             <li><b>Seguimiento a la actualidad política</b><span>Análisis con criterio de lo que pasó en el mes en el gobierno y el país.</span></li>
             <li><b>El podcast y los documentales</b><span>Los episodios y avances del mes.</span></li>
             <li><b>Eventos y agenda</b><span>Foros, debates y encuentros de la red, se hagan donde se hagan.</span></li>
             <li><b>Publicaciones</b><span>Artículos nuevos y avances del libro.</span></li>
           </ul>
-          <Signup />
+          <div style="max-width:560px">
+            <Signup />
+            <p class="note signup-fine">Gratis · Te das de baja cuando quieras</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="block tint-teal" id="numeros">
-      <div class="wrap">
-        <div class="sec-head"><p class="kicker">Números</p><h2>Ediciones publicadas</h2></div>
-        <div class="dir-empty">
-          <p>El <b>primer número</b> sale pronto. Suscríbete arriba y te llega apenas se publique; aquí quedará el archivo de todas las ediciones.</p>
+    <section class="sec alt" id="numeros">
+      <div class="wrap rail">
+        <p class="label">Números</p>
+        <div class="body">
+          <h2>Ediciones publicadas</h2>
+          <div class="notice">
+            <p class="label">Primer número</p>
+            <p>El <b>primer número</b> sale pronto. Suscríbete arriba y te llega apenas se publique; aquí quedará el archivo de todas las ediciones.</p>
+          </div>
         </div>
       </div>
     </section>
