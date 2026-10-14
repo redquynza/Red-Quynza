@@ -53,17 +53,16 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
   <meta name="twitter:image" content={ogImage} />
   <link rel="apple-touch-icon" href="/img/logo-q.png" />
   <link rel="icon" type="image/png" href="/img/pajaro.png" />
-  <meta name="theme-color" content="#F7F4EE" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#0C2328" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#0E3A42" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Zilla+Slab:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Zilla+Slab:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
 </head>
 <body>
   <header class="top">
-    <div class="wrap">
-      <a class="brand" href="/" aria-label="RED Quynza, inicio"><img src="/img/wordmark.png" alt="RED Quynza" width="760" height="135" /></a>
-      <button class="menu-btn" aria-expanded="false" aria-controls="menu"><i aria-hidden="true"></i>Menú</button>
+    <div class="wrap" style="position:relative">
+      <a class="brand" href="/" aria-label="RED Quynza, inicio"><img src="/img/pajaro.png" alt="" /><span>RED <span>QUYNZA</span></span></a>
+      <button class="menu-btn" aria-expanded="false" aria-controls="menu">Menú</button>
       <nav id="menu" aria-label="Principal">
         <ul>
           {nav.map((item) => (
@@ -78,35 +77,15 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
 
   <footer>
     <div class="wrap">
-      <div class="f-top">
-        <div><img class="flogo" src="/img/wordmark-crema.png" alt="RED Quynza" width="760" height="135" loading="lazy" /></div>
-        <div>
-          <p class="tag">Un contrapeso mediático. Paz y cuidado de la vida.</p>
-          <div class="f-cols">
-            <div>
-              <h4>Secciones</h4>
-              <ul>{nav.filter((i) => i.href !== '/').map((i) => <li><a href={i.href}>{i.label}</a></li>)}</ul>
-            </div>
-            <div>
-              <h4>Redes</h4>
-              <ul>
-                <li><a href="https://www.youtube.com/@REDQuynza" target="_blank" rel="noopener">YouTube</a></li>
-                <li><a href="https://www.instagram.com/redquynza/" target="_blank" rel="noopener">Instagram</a></li>
-                <li><a href="https://www.tiktok.com/@red.quynza" target="_blank" rel="noopener">TikTok</a></li>
-                <li><a href="https://www.facebook.com/profile.php?id=61591393226166" target="_blank" rel="noopener">Facebook</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4>Escríbenos</h4>
-              <ul>
-                <li><a href="mailto:redquynza@gmail.com">redquynza@gmail.com</a></li>
-                <li><a href="https://zenodo.org/communities/redquynza/records" target="_blank" rel="noopener">Datos abiertos en Zenodo</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="f-bottom"><span>© 2026 RED Quynza</span><span>Violencia urbana y paz desde las ciudades de Colombia</span></div>
+      <div><img class="flogo" src="/img/logo-red-quynza-crema.png" alt="RED Quynza" /><span class="tag">Un contrapeso mediático.</span></div>
+      <ul>
+        <li><a href="https://www.youtube.com/@REDQuynza" target="_blank" rel="noopener">YouTube</a></li>
+        <li><a href="https://www.instagram.com/redquynza/" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@red.quynza" target="_blank" rel="noopener">TikTok</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=61591393226166" target="_blank" rel="noopener">Facebook</a></li>
+        <li><a href="mailto:redquynza@gmail.com">redquynza@gmail.com</a></li>
+      </ul>
+      <span class="note">© 2026 RED Quynza</span>
     </div>
   </footer>
 
@@ -153,7 +132,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
       });
 
       // --- Reproductor de YouTube embebido al hacer clic (si hay videos) ---
-      document.querySelectorAll('.film[data-yt]').forEach(function (a) {
+      document.querySelectorAll('.video[data-yt]').forEach(function (a) {
         a.addEventListener('click', function (e) {
           var t = a.querySelector('.thumb');
           if (!t || t.querySelector('iframe')) return;

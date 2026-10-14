@@ -4,179 +4,188 @@ import Signup from '../components/Signup.astro';
 
 // Directorio: los datos viven en src/data/integrantes.ts; el directorio completo está en /la-red.
 import { integrantes } from '../data/integrantes';
-const conFoto = integrantes.filter((m) => m.foto);
 ---
 <Base>
   <main id="inicio">
     <!-- HÉROE: primero quiénes somos, luego la suscripción -->
-    <section class="cover">
+    <section class="hero">
       <div class="wrap">
-        <div class="crumb">
-          <p class="label">Paz y cuidado de la vida</p>
-          <p class="label">Centro de pensamiento · Colombia</p>
-        </div>
-        <h1>La ciudad también tiene <em>derecho a la paz</em></h1>
-        <div class="cover-grid">
-          <div>
-            <p class="lede">La guerra no se tomó la ciudad. Pero allí ocurren <b>más de la mitad de los homicidios del país</b>, y casi nunca entra en las conversaciones de paz.</p>
-            <p class="lede-2">Somos más de 80 investigadores e investigadoras de más de 25 universidades que pensamos la violencia urbana desde las ciudades de Colombia, y abrimos lo que investigamos: publicaciones, datos, podcast y documentales.</p>
-          </div>
-          <figure class="figure" aria-label="Dato clave">
-            <div class="num">58<sup>%</sup></div>
-            <p class="cap">de los homicidios del país ocurren en las ciudades</p>
-            <blockquote>«La ciudad produce grandes violencias y, no obstante, se mantiene enterrada en el olvido».</blockquote>
-            <figcaption class="note src">El derecho de la ciudad a la paz</figcaption>
-          </figure>
-          <div class="cover-signup" id="suscribirse">
-            <p class="label">Boletín mensual · <i>gratis</i></p>
-            <p class="title">Recibe cada mes lo que la red piensa, investiga y publica.</p>
+        <div>
+          <p class="tagline">Paz y cuidado de la vida</p>
+          <h1>La ciudad también tiene <em>derecho a la paz</em></h1>
+          <p class="lede">La guerra no se tomó la ciudad. Pero allí ocurren <b>más de la mitad de los homicidios del país</b>, y casi nunca entra en las conversaciones de paz.</p>
+          <p class="lede-2">Somos más de 80 investigadores e investigadoras de más de 25 universidades que pensamos la violencia urbana desde las ciudades de Colombia, y abrimos lo que investigamos: publicaciones, datos, podcast y documentales.</p>
+          <div class="hero-signup" id="suscribirse">
+            <p class="hs-label"><i>Gratis</i> Boletín mensual</p>
+            <p class="hs-title">Recibe cada mes lo que la red piensa, investiga y publica.</p>
             <Signup id="signup" cta="Quiero recibirlo" />
-            <p class="note fine">Una vez al mes. Te das de baja cuando quieras.</p>
-            <a class="go" href="#tesis">O lee primero la tesis ↓</a>
           </div>
+          <a class="text-link" href="#tesis">O lee primero la tesis ↓</a>
         </div>
+        <aside class="statcard" aria-label="Dato clave">
+          <div class="big-num">58%<small>de los homicidios del país ocurren en las ciudades</small></div>
+          <blockquote>La ciudad produce grandes violencias y, no obstante, se mantiene enterrada en el olvido.</blockquote>
+          <span class="src">RED Quynza · El derecho de la ciudad a la paz</span>
+        </aside>
       </div>
     </section>
 
     <!-- VIDEO: qué es la red -->
-    <section class="sec alt" id="que-es">
-      <div class="wrap rail">
-        <p class="label">Video</p>
-        <div class="body film-split">
-          <a class="film" data-yt="itAaEUX_1pM" href="https://youtu.be/itAaEUX_1pM" target="_blank" rel="noopener" aria-label="Ver en YouTube: Esto es RED Quynza">
-            <span class="thumb"><img src="/img/video-intro.jpg" alt="" loading="lazy" /><span class="play" aria-hidden="true">Ver el video</span></span>
-          </a>
-          <div>
-            <h2>Esto es RED Quynza</h2>
-            <p class="dek" style="margin:0">Qué es la red, por qué existe y desde dónde pensamos la violencia y la paz en Colombia.</p>
-          </div>
+    <section class="block tint-teal" id="que-es">
+      <div class="wrap convo">
+        <a class="video" data-yt="itAaEUX_1pM" href="https://youtu.be/itAaEUX_1pM" target="_blank" rel="noopener" aria-label="Ver en YouTube: Esto es RED Quynza">
+          <span class="thumb"><img src="/img/video-intro.jpg" alt="" loading="lazy" /><span class="play" aria-hidden="true"></span></span>
+        </a>
+        <div>
+          <p class="kicker">Video</p>
+          <h2>Esto es RED Quynza</h2>
+          <p class="intro">Qué es la red, por qué existe y desde dónde pensamos la violencia y la paz en Colombia.</p>
         </div>
       </div>
     </section>
 
     <!-- TESIS -->
-    <section class="sec dark" id="tesis">
-      <div class="wrap rail">
-        <p class="label">La tesis</p>
-        <div class="body">
-          <h2>Pensar solo la guerra no nos sacó de la violencia</h2>
-          <p class="dek">Falta mirar la ciudad. Tres ideas para un renovado imaginario de la paz.</p>
-          <div class="thesis">
-            <div>
-              <span class="n">i.</span>
-              <h3>La paradoja urbana</h3>
-              <p>Cuatro de cada cinco colombianos viven en ciudades, que concentran más de la mitad de los homicidios. Aun así, lo urbano quedó fuera del relato de la guerra y de la paz.</p>
-            </div>
-            <div>
-              <span class="n">ii.</span>
-              <h3>Otras violencias</h3>
-              <p>La violencia de la ciudad no la produce solo la confrontación armada. Reconocer su singularidad obliga a mirar con otros ojos y a nombrar lo que el imaginario armado borró.</p>
-            </div>
-            <div>
-              <span class="n">iii.</span>
-              <h3>El derecho a la paz</h3>
-              <p>Equidad, transformación cultural y empoderamiento de la sociedad como pilares de la no violencia y el cuidado de la vida.</p>
-            </div>
-          </div>
-          <p class="pullquote">Sin la ciudad <span>no hay paz completa.</span></p>
+    <section class="block ink" id="tesis">
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">La tesis</p><h2>Pensar solo la guerra no nos sacó de la violencia</h2></div>
+          <p class="intro">Falta mirar la ciudad. Tres ideas para un renovado imaginario de la paz.</p>
         </div>
+        <div class="thesis">
+          <div class="t-item">
+            <h3>La paradoja urbana</h3>
+            <p>Cuatro de cada cinco colombianos viven en ciudades, que concentran más de la mitad de los homicidios. Aun así, lo urbano quedó fuera del relato de la guerra y de la paz.</p>
+          </div>
+          <div class="t-item">
+            <h3>Otras violencias</h3>
+            <p>La violencia de la ciudad no la produce solo la confrontación armada. Reconocer su singularidad obliga a mirar con otros ojos y a nombrar lo que el imaginario armado borró.</p>
+          </div>
+          <div class="t-item">
+            <h3>El derecho a la paz</h3>
+            <p>Equidad, transformación cultural y empoderamiento de la sociedad como pilares de la no violencia y el cuidado de la vida.</p>
+          </div>
+        </div>
+        <p class="pullquote">Sin la ciudad <span>no hay paz completa.</span></p>
       </div>
     </section>
 
     <!-- REPOSITORIO -->
-    <section class="sec" id="repositorio">
-      <div class="wrap rail">
-        <p class="label">Repositorio</p>
-        <div class="body">
-          <h2>Lo que investigamos, abierto para todos</h2>
-          <p class="dek">Libros y artículos de la red, y las bases de datos con las que trabajamos. Acceso libre y citable.</p>
-          <div class="shelf">
-            <article class="pub">
-              <a class="book" href="/publicaciones"><img src="/img/libro-construir-la-paz.jpg" alt="Portada del libro Construir la paz y cuidar la vida" loading="lazy" /></a>
-              <p class="label meta">Libro · Editorial UNAL</p>
-              <h3>Construir la paz y cuidar la vida</h3>
-            </article>
-            <article class="pub">
-              <a class="book made c1" href="/publicaciones" aria-label="Un renovado imaginario">
-                <div><div class="bar"></div><div class="bt">Un renovado imaginario</div><div class="bs">El derecho de la ciudad a la paz</div></div>
-                <div class="bf"><span>Propuesta política</span><img src="/img/pajaro.png" alt="" /></div>
-              </a>
-              <p class="label meta">Propuesta política</p>
-              <h3>Un renovado imaginario</h3>
-            </article>
-            <article class="pub">
-              <a class="book made c3" href="https://zenodo.org/communities/redquynza/records" target="_blank" rel="noopener" aria-label="Bases de datos en Zenodo">
-                <div><div class="bar"></div><div class="bt">Bases de datos</div><div class="bs">Informes y documentos de trabajo</div></div>
-                <div class="bf"><span>Zenodo · DOI</span><img src="/img/pajaro.png" alt="" /></div>
-              </a>
-              <p class="label meta">Zenodo · DOI</p>
-              <h3>Datos abiertos</h3>
-            </article>
-          </div>
-          <div class="actions">
-            <a class="btn" href="/publicaciones">Ver todo el repositorio</a>
-            <a class="go" href="https://zenodo.org/communities/redquynza/records" target="_blank" rel="noopener">Ir a Zenodo ↗</a>
-          </div>
+    <section class="block" id="repositorio">
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Repositorio</p><h2>Lo que investigamos, abierto para todos</h2></div>
+          <p class="intro">Libros y artículos de la red, y las bases de datos con las que trabajamos. Acceso libre y citable.</p>
+        </div>
+        <div class="pubs">
+          <article class="pub">
+            <a class="cover" href="/publicaciones"><img src="/img/libro-construir-la-paz.jpg" alt="Portada del libro Construir la paz y cuidar la vida" loading="lazy" /></a>
+            <h3>Construir la paz y cuidar la vida</h3>
+            <p class="sub">Libro · Editorial Universidad Nacional</p>
+          </article>
+          <article class="pub">
+            <a class="cover made c1" href="/publicaciones" aria-label="Un renovado imaginario">
+              <div><div class="bar"></div><div class="ct">Un renovado imaginario</div><div class="cs">El derecho de la ciudad a la paz</div></div>
+              <div class="cf"><span>Propuesta política</span><img src="/img/pajaro.png" alt="" /></div>
+            </a>
+            <h3>Un renovado imaginario</h3>
+            <p class="sub">Propuesta política de la red</p>
+          </article>
+          <article class="pub">
+            <a class="cover made c3" href="https://zenodo.org/communities/redquynza/records" target="_blank" rel="noopener" aria-label="Bases de datos en Zenodo">
+              <div><div class="bar"></div><div class="ct">Bases de datos</div><div class="cs">Informes y documentos de trabajo</div></div>
+              <div class="cf"><span>Zenodo · DOI</span><img src="/img/pajaro.png" alt="" /></div>
+            </a>
+            <h3>Datos abiertos</h3>
+            <p class="sub">Repositorio de la red en Zenodo</p>
+          </article>
+        </div>
+        <div class="actions" style="margin-top:2.5rem">
+          <a class="btn solid" href="/publicaciones">Ver todo el repositorio</a>
+          <a class="text-link" href="https://zenodo.org/communities/redquynza/records" target="_blank" rel="noopener">Ir a Zenodo ↗</a>
         </div>
       </div>
     </section>
 
-    <!-- ÍNDICE -->
-    <section class="sec alt" id="explora">
-      <div class="wrap rail">
-        <p class="label">Centro de Pensamiento Digital</p>
-        <div class="body">
-          <h2>Investigación que se escucha, se ve y se lee</h2>
-          <p class="dek">Llevamos lo que investigamos a donde hoy se forma la opinión pública.</p>
-          <ol class="index">
-            <li><a class="ix" href="/podcast"><span class="k">Podcast</span><span class="t">Un viaje por Colombia</span><span class="d">Conversación a conversación, un mapa del país que se llena con cada episodio.</span><span class="a" aria-hidden="true">→</span></a></li>
-            <li><a class="ix" href="/publicaciones"><span class="k">Repositorio</span><span class="t">Publicaciones y datos</span><span class="d">Libros, artículos y las bases de datos de nuestras investigaciones.</span><span class="a" aria-hidden="true">→</span></a></li>
-            <li><a class="ix" href="/videos"><span class="k">Videos</span><span class="t">Empieza por aquí</span><span class="d">Dos videos cortos para entender la red y su punto de partida.</span><span class="a" aria-hidden="true">→</span></a></li>
-            <li><a class="ix" href="/documentales"><span class="k">Documentales</span><span class="t">Historias con tiempo</span><span class="d">Las piezas mayores de la red, filmadas donde ocurren: Pereira, Barranquilla, Cali.</span><span class="a" aria-hidden="true">→</span></a></li>
-            <li><a class="ix" href="/la-red"><span class="k">La RED</span><span class="t">Quiénes somos</span><span class="d">Una academia comprometida y plural, con la paz como corazón.</span><span class="a" aria-hidden="true">→</span></a></li>
-            <li><a class="ix" href="/la-red#integrantes"><span class="k">Integrantes</span><span class="t">La red en el territorio</span><span class="d">Más de 80 investigadores e investigadoras en las siete macrorregiones del país.</span><span class="a" aria-hidden="true">→</span></a></li>
-          </ol>
+    <!-- TEASERS -->
+    <section class="block tint-sand" id="explora">
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Centro de Pensamiento Digital</p><h2>Investigación que se escucha, se ve y se lee</h2></div>
+          <p class="intro">Llevamos lo que investigamos a donde hoy se forma la opinión pública.</p>
+        </div>
+        <div class="teasers">
+          <a class="teaser" href="/podcast">
+            <span class="tk">Podcast</span>
+            <h3>Un viaje por Colombia</h3>
+            <p>Conversación a conversación, un mapa del país que se llena con cada episodio.</p>
+            <span class="arrow">Escuchar →</span>
+          </a>
+          <a class="teaser" href="/publicaciones">
+            <span class="tk">Repositorio</span>
+            <h3>Publicaciones y datos</h3>
+            <p>Libros, artículos y las bases de datos de nuestras investigaciones.</p>
+            <span class="arrow">Leer →</span>
+          </a>
+          <a class="teaser" href="/videos">
+            <span class="tk">Videos</span>
+            <h3>Empieza por aquí</h3>
+            <p>Dos videos cortos para entender la red y su punto de partida.</p>
+            <span class="arrow">Ver →</span>
+          </a>
+          <a class="teaser" href="/documentales">
+            <span class="tk">Documentales</span>
+            <h3>Historias con tiempo</h3>
+            <p>Las piezas mayores de la red, filmadas donde ocurren: Pereira, Barranquilla, Cali.</p>
+            <span class="arrow">Descubrir →</span>
+          </a>
+          <a class="teaser" href="/la-red">
+            <span class="tk">La RED</span>
+            <h3>Quiénes somos</h3>
+            <p>Una academia comprometida y plural, con la paz como corazón.</p>
+            <span class="arrow">Conocer →</span>
+          </a>
+          <a class="teaser" href="/la-red#integrantes">
+            <span class="tk">Integrantes</span>
+            <h3>La red en el territorio</h3>
+            <p>Más de 80 investigadores e investigadoras en las siete macrorregiones del país.</p>
+            <span class="arrow">Ver directorio →</span>
+          </a>
         </div>
       </div>
     </section>
 
     <!-- BOLETÍN -->
-    <section class="sec dark" id="boletin-cta">
-      <div class="wrap rail">
-        <p class="label">Boletín</p>
-        <div class="body two-col">
+    <section class="block" id="boletin-cta">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Boletín</p>
           <h2>La política se decide hoy en el territorio digital</h2>
-          <div>
-            <p class="dek" style="margin-bottom:1.6rem">Quien no disputa ese espacio se lo cede a la desinformación. Una vez al mes, en tu correo: análisis con criterio, el podcast, los documentales y la agenda de la red.</p>
-            <Signup id="signup-2" />
-            <p class="note signup-fine">Gratis · Te das de baja cuando quieras</p>
-          </div>
+        </div>
+        <div>
+          <p class="intro" style="margin-bottom:1.6rem">Quien no disputa ese espacio se lo cede a la desinformación. Una vez al mes, en tu correo: análisis con criterio, el podcast, los documentales y la agenda de la red.</p>
+          <Signup id="signup-2" />
+          <p class="signup-fine">Gratis · Te das de baja cuando quieras</p>
         </div>
       </div>
     </section>
 
     <!-- DIRECTORIO -->
-    <section class="sec" id="directorio">
-      <div class="wrap rail">
-        <p class="label">La red en el territorio</p>
-        <div class="body">
-          <h2>Directorio de integrantes</h2>
-          <p class="dek">Más de 80 investigadores e investigadoras de más de 25 universidades en las siete macrorregiones del país. Estos son algunos de los rostros de la red.</p>
-          <div class="faces">
-            {conFoto.map((m) => (
-              <a href={`/la-red#${m.id}`} title={`${m.nombre} · ${m.ciudad}`}>
-                <img src={m.foto} alt={`${m.nombre}, ${m.ciudad}`} loading="lazy" />
-              </a>
-            ))}
-          </div>
-          <p class="roll">
-            {integrantes.map((m, i) => (
-              <>{i > 0 && <span aria-hidden="true">·</span>}<a href={`/la-red#${m.id}`}>{m.nombre}</a></>
-            ))}
-          </p>
-          <div class="actions">
-            <a class="btn" href="/la-red#integrantes">Ver el directorio completo</a>
-          </div>
+    <section class="block tint-teal" id="directorio">
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">La red en el territorio</p><h2>Directorio de integrantes</h2></div>
+          <p class="intro">Más de 80 investigadores e investigadoras de más de 25 universidades en las siete macrorregiones del país. Estos son algunos de los rostros de la red.</p>
+        </div>
+
+        <div class="faces">
+          {integrantes.filter((m) => m.foto).map((m) => (
+            <a href={`/la-red#${m.id}`} title={`${m.nombre} · ${m.ciudad}`}>
+              <img src={m.foto} alt={`${m.nombre}, ${m.ciudad}`} loading="lazy" />
+            </a>
+          ))}
+        </div>
+        <div class="actions">
+          <a class="btn solid" href="/la-red#integrantes">Ver el directorio completo</a>
         </div>
       </div>
     </section>

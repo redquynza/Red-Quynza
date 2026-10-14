@@ -10,7 +10,6 @@ const iniciales = (n: string) =>
   {regiones.filter((r) => porRegion(r.id).length > 0).map((r) => <a href={`#region-${r.id}`}>{r.nombre}</a>)}
 </nav>
 
-<div class="regions">
 {regiones.map((r) => {
   const ms = porRegion(r.id);
   if (ms.length === 0) return null;
@@ -36,17 +35,16 @@ const iniciales = (n: string) =>
     </div>
   );
 })}
-</div>
 
 {integrantes.map((m) => (
   <dialog class="perfil" id={`perfil-${m.id}`} aria-labelledby={`perfil-${m.id}-t`}>
-    <button class="perfil-close" type="button" data-close>Cerrar</button>
+    <button class="perfil-close" type="button" data-close aria-label="Cerrar">×</button>
     <div class="perfil-grid">
       <div class="photo">
         {m.foto ? <img src={m.foto} alt={`Fotografía de ${m.nombre}`} loading="lazy" /> : <span class="initials">{iniciales(m.nombre)}</span>}
       </div>
       <div class="perfil-body">
-        <p class="label">{m.ciudad}</p>
+        <p class="kicker">{m.ciudad}</p>
         <h3 id={`perfil-${m.id}-t`}>{m.nombre}</h3>
         <p class="perfil-rol">{m.rol} · <span>{m.institucion}</span></p>
         {m.resena.map((p) => <p>{p}</p>)}
