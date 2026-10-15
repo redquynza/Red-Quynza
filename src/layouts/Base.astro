@@ -56,13 +56,26 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
   <meta name="theme-color" content="#0E3A42" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Zilla+Slab:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..800,0..100,0..1;1,9..144,300..800,0..100,0..1&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+  <script is:inline>
+    // tema elegido por la persona (claro/oscuro); si no eligió, se sigue el del sistema
+    (function () {
+      var d = document.documentElement; d.classList.add('js');
+      try { var t = localStorage.getItem('tema'); if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t); } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <header class="top">
     <div class="wrap" style="position:relative">
-      <a class="brand" href="/" aria-label="RED Quynza, inicio"><img src="/img/pajaro.png" alt="" /><span>RED <span>QUYNZA</span></span></a>
-      <button class="menu-btn" aria-expanded="false" aria-controls="menu">Menú</button>
+      <a class="brand" href="/" aria-label="RED Quynza, inicio"><img src="/img/wordmark.png" alt="RED Quynza" width="760" height="135" /></a>
+      <div class="tools">
+        <button class="theme-btn" type="button" aria-label="Cambiar entre modo claro y oscuro" title="Modo claro / oscuro">
+          <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+        </button>
+        <button class="menu-btn" aria-expanded="false" aria-controls="menu">Menú</button>
+      </div>
       <nav id="menu" aria-label="Principal">
         <ul>
           {nav.map((item) => (
@@ -129,6 +142,63 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
           var msg = document.getElementById(form.id + '-msg');
           if (msg) msg.textContent = 'El boletín todavía no está activo. El primer número sale pronto.';
         });
+      });
+
+      // --- Selector claro / oscuro ---
+      var tb = document.querySelector('.theme-btn');
+      if (tb) tb.addEventListener('click', function () {
+        var d = document.documentElement;
+        var oscuro = d.getAttribute('data-theme') ? d.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        var nuevo = oscuro ? 'light' : 'dark';
+        d.setAttribute('data-theme', nuevo);
+        try { localStorage.setItem('tema', nuevo); } catch (e) {}
+      });
+
+      // --- Animaciones: cabecera con sombra al bajar, aparición al hacer scroll, cifra que cuenta ---
+      var header = document.querySelector('header.top');
+      var onScroll = function () { if (header) header.classList.toggle('scrolled', window.scrollY > 8); };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      var quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if ('IntersectionObserver' in window && !quieto) {
+        var sel = '.sec-head, .block > .wrap.sec-grid > *, .convo > *, .thesis .t-item, .pullquote, .pub, .teaser, .faces a, .member, .region-head, .docs li, .moments li, .videos .video, .benefits li, .dir-empty, .big';
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+          });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+        document.querySelectorAll(sel).forEach(function (el) {
+          if (el.closest('.hero') || el.closest('dialog')) return;
+          if (el.getBoundingClientRect().top < window.innerHeight) return; // ya visible al cargar: sin animación
+          var i = Array.prototype.indexOf.call(el.parentNode.children, el);
+          el.style.setProperty('--d', Math.min(i, 8) * 0.07 + 's');
+          el.classList.add('rv');
+          io.observe(el);
+        });
+        window.addEventListener('beforeprint', function () {
+          document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); });
+        });
+      } else {
+        document.documentElement.classList.remove('js');
+      }
+
+      document.querySelectorAll('.big-num').forEach(function (el) {
+        var t = el.firstChild;
+        if (!t || t.nodeType !== 3) return;
+        var m = t.nodeValue.match(/(\d+)/);
+        if (!m || quieto) return;
+        var fin = parseInt(m[1], 10), resto = t.nodeValue.replace(m[1], '{n}');
+        // la cifra real queda en el HTML; solo se anima si el navegador pinta cuadros
+        var t0 = null, dur = 1600;
+        var paso = function (ts) {
+          if (!t0) t0 = ts;
+          var p = Math.min((ts - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+          t.nodeValue = resto.replace('{n}', Math.round(fin * e));
+          if (p < 1) requestAnimationFrame(paso);
+        };
+        requestAnimationFrame(paso);
+        setTimeout(function () { t.nodeValue = resto.replace('{n}', fin); }, dur + 1500);
       });
 
       // --- Reproductor de YouTube embebido al hacer clic (si hay videos) ---

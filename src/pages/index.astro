@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Signup from '../components/Signup.astro';
 
 // Directorio: los datos viven en src/data/integrantes.ts; el directorio completo está en /la-red.
-import { integrantes } from '../data/integrantes';
+import { integrantes, regiones } from '../data/integrantes';
 ---
 <Base>
   <main id="inicio">
@@ -34,7 +34,7 @@ import { integrantes } from '../data/integrantes';
     <section class="block tint-teal" id="que-es">
       <div class="wrap convo">
         <a class="video" data-yt="itAaEUX_1pM" href="https://youtu.be/itAaEUX_1pM" target="_blank" rel="noopener" aria-label="Ver en YouTube: Esto es RED Quynza">
-          <span class="thumb"><img src="/img/video-intro.jpg" alt="" loading="lazy" /><span class="play" aria-hidden="true"></span></span>
+          <span class="thumb"><img src="/img/portada-esto-es-red-quynza.jpg" alt="" loading="lazy" /><span class="play" aria-hidden="true"></span></span>
         </a>
         <div>
           <p class="kicker">Video</p>
@@ -45,6 +45,7 @@ import { integrantes } from '../data/integrantes';
     </section>
 
     <!-- TESIS -->
+    <div class="sep-tejido" aria-hidden="true"></div>
     <section class="block ink" id="tesis">
       <div class="wrap">
         <div class="sec-grid sec-head">
@@ -70,6 +71,7 @@ import { integrantes } from '../data/integrantes';
     </section>
 
     <!-- REPOSITORIO -->
+    <div class="sep-tejido" aria-hidden="true"></div>
     <section class="block" id="repositorio">
       <div class="wrap">
         <div class="sec-grid sec-head">
@@ -155,7 +157,8 @@ import { integrantes } from '../data/integrantes';
     </section>
 
     <!-- BOLETÍN -->
-    <section class="block" id="boletin-cta">
+    <div class="sep-tejido" aria-hidden="true"></div>
+    <section class="block band-teal" id="boletin-cta">
       <div class="wrap sec-grid">
         <div>
           <p class="kicker">Boletín</p>
@@ -168,6 +171,13 @@ import { integrantes } from '../data/integrantes';
         </div>
       </div>
     </section>
+
+    <!-- CINTA: las siete macrorregiones -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        {[0, 1].map(() => regiones.map((r, i) => (<><span class={i % 2 ? 't' : undefined}>{r.nombre}</span><i></i></>)))}
+      </div>
+    </div>
 
     <!-- DIRECTORIO -->
     <section class="block tint-teal" id="directorio">
@@ -183,6 +193,7 @@ import { integrantes } from '../data/integrantes';
               <img src={m.foto} alt={`${m.nombre}, ${m.ciudad}`} loading="lazy" />
             </a>
           ))}
+          <a class="faces-more" href="/la-red#integrantes"><b>+{80 - integrantes.filter((m) => m.foto).length}</b><span>integrantes más en todo el país</span></a>
         </div>
         <div class="actions">
           <a class="btn solid" href="/la-red#integrantes">Ver el directorio completo</a>

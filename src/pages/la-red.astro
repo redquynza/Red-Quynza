@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Directorio from '../components/Directorio.astro';
+import RedTerritorio from '../components/RedTerritorio.astro';
 import { integrantes } from '../data/integrantes';
 ---
 <Base
@@ -10,7 +11,7 @@ import { integrantes } from '../data/integrantes';
   <main>
     <section class="block red" id="la-red">
       <div class="wrap sec-grid">
-        <div><p class="kicker">La RED</p><h2>Quiénes somos</h2></div>
+        <div><p class="kicker">La RED</p><h2>Quiénes somos</h2><RedTerritorio /></div>
         <div>
           <p class="big">La mayoría de los homicidios del país ocurren en las ciudades, pero la ciudad casi nunca ha estado en las conversaciones de paz.</p>
           <p>La RED Quynza reúne a más de 80 investigadores e investigadoras de más de 25 universidades, en todas las macrorregiones de Colombia, que estudian la violencia urbana en ciudades grandes, intermedias y pequeñas. Nuestro trabajo parte de una idea: sin la ciudad no hay paz completa.</p>
@@ -26,7 +27,7 @@ import { integrantes } from '../data/integrantes';
           <div><p class="kicker">Naturaleza</p><h2>Una academia comprometida</h2></div>
           <p class="intro">Un propósito colectivo, plural, que hace del rigor y de la incidencia sus dos pilares.</p>
         </div>
-        <div class="pubs" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+        <div class="pubs">
           <article class="pub">
             <h3>Rigor académico</h3>
             <p class="sub">Primer pilar</p>
@@ -57,7 +58,8 @@ import { integrantes } from '../data/integrantes';
       </div>
     </section>
 
-    <section class="block tint-teal" id="integrantes">
+    <div class="sep-tejido" aria-hidden="true"></div>
+    <section class="block" id="integrantes">
       <div class="wrap">
         <div class="sec-grid sec-head">
           <div><p class="kicker">La red en el territorio</p><h2>Directorio de integrantes</h2></div>
