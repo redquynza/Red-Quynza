@@ -49,24 +49,6 @@
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#061F24; --surface:#0B2B31; --sand-2:#0A272D;
-    --ink:#F2EDE3; --ink-2:#6FE0E0; --text-2:#A8C0C3;
-    --teal:#1ECFD1; --teal-ink:#5EDCDD; --on-teal:#04191D;
-    --laguna:#139EA3; --mist:#8FDDDA;
-    --coral:#FF8A80; --coral-ink:#FF9C93;
-    --muted:#86A0A4;
-    --line:rgba(242,237,227,.12); --line-strong:rgba(242,237,227,.28);
-    --band:#04171B; --band-ink:#F2EDE3; --band-2:#A3BEC1;
-    --tint-teal:#0A2E34; --tint-coral:#2A211D;
-    --topo:rgba(30,207,209,.22); --topo-band:rgba(30,207,209,.16);
-    --shadow:0 24px 48px -26px rgba(0,0,0,.75);
-    --grain:.04;
-    --land:#164249; --land-stroke:#061F24;
-  }
-}
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#061F24; --surface:#0B2B31; --sand-2:#0A272D;
@@ -464,11 +446,9 @@ footer ul{ display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; list-style:none; marg
 footer a{ text-decoration:none; color:#F5F0E6; border-bottom:1px solid rgba(245,240,230,.3); padding-bottom:1px; transition:color .2s, border-color .2s; }
 footer a:hover{ border-color:#03BEC0; color:#03BEC0; }
 footer .note{ color:#A9C2C5; width:100%; border-top:1px solid rgba(245,240,230,.14); padding-top:1.2rem; }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) footer, :root:not([data-theme="light"]) .marquee{ background:#04171B; }
-  :root:not([data-theme="light"]) .hero-signup{ border:1px solid rgba(242,237,227,.1); }
-}
+/* modo oscuro: solo cuando la persona lo activa con el botón (data-theme="dark") */
 :root[data-theme="dark"] footer, :root[data-theme="dark"] .marquee{ background:#04171B; }
+:root[data-theme="dark"] .hero-signup{ border:1px solid rgba(242,237,227,.1); }
 
 /* ---------- aparición al hacer scroll (solo con JS) ---------- */
 .js .rv{ opacity:0; transform:translateY(26px); }
@@ -572,10 +552,6 @@ nav{ margin-left:auto; }
 .theme-btn .sun{ display:none; }
 :root[data-theme="dark"] .theme-btn .sun{ display:block; }
 :root[data-theme="dark"] .theme-btn .moon{ display:none; }
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) .theme-btn .sun{ display:block; }
-  :root:not([data-theme="light"]) .theme-btn .moon{ display:none; }
-}
 
 @media (max-width: 900px){
   .red .red-territorio{ display:none; }

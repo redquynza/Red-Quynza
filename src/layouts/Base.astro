@@ -58,10 +58,10 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..800,0..100,0..1;1,9..144,300..800,0..100,0..1&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
   <script is:inline>
-    // tema elegido por la persona (claro/oscuro); si no eligió, se sigue el del sistema
+    // el sitio abre en claro; el oscuro solo se activa con el botón y se recuerda
     (function () {
       var d = document.documentElement; d.classList.add('js');
-      try { var t = localStorage.getItem('tema'); if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t); } catch (e) {}
+      try { var t = localStorage.getItem('tema'); if (t === 'dark') d.setAttribute('data-theme', 'dark'); } catch (e) {}
     })();
   </script>
 </head>
@@ -148,7 +148,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
       var tb = document.querySelector('.theme-btn');
       if (tb) tb.addEventListener('click', function () {
         var d = document.documentElement;
-        var oscuro = d.getAttribute('data-theme') ? d.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        var oscuro = d.getAttribute('data-theme') === 'dark';
         var nuevo = oscuro ? 'light' : 'dark';
         d.setAttribute('data-theme', nuevo);
         try { localStorage.setItem('tema', nuevo); } catch (e) {}
