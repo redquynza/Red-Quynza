@@ -1,0 +1,76 @@
+---
+import Base from '../layouts/Base.astro';
+// Página privada de cada aportante: se abre con el enlace del correo (?k=clave).
+---
+<Base title="Mi aporte · RED Quynza" description="Consulta o cancela tu aporte mensual a la RED Quynza." noindex>
+  <main>
+    <section class="block" id="mi-aporte">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Mi aporte</p>
+          <h2 id="m-titulo">Tu aporte a la <em>RED</em></h2>
+          <p class="intro" id="m-intro">Cargando…</p>
+        </div>
+        <div id="m-cuerpo" hidden>
+          <ul class="resumen" id="m-resumen"></ul>
+          <div class="actions" id="m-acciones">
+            <button class="btn peligro" type="button" id="m-cancelar">Cancelar mi aporte</button>
+          </div>
+          <p class="aporte-msg" id="m-msg" role="status"></p>
+          <h3 style="margin-top:2.4rem">Cobros</h3>
+          <table class="historial"><thead><tr><th>Fecha</th><th>Monto</th><th>Resultado</th></tr></thead><tbody id="m-cobros"></tbody></table>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  import { pesos } from '../data/aportes.js';
+  const k = new URLSearchParams(location.search).get('k') || '';
+  const $ = (id: string) => document.getElementById(id)!;
+  const fecha = (f: string) => new Date(f.slice(0, 10) + 'T12:00:00').toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+  const ESTADOS: Record<string, string> = {
+    activo: 'Activo', cobrando: 'Procesando el primer cobro', verificando: 'Esperando confirmación',
+    suspendido: 'Pausado: el medio de pago no aceptó el cobro', rechazado: 'No se completó', cancelado: 'Cancelado',
+  };
+  const RESULTADO: Record<string, string> = { APPROVED: 'Aprobado', DECLINED: 'Rechazado', ERROR: 'Error', VOIDED: 'Anulado' };
+
+  function pintar(a: any) {
+    $('m-titulo').innerHTML = `Hola, <em>${a.nombre.replace(/[<>&]/g, '')}</em>`;
+    $('m-intro').textContent = a.estado === 'cancelado'
+      ? 'Tu aporte está cancelado. No se te hará ningún otro cobro.'
+      : 'Aquí puedes ver tus cobros y cancelar tu aporte cuando quieras.';
+    const filas = [
+      ['Estado', ESTADOS[a.estado] || a.estado],
+      ['Aporte', `${pesos(a.monto)} al mes`],
+      ['Perfil', a.perfil],
+      ['Medio de pago', a.metodo],
+      ['Aportas desde', fecha(a.desde)],
+    ];
+    if (a.proximo_cobro) filas.push(['Próximo cobro', fecha(a.proximo_cobro)]);
+    $('m-resumen').innerHTML = filas.map(([t, v]) => `<li><span>${t}</span><b>${v}</b></li>`).join('');
+    $('m-cobros').innerHTML = a.cobros.length
+      ? a.cobros.map((c: any) => `<tr><td>${fecha(c.actualizado)}</td><td>${pesos(c.monto)}</td><td>${RESULTADO[c.estado] || c.estado}</td></tr>`).join('')
+      : '<tr><td colspan="3">Todavía no hay cobros.</td></tr>';
+    $('m-acciones').hidden = ['cancelado', 'rechazado'].includes(a.estado);
+    $('m-cuerpo').hidden = false;
+  }
+
+  fetch('/api/aporte?k=' + encodeURIComponent(k)).then(async (r) => {
+    const a = await r.json();
+    if (!r.ok) { $('m-intro').textContent = a.error || 'No encontramos este aporte.'; return; }
+    pintar(a);
+  }).catch(() => { $('m-intro').textContent = 'No pudimos cargar tu aporte. Intenta más tarde.'; });
+
+  $('m-cancelar').addEventListener('click', async () => {
+    if (!confirm('¿Seguro que quieres cancelar tu aporte mensual? No se te hará ningún otro cobro.')) return;
+    const b = $('m-cancelar') as HTMLButtonElement;
+    b.disabled = true;
+    const r = await fetch('/api/aporte/cancelar', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ k }) });
+    if (!r.ok) { $('m-msg').textContent = 'No pudimos cancelar. Intenta de nuevo o escríbenos a redquynza@gmail.com.'; b.disabled = false; return; }
+    const a = await fetch('/api/aporte?k=' + encodeURIComponent(k)).then((x) => x.json());
+    pintar(a);
+    $('m-msg').textContent = 'Listo. Tu aporte quedó cancelado. Gracias por acompañar a la RED.';
+  });
+</script>

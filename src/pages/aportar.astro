@@ -1,0 +1,271 @@
+---
+import Base from '../layouts/Base.astro';
+import { perfiles, pesos } from '../data/aportes.js';
+---
+<Base
+  title="Aporta a la RED · RED Quynza"
+  description="Sostén con un aporte mensual la investigación de la RED Quynza y su búsqueda permanente de la paz en Colombia. Con tarjeta de crédito, débito o Nequi."
+>
+  <main>
+    <section class="hero" id="aportar">
+      <div class="wrap">
+        <div>
+          <p class="tagline">Aporte mensual</p>
+          <h1>Sostén la <em>RED</em></h1>
+          <p class="lede">La RED Quynza se sostiene con el aporte de sus integrantes y de quienes creen en su trabajo. <b>Cada mes, lo que tú decidas.</b></p>
+          <p class="lede-2">Tu aporte sostiene la investigación y la búsqueda permanente de la paz en Colombia: el trabajo de más de 80 investigadoras e investigadores de más de 25 universidades que piensan la violencia y la paz desde las ciudades. El podcast, los documentales, el repositorio abierto y el boletín son las herramientas con que esa investigación llega a la gente y sirve a la paz urbana y nacional. Se cobra automáticamente una vez al mes y puedes cancelarlo cuando quieras, sin trámites.</p>
+        </div>
+        <aside class="statcard" aria-label="Cómo funciona">
+          <span class="src">Cómo funciona</span>
+          <ul class="welcome-list">
+            <li>Eliges tu perfil y cuánto aportar al mes.</li>
+            <li>Pagas con tarjeta de crédito, débito o Nequi.</li>
+            <li>El cobro se repite solo cada mes, el mismo día.</li>
+            <li>Te llega un enlace para ver tus cobros o cancelar.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section class="block tint-teal" id="formulario">
+      <div class="wrap">
+        <form class="aporte" id="aporte-form" novalidate>
+          <fieldset class="paso">
+            <legend><span class="n">1</span> ¿Desde dónde aportas?</legend>
+            <div class="perfiles">
+              {perfiles.map((p, i) => (
+                <label class="perfil-op">
+                  <input type="radio" name="perfil" value={p.id} checked={i === 1} />
+                  <span class="po-quien">{p.quien}</span>
+                  <span class="po-det">{p.detalle}</span>
+                  <span class="po-rango">{pesos(p.montos[0])} a {pesos(p.montos[p.montos.length - 1])} al mes</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset class="paso">
+            <legend><span class="n">2</span> ¿Cuánto al mes?</legend>
+            <div class="montos" id="montos" aria-live="polite"></div>
+          </fieldset>
+
+          <fieldset class="paso">
+            <legend><span class="n">3</span> Tus datos</legend>
+            <div class="campos">
+              <label class="campo"><span>Nombre completo</span><input name="nombre" autocomplete="name" required maxlength="120" /></label>
+              <label class="campo"><span>Correo</span><input name="email" type="email" autocomplete="email" required maxlength="160" /></label>
+            </div>
+            <p class="ayuda">Al correo te llega la confirmación y el enlace para cancelar.</p>
+          </fieldset>
+
+          <fieldset class="paso">
+            <legend><span class="n">4</span> ¿Cómo pagas?</legend>
+            <div class="metodos" role="radiogroup">
+              <label class="metodo-op"><input type="radio" name="metodo" value="CARD" checked /><span>Tarjeta de crédito o débito</span></label>
+              <label class="metodo-op"><input type="radio" name="metodo" value="NEQUI" /><span>Nequi</span></label>
+            </div>
+
+            <div class="campos" data-metodo="CARD">
+              <label class="campo ancho"><span>Número de la tarjeta</span><input name="numero" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="0000 0000 0000 0000" /></label>
+              <label class="campo ancho"><span>Nombre como aparece en la tarjeta</span><input name="titular" autocomplete="cc-name" maxlength="80" /></label>
+              <label class="campo"><span>Vence (MM/AA)</span><input name="vence" inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="MM/AA" /></label>
+              <label class="campo"><span>Código de seguridad</span><input name="cvc" inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="CVC" /></label>
+              <p class="ayuda ancho">Visa o Mastercard, de crédito o de débito con compras por internet habilitadas. Puede que tu banco te pida confirmar la tarjeta.</p>
+            </div>
+
+            <div class="campos" data-metodo="NEQUI" hidden>
+              <label class="campo"><span>Celular registrado en Nequi</span><input name="nequi" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="300 000 0000" /></label>
+              <p class="ayuda ancho">Te llegará una notificación en la app de Nequi para autorizar el cobro mensual. Ábrela y acéptala.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="paso">
+            <legend><span class="n">5</span> Confirma</legend>
+            <label class="check"><input type="checkbox" name="acepta" required />
+              <span>Entiendo que es un <b>aporte voluntario mensual, no reembolsable y sin contraprestación</b>, que se cobra automáticamente y que puedo cancelar cuando quiera. Acepto la <a href="/datos-personales/" target="_blank">política de tratamiento de datos</a> de la RED Quynza.</span></label>
+            <label class="check"><input type="checkbox" name="wompi_terminos" required />
+              <span>Acepto los <a id="wompi-terminos" href="https://wompi.co/terminos-y-condiciones/" target="_blank" rel="noopener">términos y condiciones de Wompi</a>, la pasarela que procesa el pago.</span></label>
+            <label class="check"><input type="checkbox" name="wompi_datos" required />
+              <span>Autorizo a Wompi el <a id="wompi-datos" href="https://wompi.com/es/co/politica-de-privacidad" target="_blank" rel="noopener">tratamiento de mis datos personales</a>.</span></label>
+
+            <div class="enviar">
+              <button class="btn solid" type="submit" id="aporte-btn">Aportar</button>
+              <p class="ayuda">Pago seguro procesado por Wompi (Bancolombia). La RED no guarda los datos de tu tarjeta.</p>
+            </div>
+            <p class="aporte-msg" id="aporte-msg" role="status" aria-live="polite"></p>
+          </fieldset>
+        </form>
+
+        <p class="aporte-otro">¿Prefieres aportar una sola vez o por otro medio? Escríbenos a <a href="mailto:redquynza@gmail.com">redquynza@gmail.com</a>.</p>
+      </div>
+    </section>
+
+    <dialog class="tresds" id="tresds" aria-label="Confirmación de tu banco">
+      <p class="kicker">Confirmación de tu banco</p>
+      <iframe id="tresds-frame" title="Verificación 3D Secure" sandbox="allow-forms allow-scripts"></iframe>
+      <p class="ayuda">Completa la verificación que te pide tu banco. Esta ventana se cierra sola.</p>
+    </dialog>
+  </main>
+</Base>
+
+<script>
+  import { perfiles, pesos } from '../data/aportes.js';
+
+  const form = document.getElementById('aporte-form') as HTMLFormElement;
+  const montosEl = document.getElementById('montos')!;
+  const btn = document.getElementById('aporte-btn') as HTMLButtonElement;
+  const msg = document.getElementById('aporte-msg')!;
+  const dlg = document.getElementById('tresds') as HTMLDialogElement;
+  const frame = document.getElementById('tresds-frame') as HTMLIFrameElement;
+  const espera = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  let cfg: any = null;
+
+  const val = (n: string) => ((form.elements.namedItem(n) as HTMLInputElement)?.value || '').trim();
+  const marcado = (n: string) => (form.elements.namedItem(n) as HTMLInputElement)?.checked;
+  const elegido = (n: string) => (form.querySelector(`input[name="${n}"]:checked`) as HTMLInputElement)?.value;
+  const aviso = (t: string, tipo = '') => { msg.textContent = t; msg.dataset.tipo = tipo; };
+
+  // ---- montos según el perfil ----
+  function pintarMontos() {
+    const p = perfiles.find((x) => x.id === elegido('perfil'))!;
+    const previo = Number(elegido('monto'));
+    const sel = p.montos.includes(previo) ? previo : p.sugerido;
+    montosEl.innerHTML = p.montos.map((m) => `
+      <label class="monto-op${m === p.sugerido ? ' sugerido' : ''}">
+        <input type="radio" name="monto" value="${m}" ${m === sel ? 'checked' : ''} />
+        <span class="mo-valor">${pesos(m)}</span><span class="mo-mes">al mes</span>
+        ${m === p.sugerido ? '<span class="mo-tag">Sugerido</span>' : ''}
+      </label>`).join('');
+    pintarBoton();
+  }
+  function pintarBoton() {
+    const m = Number(elegido('monto'));
+    btn.textContent = m ? `Aportar ${pesos(m)} al mes` : 'Aportar';
+  }
+  form.addEventListener('change', (e) => {
+    const t = e.target as HTMLInputElement;
+    if (t.name === 'perfil') pintarMontos();
+    if (t.name === 'monto') pintarBoton();
+    if (t.name === 'metodo') form.querySelectorAll<HTMLElement>('[data-metodo]').forEach((el) => { el.hidden = el.dataset.metodo !== t.value; });
+  });
+  pintarMontos();
+
+  // ---- formato de los campos de tarjeta ----
+  const numero = form.elements.namedItem('numero') as HTMLInputElement;
+  numero.addEventListener('input', () => { numero.value = numero.value.replace(/\D/g, '').slice(0, 19).replace(/(\d{4})(?=\d)/g, '$1 '); });
+  const vence = form.elements.namedItem('vence') as HTMLInputElement;
+  vence.addEventListener('input', () => { const d = vence.value.replace(/\D/g, '').slice(0, 4); vence.value = d.length > 2 ? d.slice(0, 2) + '/' + d.slice(2) : d; });
+
+  // ---- configuración de Wompi (llave pública y contratos) ----
+  fetch('/api/aportes/config').then((r) => r.ok ? r.json() : Promise.reject(r)).then((c) => {
+    cfg = c;
+    if (c.terminos?.enlace) (document.getElementById('wompi-terminos') as HTMLAnchorElement).href = c.terminos.enlace;
+    if (c.datos?.enlace) (document.getElementById('wompi-datos') as HTMLAnchorElement).href = c.datos.enlace;
+    if (c.sandbox) aviso('Modo de pruebas: no se cobra dinero real.', 'info');
+  }).catch(() => aviso('El sistema de aportes no está disponible en este momento. Intenta más tarde.', 'error'));
+
+  async function wompi(path: string, body?: object) {
+    const r = await fetch(cfg.apiBase + path, {
+      method: body ? 'POST' : 'GET',
+      headers: body ? { authorization: `Bearer ${cfg.publicKey}`, 'content-type': 'application/json' } : { authorization: `Bearer ${cfg.publicKey}` },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw Object.assign(new Error('wompi'), { detalle: d });
+    return d.data;
+  }
+
+  // JWE compacto RSA-OAEP-256 + A256GCM con la llave pública de tokenización de Wompi
+  const b64u = (b: ArrayBuffer | Uint8Array) => btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  async function cifrar(pem: string, datos: object) {
+    const der = Uint8Array.from(atob(pem.replace(/-----[^-]+-----/g, '').replace(/\s/g, '')), (c) => c.charCodeAt(0));
+    const rsa = await crypto.subtle.importKey('spki', der, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt']);
+    const cek = crypto.getRandomValues(new Uint8Array(32));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const cab = b64u(new TextEncoder().encode(JSON.stringify({ alg: 'RSA-OAEP-256', enc: 'A256GCM' })));
+    const ek = await crypto.subtle.encrypt({ name: 'RSA-OAEP' }, rsa, cek);
+    const aes = await crypto.subtle.importKey('raw', cek, 'AES-GCM', false, ['encrypt']);
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv, additionalData: new TextEncoder().encode(cab), tagLength: 128 }, aes, new TextEncoder().encode(JSON.stringify(datos))));
+    return [cab, b64u(ek), b64u(iv), b64u(ct.slice(0, -16)), b64u(ct.slice(-16))].join('.');
+  }
+
+  function validar(metodo: string) {
+    const faltas: string[] = [];
+    if (val('nombre').length < 3) faltas.push('tu nombre');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('email'))) faltas.push('un correo válido');
+    if (metodo === 'CARD') {
+      const n = val('numero').replace(/\D/g, '');
+      if (n.length < 13) faltas.push('el número de la tarjeta');
+      if (val('titular').length < 3) faltas.push('el nombre de la tarjeta');
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(val('vence'))) faltas.push('la fecha de vencimiento (MM/AA)');
+      if (!/^\d{3,4}$/.test(val('cvc'))) faltas.push('el código de seguridad');
+    } else if (val('nequi').replace(/\D/g, '').length !== 10) faltas.push('tu celular de Nequi (10 dígitos)');
+    if (!marcado('acepta') || !marcado('wompi_terminos') || !marcado('wompi_datos')) faltas.push('las tres autorizaciones');
+    return faltas;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!cfg) return aviso('El sistema de aportes no está disponible en este momento. Intenta más tarde.', 'error');
+    const metodo = elegido('metodo');
+    const faltas = validar(metodo);
+    if (faltas.length) return aviso('Falta: ' + faltas.join(', ') + '.', 'error');
+
+    btn.disabled = true;
+    const base: any = {
+      perfil: elegido('perfil'), monto: Number(elegido('monto')), metodo,
+      nombre: val('nombre'), email: val('email'), acepta: true,
+      acceptance_token: cfg.terminos.token, accept_personal_auth: cfg.datos.token,
+    };
+    try {
+      if (metodo === 'CARD') {
+        aviso('Verificando tu tarjeta…');
+        const [mm, aa] = val('vence').split('/');
+        // los datos de la tarjeta viajan cifrados (JWE) directo a Wompi; nunca pasan por nuestro servidor
+        if (!cfg.llaveTarjetas) throw Object.assign(new Error('llave'), { visible: 'El pago con tarjeta no está disponible en este momento. Intenta más tarde o paga con Nequi.' });
+        const t = await wompi('/tokens/cards', { payload: await cifrar(cfg.llaveTarjetas, {
+          number: val('numero').replace(/\D/g, ''), cvc: val('cvc'),
+          exp_month: mm, exp_year: aa, card_holder: val('titular'),
+        }) });
+        Object.assign(base, { token: t.id, marca: t.brand, ultimos: t.last_four });
+      } else {
+        const tel = val('nequi').replace(/\D/g, '');
+        aviso('Abre la app de Nequi y acepta la autorización del cobro mensual…');
+        const t = await wompi('/tokens/nequi', { phone_number: tel });
+        let estado = t.status;
+        for (let i = 0; i < 100 && estado === 'PENDING'; i++) { await espera(3000); estado = (await wompi('/tokens/nequi/' + t.id)).status; }
+        if (estado !== 'APPROVED') throw Object.assign(new Error('nequi'), { visible: 'La autorización en Nequi no se completó. Intenta de nuevo.' });
+        Object.assign(base, { token: t.id, telefono: tel });
+      }
+
+      aviso('Registrando tu aporte…');
+      const r = await fetch('/api/aportes', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(base) });
+      const d = await r.json();
+      if (!r.ok) throw Object.assign(new Error('api'), { visible: d.error });
+      await seguir(d.clave, d.estado);
+    } catch (err: any) {
+      console.error(err, err?.detalle);
+      aviso(err?.visible || 'No pudimos procesar el pago. Revisa los datos o prueba con otro medio.', 'error');
+      btn.disabled = false;
+    }
+  });
+
+  // Espera la verificación (3D Secure) y el primer cobro
+  async function seguir(k: string, estado: string) {
+    for (let i = 0; i < 90; i++) {
+      if (estado === 'activo') { location.href = '/gracias/?k=' + encodeURIComponent(k); return; }
+      if (estado === 'rechazado') {
+        if (dlg.open) dlg.close();
+        throw Object.assign(new Error('rechazado'), { visible: 'El banco no aprobó el cobro. Prueba con otra tarjeta o con Nequi.' });
+      }
+      aviso(estado === 'verificando' ? 'Esperando la confirmación de tu banco…' : 'Procesando tu primer aporte…');
+      await espera(2500);
+      const d = await fetch('/api/aportes/estado?k=' + encodeURIComponent(k)).then((r) => r.json());
+      estado = d.estado;
+      if (d.tresDS?.html && !dlg.open) { frame.srcdoc = d.tresDS.html; dlg.showModal(); }
+      if (estado !== 'verificando' && dlg.open) dlg.close();
+    }
+    // sigue en proceso: el resultado llega por correo
+    location.href = '/gracias/?k=' + encodeURIComponent(k);
+  }
+</script>

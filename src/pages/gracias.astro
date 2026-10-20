@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+// Llegan aquí quienes terminan /aportar (?k=clave) y los planes de Mercado Pago (sin clave).
+---
+<Base
+  title="Gracias por tu aporte · RED Quynza"
+  description="Gracias por sostener el trabajo de la RED Quynza."
+  noindex
+>
+  <main>
+    <section class="hero" id="gracias">
+      <div class="wrap">
+        <div>
+          <p class="tagline">Aporte mensual</p>
+          <h1 id="g-titulo">Gracias por sostener la <em>RED</em></h1>
+          <p class="lede" id="g-lede">Tu aporte sostiene la investigación y la búsqueda permanente de la paz en Colombia, desde sus ciudades.</p>
+          <p class="lede-2" id="g-detalle">Te llegará un correo con la confirmación. Si en unos minutos no lo ves, revisa la carpeta de correo no deseado.</p>
+          <div class="actions">
+            <a class="btn solid" id="g-gestionar" href="/" hidden>Ver o cancelar mi aporte</a>
+            <a class="text-link" href="/">Volver al inicio</a>
+          </div>
+        </div>
+        <aside class="statcard" aria-label="Tu aporte" id="g-card" hidden>
+          <span class="src">Tu aporte</span>
+          <ul class="welcome-list" id="g-lista"></ul>
+        </aside>
+      </div>
+    </section>
+  </main>
+</Base>
+
+<script>
+  import { pesos } from '../data/aportes.js';
+  const k = new URLSearchParams(location.search).get('k');
+  const $ = (id: string) => document.getElementById(id)!;
+  const fecha = (f: string) => new Date(f + 'T12:00:00').toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  if (k) fetch('/api/aporte?k=' + encodeURIComponent(k)).then((r) => r.ok ? r.json() : null).then((a) => {
+    if (!a) return;
+    $('g-titulo').innerHTML = `Gracias, <em>${a.nombre.replace(/[<>&]/g, '')}</em>`;
+    const items = [`${pesos(a.monto)} al mes`, a.perfil, a.metodo];
+    if (a.estado === 'activo' && a.proximo_cobro) items.push(`Próximo cobro: ${fecha(a.proximo_cobro)}`);
+    $('g-lista').innerHTML = items.map((t) => `<li>${t}</li>`).join('');
+    $('g-card').hidden = false;
+    if (a.estado !== 'activo') {
+      $('g-lede').textContent = 'Estamos terminando de procesar tu primer aporte.';
+      $('g-detalle').textContent = 'Te avisaremos por correo cuando quede confirmado.';
+    }
+    const g = $('g-gestionar') as HTMLAnchorElement;
+    g.href = '/mi-aporte/?k=' + encodeURIComponent(k);
+    g.hidden = false;
+  });
+</script>

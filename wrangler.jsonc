@@ -1,10 +1,32 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "red-quynza",
+  "main": "worker/index.js",
   "compatibility_date": "2026-09-24",
   "workers_dev": false,
   "preview_urls": false,
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // solo la API pasa por el Worker; el resto se sirve directo como estático
+    "run_worker_first": ["/api/*"]
+  },
+  // Aportantes y cobros (migraciones en ./migrations)
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "red-quynza-aportes",
+      "database_id": "45dba3d3-aa6b-4845-8f7b-91d5569dd5b9",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Cobros del día a las 9:00 a. m. de Colombia (14:00 UTC); cada hora, conciliación con Wompi
+  "triggers": { "crons": ["0 14 * * *", "30 * * * *"] },
+  "vars": {
+    "SITE_URL": "https://redquynza.org",
+    "WOMPI_PUBLIC_KEY": "pub_prod_Yz9ROtHkvKsiGQwAUqmTIqNUd5z4KkWf",
+    "MAIL_FROM": "RED Quynza <aportes@redquynza.org>"
   }
+  // Secretos (npx wrangler secret put NOMBRE): WOMPI_PRIVATE_KEY, WOMPI_EVENTS_SECRET,
+  // WOMPI_INTEGRITY_SECRET, ADMIN_TOKEN, RESEND_API_KEY
 }
