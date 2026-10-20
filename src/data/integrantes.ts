@@ -44,6 +44,19 @@ export const integrantes: Integrante[] = [
       'Sus líneas de investigación son la sociología política, el pensamiento sociológico latinoamericano y la sociología de la literatura. Ha publicado sobre violencia urbana en Barranquilla y el Caribe, entre otros el capítulo «Un renovado imaginario. El derecho de la ciudad a la paz» (IEPRI, 2026), escrito con colegas de la red. Su obra literaria incluye el poemario «De ciertas lealtades» (2021), «Gabriela y otros cuentos» (2021) y las novelas «Sin remordimiento» (2022) y «Diario de la inutilidad cotidiana» (2025).',
     ],
   },
+  {
+    id: 'wilfrido-ariza',
+    nombre: 'Wilfrido Ariza',
+    rol: 'Sociólogo, docente catedrático',
+    institucion: 'Universidad del Atlántico',
+    ciudad: 'Barranquilla',
+    region: 'caribe',
+    foto: '/img/integrantes/wilfrido-ariza.webp',
+    resena: [
+      'Sociólogo, especialista en Crimen Organizado y Seguridad Internacional y magíster en Políticas Públicas. Docente catedrático de la Universidad del Atlántico.',
+    ],
+    otras: 'Alcaldía de Barranquilla',
+  },
 
   // ---------- Zona Centro ----------
   {
@@ -97,6 +110,19 @@ export const integrantes: Integrante[] = [
     ],
   },
   {
+    id: 'fabian-acosta',
+    nombre: 'Fabián Rodolfo Acosta Sánchez',
+    rol: 'Profesor asociado, Departamento de Ciencia Política',
+    institucion: 'Universidad Nacional de Colombia',
+    ciudad: 'Bogotá',
+    region: 'centro',
+    foto: '/img/integrantes/fabian-acosta.webp',
+    resena: [
+      'Filósofo e investigador social (1961). Master of Arts de la Universidad St. Kliment Ojridski de Sofía, Bulgaria (1986), cursó la maestría en Ciencia Política de la Universidad de los Andes (1994) y es doctor en Filosofía Social y Política de la Universidad Kliment Ojridski (2020). Profesor asociado del Departamento de Ciencia Política de la Universidad Nacional de Colombia y director del Observatorio de Juventud de la misma institución (OBJUN).',
+      'Sus campos de interés son la filosofía social y política, la economía política, la teoría política, la sociología, la antropología y los estudios sociales enfocados en jóvenes y juventud.',
+    ],
+  },
+  {
     id: 'andres-tafur',
     nombre: 'Andrés Tafur Villarreal',
     rol: 'Docente, Departamento de Estudios Interdisciplinarios',
@@ -132,6 +158,18 @@ export const integrantes: Integrante[] = [
     region: 'cafetera',
     foto: '/img/integrantes/john-jairo-uribe.webp',
     resena: ['Investigador en construcción de paces desde abajo, juventudes y familias.'],
+  },
+  {
+    id: 'james-delgado',
+    nombre: 'James Delgado',
+    rol: 'Artista, docente e investigador interdisciplinar',
+    institucion: 'IPECAL',
+    ciudad: 'Manizales',
+    region: 'cafetera',
+    foto: '/img/integrantes/james-delgado.webp',
+    resena: [
+      'James Alfonso Delgado Giraldo es artista, docente e investigador interdisciplinar y un sujeto sonopensante que articula sonido, imagen, palabra, cuerpo y pedagogía. Su trayectoria cruza creación sonora experimental, rock-blues, prácticas musicales comunitarias e investigación-creación. Es creador de Prácticas Musicales Comunitarias y Psicoblues. Actualmente cursa el Doctorado en Didáctica y Conciencia Histórica en IPECAL.',
+    ],
   },
   {
     id: 'gloria-naranjo',
@@ -213,6 +251,34 @@ export const integrantes: Integrante[] = [
     foto: '/img/integrantes/gildardo-vanegas.webp',
     resena: [
       'Coordinador editorial de la RED Quynza. Sociólogo, magíster en Estudios Políticos y doctor en Sociología. Sus temas de investigación giran alrededor del conflicto violento urbano, el conflicto armado y las políticas públicas, con intereses en la literatura.',
+    ],
+  },
+  {
+    id: 'carlos-rojas',
+    nombre: 'Carlos Rojas Cruz',
+    rol: 'Investigador social y director',
+    institucion: 'THOTLABS',
+    ciudad: 'Cali',
+    region: 'pacifico',
+    foto: '/img/integrantes/carlos-rojas.webp',
+    resena: [
+      'Investigador social con base en Cali. Candidato a doctor en Derecho por la Universidad de Jaén (España), magíster en Políticas Públicas por la Universidad del Valle y en Derecho Constitucional por la Universidad Libre, y especialista en Teorías, Métodos y Técnicas de Investigación. Su trabajo une las ciencias sociales críticas con el uso metodológico de tecnologías digitales, desde las epistemologías del Sur y la perspectiva decolonial.',
+      'Dirige THOTLABS, iniciativa de investigación aplicada e innovación pública que diseña arquitecturas de investigación asistidas por inteligencia artificial: sistemas agénticos para análisis jurídico, territorial y de políticas públicas, revisión sistemática y bibliometría, modelación de fenómenos de violencia urbana, análisis de fuentes abiertas (OSINT) e inteligencia territorial.',
+      'Sus líneas de investigación abarcan los derechos de la naturaleza y el ecoconstitucionalismo en Colombia, Ecuador y Bolivia, la gobernanza algorítmica y la transformación digital del Estado, la seguridad ciudadana, los derechos étnico-territoriales y la gestión del riesgo. Su apuesta: una investigación social computacionalmente aumentada pero epistémicamente vigilante.',
+    ],
+    enlaces: [{ label: 'ORCID', href: 'https://orcid.org/0000-0003-0915-6653' }],
+  },
+  {
+    id: 'karen-ceron',
+    nombre: 'Karen Nathalia Cerón Steevens',
+    rol: 'Profesora e investigadora, Facultad de Estudios Internacionales, Políticos y Urbanos',
+    institucion: 'Universidad del Rosario',
+    ciudad: 'Puerto Tejada',
+    region: 'pacifico',
+    foto: '/img/integrantes/karen-ceron.webp',
+    resena: [
+      'Doctoranda en Sociología de la Universitat de Barcelona, magíster en Estudios Políticos e Internacionales y profesional en Relaciones Internacionales de la Universidad del Rosario. Actualmente es profesora e investigadora de la Facultad de Estudios Internacionales, Políticos y Urbanos de esa universidad.',
+      'Especialista en la violencia asociada a las pandillas, que vincula especialmente a niños y jóvenes, en las carencias sociales que reproducen este y otros fenómenos, y en las dinámicas de acción colectiva y movilización social, particularmente en el Chocó. Ganadora del premio UNESCO-Juan Bosch a la mejor tesis de un joven investigador en América Latina y el Caribe.',
     ],
   },
 
