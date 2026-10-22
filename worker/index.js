@@ -147,9 +147,9 @@ async function estadoAporte(url, env, ctx) {
     const c = await env.DB.prepare(
       `SELECT * FROM cobros WHERE aportante_id = ? ORDER BY creado DESC LIMIT 1`).bind(a.id).first();
     if (c && c.estado === 'PENDING' && c.wompi_id) {
-      const t = await wompi(env, 'GET', `/transactions/${c.wompi_id}`).catch(() => null);
+      const t = await transaccion(env, c.wompi_id);
       const s = t?.data?.status;
-      if (s && s !== 'PENDING') await aplicarResultado(env, c, s, ctx);
+      if (s && s !== 'PENDING') await aplicarResultado(env, c, s, ctx, t.data.status_message);
       a.estado = (await porClave(env, a.clave)).estado;
     }
   }
@@ -203,7 +203,7 @@ async function eventoWompi(request, env, ctx) {
       if (!c.wompi_id && t.id) {
         await env.DB.prepare(`UPDATE cobros SET wompi_id = ? WHERE referencia = ?`).bind(t.id, c.referencia).run();
       }
-      if (t.status && t.status !== 'PENDING') await aplicarResultado(env, c, t.status, ctx);
+      if (t.status && t.status !== 'PENDING') await aplicarResultado(env, c, t.status, ctx, t.status_message);
     }
   }
   return json({ ok: true });
@@ -221,7 +221,7 @@ async function admin(p, request, env) {
   }
   if (p === '/api/admin/cobros.csv') {
     const { results } = await env.DB.prepare(
-      `SELECT c.creado, c.periodo, a.nombre, a.email, a.perfil, c.monto, a.metodo, c.estado, c.referencia, c.wompi_id
+      `SELECT c.creado, c.periodo, a.nombre, a.email, a.perfil, c.monto, a.metodo, c.estado, c.motivo, c.referencia, c.wompi_id
        FROM cobros c JOIN aportantes a ON a.id = c.aportante_id ORDER BY c.creado`).all();
     return csv(results, 'cobros.csv');
   }
@@ -271,7 +271,7 @@ async function cobrar(env, a, periodo) {
       .bind(t.data?.id || null, new Date().toISOString(), referencia).run();
     if (s !== 'PENDING') {
       const c = await env.DB.prepare(`SELECT * FROM cobros WHERE referencia = ?`).bind(referencia).first();
-      await aplicarResultado(env, c, s);
+      await aplicarResultado(env, c, s, null, t.data?.status_message);
     }
   } catch (e) {
     // Falla de comunicación: no cuenta como rechazo; el ciclo de mañana lo vuelve a intentar
@@ -282,10 +282,10 @@ async function cobrar(env, a, periodo) {
 }
 
 // Aplica el resultado final de un cobro (una sola vez por cobro).
-async function aplicarResultado(env, c, status, ctx) {
+async function aplicarResultado(env, c, status, ctx, motivo) {
   const ahora = new Date().toISOString();
-  const r = await env.DB.prepare(`UPDATE cobros SET estado = ?, actualizado = ? WHERE referencia = ? AND estado = 'PENDING'`)
-    .bind(status, ahora, c.referencia).run();
+  const r = await env.DB.prepare(`UPDATE cobros SET estado = ?, motivo = ?, actualizado = ? WHERE referencia = ? AND estado = 'PENDING'`)
+    .bind(status, status === 'APPROVED' ? null : limpio(motivo, 300) || null, ahora, c.referencia).run();
   if (!r.meta?.changes) return;
   const a = await env.DB.prepare(`SELECT * FROM aportantes WHERE id = ?`).bind(c.aportante_id).first();
   if (!a || a.estado === 'cancelado') return;
@@ -336,9 +336,18 @@ async function conciliar(env) {
   const { results: pendientes } = await env.DB.prepare(
     `SELECT * FROM cobros WHERE estado = 'PENDING' AND wompi_id IS NOT NULL AND creado < ?`).bind(hace10min).all();
   for (const c of pendientes) {
-    const t = await wompi(env, 'GET', `/transactions/${c.wompi_id}`).catch(() => null);
+    const t = await transaccion(env, c.wompi_id);
     const s = t?.data?.status;
-    if (s && s !== 'PENDING') await aplicarResultado(env, c, s);
+    if (s && s !== 'PENDING') await aplicarResultado(env, c, s, null, t.data.status_message);
+  }
+  // completa el motivo de rechazos anteriores a que se guardara
+  const { results: sinMotivo } = await env.DB.prepare(
+    `SELECT referencia, wompi_id FROM cobros WHERE estado IN ('DECLINED','ERROR','VOIDED')
+     AND motivo IS NULL AND wompi_id IS NOT NULL LIMIT 20`).all();
+  for (const c of sinMotivo) {
+    const t = await transaccion(env, c.wompi_id);
+    if (t?.data) await env.DB.prepare(`UPDATE cobros SET motivo = ? WHERE referencia = ?`)
+      .bind(limpio(t.data.status_message, 300) || '(sin motivo)', c.referencia).run();
   }
   return pendientes;
 }
@@ -377,6 +386,10 @@ async function wompi(env, method, path, body, { privada = false, merchant = fals
   if (!r.ok) throw new Error(`Wompi ${method} ${path} → ${r.status} ${JSON.stringify(data.error || data).slice(0, 400)}`);
   return data;
 }
+
+// En producción Wompi solo muestra las transacciones con fuente de pago a la llave privada
+const transaccion = (env, id) => wompi(env, 'GET', `/transactions/${id}`, null, { privada: true })
+  .catch((e) => { console.error('transaccion', id, e.message); return null; });
 
 async function firmaEventoValida(ev, secreto) {
   if (!secreto || !ev.signature?.properties || !ev.signature?.checksum) return false;
