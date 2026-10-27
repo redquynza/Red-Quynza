@@ -20,6 +20,8 @@ const textos = defineCollection({
     imagen: z.string().optional(),   // ruta en /public, para la cabecera y al compartir
     imagenAlt: z.string().optional(),
     adjunto: z.object({ href: z.string(), etiqueta: z.string() }).optional(),
+    galeria: z.string().optional(),  // id de src/data/galerias/<id>.json: fotos bajo el texto
+    imagenCompartir: z.string().optional(), // JPG 1200×630 al compartir (si no, se usa imagen)
   }),
 });
 

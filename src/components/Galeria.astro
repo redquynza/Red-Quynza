@@ -1,0 +1,80 @@
+---
+// Galería de fotos liviana: miniaturas de 600 px con carga diferida y, al tocar una,
+// un visor que trae la foto grande (solo entonces se descarga).
+// Datos en src/data/galerias/<id>.json (los genera el script de optimización).
+export interface Foto { src: string; mini: string; w: number; h: number; mw: number; mh: number; alt: string; grupo: string; }
+export interface Props { fotos: Foto[]; autor: string; grupos?: Record<string, string>; }
+const { fotos, autor, grupos = {} } = Astro.props;
+
+// separa en grupos conservando el orden; el índice global sirve para el visor
+const bloques: { grupo: string; titulo?: string; items: { f: Foto; i: number }[] }[] = [];
+fotos.forEach((f, i) => {
+  const ultimo = bloques[bloques.length - 1];
+  if (!ultimo || ultimo.grupo !== f.grupo) bloques.push({ grupo: f.grupo, titulo: grupos[f.grupo], items: [] });
+  bloques[bloques.length - 1].items.push({ f, i });
+});
+---
+<div class="galeria" data-autor={autor}>
+  {bloques.map((b) => (
+    <>
+      {b.titulo && <h2 class="gal-grupo">{b.titulo} <span>{b.items.length} fotos</span></h2>}
+      <ul class="gal-grid">
+        {b.items.map(({ f, i }) => (
+          <li>
+            <a href={f.src} data-i={i} data-w={f.w} data-h={f.h} aria-label={`Ampliar: ${f.alt}`}>
+              <img src={f.mini} width={f.mw} height={f.mh} alt={f.alt} loading="lazy" decoding="async" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </>
+  ))}
+  <p class="gal-credito">Fotografías: {autor}</p>
+
+  <dialog class="visor" aria-label="Visor de fotos">
+    <button class="visor-cerrar" type="button" aria-label="Cerrar">×</button>
+    <button class="visor-ant" type="button" aria-label="Foto anterior">‹</button>
+    <figure>
+      <img alt="" />
+      <figcaption><span class="visor-texto"></span> <span class="visor-num"></span></figcaption>
+    </figure>
+    <button class="visor-sig" type="button" aria-label="Foto siguiente">›</button>
+  </dialog>
+</div>
+
+<script is:inline>
+  document.querySelectorAll('.galeria').forEach(function (g) {
+    var enlaces = Array.prototype.slice.call(g.querySelectorAll('a[data-i]'));
+    var v = g.querySelector('.visor'), img = v.querySelector('img');
+    var texto = v.querySelector('.visor-texto'), num = v.querySelector('.visor-num');
+    var actual = 0, x0 = null;
+    function mostrar(i) {
+      actual = (i + enlaces.length) % enlaces.length;
+      var a = enlaces[actual], mini = a.querySelector('img');
+      img.src = mini.src;                 // se ve de inmediato la miniatura…
+      img.width = +a.dataset.w; img.height = +a.dataset.h;
+      var grande = new Image();           // …y se cambia por la grande cuando llega
+      grande.onload = function () { if (enlaces[actual] === a) img.src = a.href; };
+      grande.src = a.href;
+      img.alt = mini.alt; texto.textContent = mini.alt;
+      num.textContent = (actual + 1) + ' / ' + enlaces.length;
+    }
+    enlaces.forEach(function (a, i) {
+      a.addEventListener('click', function (e) { e.preventDefault(); mostrar(i); v.showModal(); });
+    });
+    v.querySelector('.visor-cerrar').onclick = function () { v.close(); };
+    v.querySelector('.visor-ant').onclick = function () { mostrar(actual - 1); };
+    v.querySelector('.visor-sig').onclick = function () { mostrar(actual + 1); };
+    v.addEventListener('click', function (e) { if (e.target === v) v.close(); });
+    v.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') mostrar(actual - 1);
+      if (e.key === 'ArrowRight') mostrar(actual + 1);
+    });
+    v.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
+    v.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0; x0 = null;
+      if (Math.abs(dx) > 40) mostrar(actual + (dx < 0 ? 1 : -1));
+    });
+  });
+</script>

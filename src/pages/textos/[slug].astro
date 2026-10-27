@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
+import Galeria, { type Foto } from '../../components/Galeria.astro';
 import { getCollection, render } from 'astro:content';
 import { fechaLarga } from '../../data/boletines';
 
@@ -13,6 +14,12 @@ const { texto } = Astro.props;
 const d = texto.data;
 const { Content } = await render(texto);
 
+// fotos (memoria fotográfica): van debajo del texto, a todo el ancho
+const galerias = import.meta.glob('../../data/galerias/*.json', { eager: true, import: 'default' }) as Record<string, Foto[]>;
+const fotos = d.galeria ? galerias[`../../data/galerias/${d.galeria}.json`] : undefined;
+const GRUPOS = { campana: 'La campaña en los muros', monumentos: 'Dos monumentos', ciudad: '' };
+const conFigura = d.imagen && !fotos;
+
 // otros textos del mismo número del boletín
 const otros = d.boletin
   ? (await getCollection('textos', (t) => t.data.boletin === d.boletin && t.id !== texto.id))
@@ -22,7 +29,7 @@ const otros = d.boletin
 <Base
   title={`${d.titulo} · RED Quynza`}
   description={d.bajada}
-  image={d.imagen ?? '/img/boletin/n1-portada.jpg'}
+  image={d.imagenCompartir ?? d.imagen ?? '/img/boletin/n1-portada.jpg'}
   imageAlt={d.imagenAlt ?? d.titulo}
   type="article"
 >
@@ -41,8 +48,8 @@ const otros = d.boletin
           </p>
         </header>
 
-        <div class={d.imagen ? 'art-cuerpo con-imagen' : 'art-cuerpo'}>
-          {d.imagen && (
+        <div class={conFigura ? 'art-cuerpo con-imagen' : 'art-cuerpo'}>
+          {conFigura && (
             <figure class="art-figura">
               <img src={d.imagen} alt={d.imagenAlt ?? ''} loading="lazy" />
             </figure>
@@ -54,6 +61,8 @@ const otros = d.boletin
             )}
           </div>
         </div>
+
+        {fotos && <Galeria fotos={fotos} autor={d.autor} grupos={GRUPOS} />}
 
         {d.boletin && (
           <aside class="art-pie">

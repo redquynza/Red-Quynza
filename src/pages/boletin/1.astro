@@ -20,6 +20,14 @@ const expedientes = [
 ];
 const esmad = t('vuelve-el-esmad');
 const manizales = t('manizales-mas-alla-de-la-adversidad');
+
+// Memoria fotográfica: dos series de Fabio López de la Roche, con cuatro miniaturas cada una
+import muros from '../../data/galerias/popayan-muros.json';
+import colonial from '../../data/galerias/popayan-colonial.json';
+const series = [
+  { x: t('popayan-la-campana-en-los-muros'), fotos: muros, muestra: [23, 8, 0, 26] },
+  { x: t('popayan-colonial-y-republicana'), fotos: colonial, muestra: [14, 4, 32, 43] },
+];
 ---
 <Base
   title={`Boletín N.º 1 · ${ed.titulo} · RED Quynza`}
@@ -35,13 +43,14 @@ const manizales = t('manizales-mas-alla-de-la-adversidad');
         <h1>La paz también se construye <em>en la ciudad</em></h1>
         <div class="ed-presenta">
           <p>Este es el primer número del boletín de la RED Quynza. Lo pensamos como un ejercicio de memoria: cada mes, lo que la red investiga, discute y ve pasar en las ciudades del país.</p>
-          <p>En este número sale el primer episodio de nuestro podcast, <i>Lo que la gente quiere es vivir</i>, una conversación con Óscar Useche sobre cómo se resiste en tiempos de miedo. Seguimos una decisión que toca de lleno la protesta urbana: el regreso del ESMAD. Recogemos el Expediente De la Espriella, el seguimiento semanal al nuevo gobierno, y te invitamos a Manizales, donde el nodo de la red abre una conversación sobre las violencias y las paces de la ciudad.</p>
+          <p>En este número sale el primer episodio de nuestro podcast, <i>Lo que la gente quiere es vivir</i>, una conversación con Óscar Useche sobre cómo se resiste en tiempos de miedo. Seguimos una decisión que toca de lleno la protesta urbana: el regreso del ESMAD. Recogemos el Expediente De la Espriella, el seguimiento semanal al nuevo gobierno; publicamos dos series de fotografías de Fabio López de la Roche sobre Popayán, y te invitamos a Manizales, donde el nodo de la red abre una conversación sobre las violencias y las paces de la ciudad.</p>
           <p>El boletín se hace con lo que ustedes envían. La convocatoria para noviembre ya está abierta.</p>
         </div>
         <nav class="ed-indice" aria-label="En este número">
           <a href="#podcast">Podcast</a>
           <a href="#documento">Documento del mes</a>
           <a href="#expediente">Expediente De la Espriella</a>
+          <a href="#fotos">Memoria fotográfica</a>
           <a href="#agenda">Agenda</a>
           <a href="#aporta">Aporta</a>
           <a href="#convocatoria">Convocatoria</a>
@@ -105,7 +114,28 @@ const manizales = t('manizales-mas-alla-de-la-adversidad');
       </div>
     </section>
 
-    <section class="block" id="agenda">
+    <section class="block" id="fotos">
+      <div class="wrap">
+        <div class="sec-head sec-grid">
+          <div><p class="kicker">Memoria fotográfica</p><h2>Popayán, <em>dos miradas</em></h2></div>
+          <p class="intro">El fotógrafo e investigador Fabio López de la Roche vuelve a la ciudad donde nació: los muros que dejó la campaña presidencial y la ciudad colonial y republicana en las horas en que se libera de los carros.</p>
+        </div>
+        <div class="ed-fotos">
+          {series.map(({ x, fotos, muestra }) => (
+            <a class="ed-serie" href={`/textos/${x.id}`}>
+              <span class="ed-tira">
+                {muestra.map((n) => <img src={fotos[n].mini} alt="" width={fotos[n].mw} height={fotos[n].mh} loading="lazy" />)}
+              </span>
+              <span class="ed-tipo">{fotos.length} fotos</span>
+              <h3>{x.data.titulo}</h3>
+              <p>{x.data.bajada}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="block tint-sand" id="agenda">
       <div class="wrap ed-agenda">
         <a class="ed-afiche" href={`/textos/${manizales.id}`}><img src={manizales.data.imagen} alt={manizales.data.imagenAlt} loading="lazy" width="1111" height="1599" /></a>
         <div>
@@ -120,7 +150,7 @@ const manizales = t('manizales-mas-alla-de-la-adversidad');
       </div>
     </section>
 
-    <section class="block tint-sand" id="aporta">
+    <section class="block" id="aporta">
       <div class="wrap sec-grid">
         <div>
           <p class="kicker">Aporta</p>
