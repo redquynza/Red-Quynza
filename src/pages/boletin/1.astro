@@ -1,0 +1,171 @@
+---
+import Base from '../../layouts/Base.astro';
+import Signup from '../../components/Signup.astro';
+import { getCollection } from 'astro:content';
+import { boletines, proximo, CANAL_WHATSAPP, CORREO_CONVOCATORIA } from '../../data/boletines';
+
+const ed = boletines.find((b) => b.numero === 1)!;
+
+// >>> Enlace del episodio 1 del podcast (YouTube o Spotify). Mientras esté vacío, la página dice "muy pronto". <<<
+const PODCAST_URL = 'https://youtu.be/Q8LBJJz5uyM';
+const EXPEDIENTE_GRAFICO = 'https://www.instagram.com/p/De2XCmZGftd/';
+const EXPEDIENTE_GRAFICO_2 = 'https://www.instagram.com/p/DfAPSv1nC0s/';
+
+const textos = await getCollection('textos', (t) => t.data.boletin === 1);
+const t = (id: string) => textos.find((x) => x.id === id)!;
+const expedientes = [
+  { x: t('expediente-15'), etiqueta: 'N.º 15 · 9 de octubre', titulo: 'Dos meses de política ambiental' },
+  { x: t('expediente-balance-terremoto'), etiqueta: 'Balance especial · 10 de octubre', titulo: 'Dos meses del terremoto' },
+  { x: t('expediente-16'), etiqueta: 'N.º 16 · 13 de octubre', titulo: 'Dos meses de seguridad' },
+];
+const esmad = t('vuelve-el-esmad');
+const manizales = t('manizales-mas-alla-de-la-adversidad');
+---
+<Base
+  title={`Boletín N.º 1 · ${ed.titulo} · RED Quynza`}
+  description={ed.resumen}
+  image={ed.imagen}
+  imageAlt="Boletín N.º 1 de la RED Quynza, octubre de 2026"
+  type="article"
+>
+  <main>
+    <section class="block ed-hero">
+      <div class="wrap">
+        <p class="kicker">Boletín N.º 1 · {ed.mes}</p>
+        <h1>La paz también se construye <em>en la ciudad</em></h1>
+        <div class="ed-presenta">
+          <p>Este es el primer número del boletín de la RED Quynza. Lo pensamos como un ejercicio de memoria: cada mes, lo que la red investiga, discute y ve pasar en las ciudades del país.</p>
+          <p>En este número sale el primer episodio de nuestro podcast, <i>Lo que la gente quiere es vivir</i>, una conversación con Óscar Useche sobre cómo se resiste en tiempos de miedo. Seguimos una decisión que toca de lleno la protesta urbana: el regreso del ESMAD. Recogemos el Expediente De la Espriella, el seguimiento semanal al nuevo gobierno, y te invitamos a Manizales, donde el nodo de la red abre una conversación sobre las violencias y las paces de la ciudad.</p>
+          <p>El boletín se hace con lo que ustedes envían. La convocatoria para noviembre ya está abierta.</p>
+        </div>
+        <nav class="ed-indice" aria-label="En este número">
+          <a href="#podcast">Podcast</a>
+          <a href="#documento">Documento del mes</a>
+          <a href="#expediente">Expediente De la Espriella</a>
+          <a href="#agenda">Agenda</a>
+          <a href="#aporta">Aporta</a>
+          <a href="#convocatoria">Convocatoria</a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="block ink" id="podcast">
+      <div class="wrap ed-podcast">
+        <a class="video ed-video" data-yt="Q8LBJJz5uyM" href={PODCAST_URL} target="_blank" rel="noopener" aria-label="Ver en YouTube: El miedo se conjura con alegría, con Óscar Useche">
+          <span class="thumb"><img src="/img/boletin/podcast-ep01.jpg" alt="" width="1280" height="720" /><span class="play" aria-hidden="true"></span></span>
+        </a>
+        <div>
+          <p class="kicker">Podcast · Episodio 1 · Bogotá</p>
+          <h2>El miedo se conjura con <em>alegría</em></h2>
+          <p class="intro">Sale el primer episodio de <b>Lo que la gente quiere es vivir</b>, el podcast de la RED. Una conversación con <b>Óscar Useche</b>, profesor de la Universidad Distrital y de Uniminuto, sobre cómo se resiste en tiempos de miedo: Spinoza y el poder de los frágiles, la resistencia de los barrios de Bogotá, el regreso a El Salado y las economías comunitarias que sostienen la vida.</p>
+          <div class="actions" style="margin-top:1.8rem">
+            {PODCAST_URL
+              ? <a class="btn solid ed-btn-claro" href={PODCAST_URL}>Ver el episodio</a>
+              : <span class="ed-pronto">Disponible muy pronto en el sitio y en YouTube</span>}
+            <a class="text-link ed-link-claro" href="/podcast">Sobre el podcast</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="documento">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Documento del mes</p>
+          <h2>Vuelve el <em>ESMAD</em></h2>
+        </div>
+        <div>
+          <p class="ed-destacado-tit"><a href={`/textos/${esmad.id}`}>{esmad.data.titulo}</a></p>
+          <p class="intro" style="max-width:none">{esmad.data.bajada}</p>
+          <div class="actions" style="margin-top:1.6rem">
+            <a class="btn solid" href={`/textos/${esmad.id}`}>Qué cambia</a>
+            <a class="text-link" href={esmad.data.adjunto!.href} download>Descargar la resolución (PDF)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="sep-tejido" aria-hidden="true"></div>
+    <section class="block tint-teal" id="expediente">
+      <div class="wrap">
+        <div class="sec-head sec-grid">
+          <div><p class="kicker">Seguimiento al gobierno</p><h2>Expediente De la Espriella</h2></div>
+          <p class="intro">Andrés hace cada semana el seguimiento a las decisiones del gobierno, con fuente y fecha. Estos son los números de octubre; aquí están completos.</p>
+        </div>
+        <ul class="ed-lista">
+          {expedientes.map(({ x, etiqueta, titulo }) => (
+            <li>
+              <span class="ed-tipo">{etiqueta}</span>
+              <h3><a href={`/textos/${x.id}`}>{titulo}</a></h3>
+              <p>{x.data.bajada}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="ed-nota-dial">El Expediente también tiene versión gráfica, hecha en diálogo con Dial. En Instagram: <a href={EXPEDIENTE_GRAFICO}>el N.º 19</a>, con el presupuesto de 2027 por decreto y el recorte al gasto de 2026, y <a href={EXPEDIENTE_GRAFICO_2}>la edición más reciente</a>, con la reserva amazónica revocada a los 80 días y la nueva Consejería de Paz.</p>
+      </div>
+    </section>
+
+    <section class="block" id="agenda">
+      <div class="wrap ed-agenda">
+        <a class="ed-afiche" href={`/textos/${manizales.id}`}><img src={manizales.data.imagen} alt={manizales.data.imagenAlt} loading="lazy" width="1111" height="1599" /></a>
+        <div>
+          <p class="kicker">Agenda · Manizales</p>
+          <h2>Más allá de la <em>adversidad</em></h2>
+          <p class="ed-fecha">Jueves 5 de noviembre · 8:30 a. m. a 6:00 p. m.<br />Auditorio del Banco de la República</p>
+          <p class="intro" style="max-width:none">Manizales tiene fama de "remanso de paz", pero hay violencias que encienden las alarmas. El nodo Manizales de la RED, con las universidades de Caldas, de Manizales y Autónoma de Manizales, organiza un día de conferencias, paneles y talleres para entenderlas, conocer las experiencias de paz de la ciudad y pensar una agenda de paz urbana.</p>
+          <div class="actions" style="margin-top:1.6rem">
+            <a class="btn solid" href={`/textos/${manizales.id}`}>Ver la programación</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block tint-sand" id="aporta">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Aporta</p>
+          <h2>Sostén la <em>RED</em></h2>
+        </div>
+        <div>
+          <p class="intro" style="max-width:none">La RED Quynza se sostiene con el aporte de sus integrantes y de quienes creen en su trabajo. El podcast, el boletín y el repositorio abierto existen gracias a ese aporte. Ya puedes aportar desde la página: por ahora con Nequi, y en unos días también con tarjeta.</p>
+          <div class="actions" style="margin-top:1.6rem">
+            <a class="btn solid" href="/aportar">Aportar cada mes</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block ink" id="convocatoria">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Convocatoria · N.º {proximo.numero}</p>
+          <h2>El próximo boletín <em>lo escribes tú</em></h2>
+        </div>
+        <div>
+          <ul class="ed-envios">
+            <li><b>Columnas de opinión</b> sobre la actualidad política, de 600 a 1.000 palabras.</li>
+            <li><b>Avances de investigación</b>, tesis o trabajos de grado, de 1.000 a 1.500 palabras.</li>
+            <li><b>Historias de paz</b> en las regiones: personas, organizaciones, procesos.</li>
+            <li><b>Fotografías, ilustraciones, audios o videos</b>, con su autor.</li>
+            <li><b>Eventos, convocatorias y publicaciones</b> que la red deba conocer.</li>
+          </ul>
+          <p class="ed-como">Envíalo a <a href={`mailto:${CORREO_CONVOCATORIA}`}>{CORREO_CONVOCATORIA}</a> hasta el <b>{proximo.cierre}</b>, con el asunto <i>Boletín – tipo de envío – tu apellido</i>. Incluye el título, tu nombre, tu universidad u organización, tu región y una reseña de dos líneas. El N.º {proximo.numero} sale el {proximo.sale}.</p>
+          <p class="ed-como">Y síguenos en el <a href={CANAL_WHATSAPP}>canal de WhatsApp de la RED</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block band-teal">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Boletín</p>
+          <h2>¿Te lo reenviaron?</h2>
+        </div>
+        <div>
+          <p class="intro" style="margin-bottom:1.4rem">Suscríbete y recíbelo el último martes de cada mes.</p>
+          <Signup id="signup-n1" />
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

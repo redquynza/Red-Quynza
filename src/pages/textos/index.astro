@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { fechaLarga } from '../../data/boletines';
+
+const textos = (await getCollection('textos')).sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf());
+---
+<Base
+  title="Textos · RED Quynza"
+  description="Los textos completos de la RED Quynza: columnas, avances de investigación, el Expediente De la Espriella, documentos y agenda. El boletín mensual los resume y enlaza aquí."
+>
+  <main>
+    <section class="block">
+      <div class="wrap">
+        <div class="sec-head sec-grid">
+          <div><p class="kicker">Textos</p><h2>Lo que la red escribe</h2></div>
+          <p class="intro">Aquí viven completos los textos que resume el <a href="/boletin">boletín</a> cada mes. Con el tiempo, esta página será la memoria escrita de la RED.</p>
+        </div>
+        <ul class="ed-lista">
+          {textos.map((t) => (
+            <li>
+              <span class="ed-tipo">{t.data.tipo} · {fechaLarga(t.data.fecha)}</span>
+              <h3><a href={`/textos/${t.id}`}>{t.data.titulo}</a></h3>
+              <p>{t.data.bajada}</p>
+              <p class="ed-autor">{t.data.autor}{t.data.region && <> · {t.data.region}</>}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </main>
+</Base>

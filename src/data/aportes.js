@@ -34,7 +34,13 @@ export const metodos = {
 
 export const pesos = (n) => '$' + Number(n).toLocaleString('es-CO');
 
+// Además de los tres montos, cada quien puede escribir otro valor: desde el mínimo
+// de su perfil hasta este tope (que solo evita errores al digitar).
+export const MONTO_MAXIMO = 2000000;
+export const montoMinimo = (p) => Math.min(...p.montos);
+
 export function montoValido(perfil, monto) {
   const p = perfiles.find((x) => x.id === perfil);
-  return !!p && p.montos.includes(Number(monto));
+  const n = Number(monto);
+  return !!p && Number.isInteger(n) && n >= montoMinimo(p) && n <= MONTO_MAXIMO;
 }

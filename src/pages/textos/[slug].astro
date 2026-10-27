@@ -1,0 +1,96 @@
+---
+import Base from '../../layouts/Base.astro';
+import Signup from '../../components/Signup.astro';
+import { getCollection, render } from 'astro:content';
+import { fechaLarga } from '../../data/boletines';
+
+export async function getStaticPaths() {
+  const textos = await getCollection('textos');
+  return textos.map((texto) => ({ params: { slug: texto.id }, props: { texto } }));
+}
+
+const { texto } = Astro.props;
+const d = texto.data;
+const { Content } = await render(texto);
+
+// otros textos del mismo número del boletín
+const otros = d.boletin
+  ? (await getCollection('textos', (t) => t.data.boletin === d.boletin && t.id !== texto.id))
+      .sort((a, b) => b.data.fecha.valueOf() - a.data.fecha.valueOf())
+  : [];
+---
+<Base
+  title={`${d.titulo} · RED Quynza`}
+  description={d.bajada}
+  image={d.imagen ?? '/img/boletin/n1-portada.jpg'}
+  imageAlt={d.imagenAlt ?? d.titulo}
+  type="article"
+>
+  <main>
+    <article class="block articulo">
+      <div class="wrap">
+        <header class="art-head">
+          <p class="kicker">{d.tipo}</p>
+          <h1>{d.titulo}</h1>
+          <p class="art-bajada">{d.bajada}</p>
+          <p class="art-meta">
+            <span><b>{d.autor}</b>{d.firma && <> · {d.firma}</>}</span>
+            <span>{fechaLarga(d.fecha)}</span>
+            {d.region && <span>{d.region}</span>}
+            {d.tema && <span>{d.tema}</span>}
+          </p>
+        </header>
+
+        <div class={d.imagen ? 'art-cuerpo con-imagen' : 'art-cuerpo'}>
+          {d.imagen && (
+            <figure class="art-figura">
+              <img src={d.imagen} alt={d.imagenAlt ?? ''} loading="lazy" />
+            </figure>
+          )}
+          <div class="prosa">
+            <Content />
+            {d.adjunto && (
+              <p class="adjunto"><a href={d.adjunto.href} download>{d.adjunto.etiqueta}</a></p>
+            )}
+          </div>
+        </div>
+
+        {d.boletin && (
+          <aside class="art-pie">
+            <p>Publicado en el <a href={`/boletin/${d.boletin}`}>Boletín N.º {d.boletin}</a> de la RED Quynza.</p>
+          </aside>
+        )}
+      </div>
+    </article>
+
+    {otros.length > 0 && (
+      <section class="block tint-sand">
+        <div class="wrap">
+          <div class="sec-head"><p class="kicker">También en este número</p></div>
+          <ul class="ed-lista">
+            {otros.map((t) => (
+              <li>
+                <span class="ed-tipo">{t.data.tipo}</span>
+                <h3><a href={`/textos/${t.id}`}>{t.data.titulo}</a></h3>
+                <p>{t.data.bajada}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+
+    <section class="block band-teal">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Boletín</p>
+          <h2>Recíbelo cada mes</h2>
+        </div>
+        <div>
+          <p class="intro" style="margin-bottom:1.4rem">El último martes de cada mes, lo que la red piensa y hace, en tu correo.</p>
+          <Signup id="signup-texto" />
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

@@ -1,6 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
 import { perfiles, pesos } from '../data/aportes.js';
+
+// Tarjeta en pausa mientras Wompi activa 3D Secure (su antifraude rechaza las tarjetas sin él).
+// Para reactivarla basta con poner true.
+const TARJETA_ACTIVA = false;
 ---
 <Base
   title="Aporta a la RED · RED Quynza"
@@ -19,7 +23,7 @@ import { perfiles, pesos } from '../data/aportes.js';
           <span class="src">Cómo funciona</span>
           <ul class="welcome-list">
             <li>Eliges tu perfil y cuánto aportar al mes.</li>
-            <li>Pagas con tarjeta de crédito, débito o Nequi.</li>
+            <li>{TARJETA_ACTIVA ? "Pagas con tarjeta de crédito, débito o Nequi." : "Pagas con Nequi (con tarjeta, en unos días)."}</li>
             <li>El cobro se repite solo cada mes, el mismo día.</li>
             <li>Te llega un enlace para ver tus cobros o cancelar.</li>
           </ul>
@@ -47,6 +51,13 @@ import { perfiles, pesos } from '../data/aportes.js';
           <fieldset class="paso">
             <legend><span class="n">2</span> ¿Cuánto al mes?</legend>
             <div class="montos" id="montos" aria-live="polite"></div>
+            <div class="monto-op monto-otro" id="monto-otro">
+              <input type="radio" name="monto" value="otro" id="monto-otro-op" />
+              <label class="mo-otro-tit" for="monto-otro-campo">Otro valor</label>
+              <span class="mo-otro-caja"><span aria-hidden="true">$</span><input id="monto-otro-campo" name="monto_otro" inputmode="numeric" autocomplete="off" maxlength="9" placeholder="Escribe el valor" /></span>
+              <span class="mo-mes">al mes</span>
+              <span class="mo-otro-ayuda" id="monto-otro-ayuda"></span>
+            </div>
           </fieldset>
 
           <fieldset class="paso">
@@ -61,11 +72,14 @@ import { perfiles, pesos } from '../data/aportes.js';
           <fieldset class="paso">
             <legend><span class="n">4</span> ¿Cómo pagas?</legend>
             <div class="metodos" role="radiogroup">
-              <label class="metodo-op"><input type="radio" name="metodo" value="CARD" checked /><span>Tarjeta de crédito o débito</span></label>
-              <label class="metodo-op"><input type="radio" name="metodo" value="NEQUI" /><span>Nequi</span></label>
+              <label class="metodo-op"><input type="radio" name="metodo" value="CARD" checked={TARJETA_ACTIVA} disabled={!TARJETA_ACTIVA} /><span>Tarjeta de crédito o débito</span>{!TARJETA_ACTIVA && <span class="mo-pronto">En unos días</span>}</label>
+              <label class="metodo-op"><input type="radio" name="metodo" value="NEQUI" checked={!TARJETA_ACTIVA} /><span>Nequi</span></label>
             </div>
+            {!TARJETA_ACTIVA && (
+              <p class="aviso-metodo"><b>Por ahora el pago con tarjeta no está disponible.</b> Estamos activando con la pasarela una verificación de seguridad adicional y volverá a funcionar en unos días. Mientras tanto puedes aportar con Nequi, o volver pronto para hacerlo con tarjeta.</p>
+            )}
 
-            <div class="campos" data-metodo="CARD">
+            <div class="campos" data-metodo="CARD" hidden={!TARJETA_ACTIVA}>
               <label class="campo ancho"><span>Número de la tarjeta</span><input name="numero" inputmode="numeric" autocomplete="cc-number" maxlength="23" placeholder="0000 0000 0000 0000" /></label>
               <label class="campo ancho"><span>Nombre como aparece en la tarjeta</span><input name="titular" autocomplete="cc-name" maxlength="80" /></label>
               <label class="campo"><span>Vence (MM/AA)</span><input name="vence" inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="MM/AA" /></label>
@@ -73,7 +87,7 @@ import { perfiles, pesos } from '../data/aportes.js';
               <p class="ayuda ancho">Visa o Mastercard, de crédito o de débito con compras por internet habilitadas. Puede que tu banco te pida confirmar la tarjeta.</p>
             </div>
 
-            <div class="campos" data-metodo="NEQUI" hidden>
+            <div class="campos" data-metodo="NEQUI" hidden={TARJETA_ACTIVA}>
               <label class="campo"><span>Celular registrado en Nequi</span><input name="nequi" inputmode="numeric" autocomplete="tel-national" maxlength="12" placeholder="300 000 0000" /></label>
               <p class="ayuda ancho">Te llegará una notificación en la app de Nequi para autorizar el cobro mensual. Ábrela y acéptala.</p>
             </div>
@@ -109,7 +123,7 @@ import { perfiles, pesos } from '../data/aportes.js';
 </Base>
 
 <script>
-  import { perfiles, pesos } from '../data/aportes.js';
+  import { perfiles, pesos, montoMinimo, MONTO_MAXIMO } from '../data/aportes.js';
 
   const form = document.getElementById('aporte-form') as HTMLFormElement;
   const montosEl = document.getElementById('montos')!;
@@ -126,8 +140,17 @@ import { perfiles, pesos } from '../data/aportes.js';
   const aviso = (t: string, tipo = '') => { msg.textContent = t; msg.dataset.tipo = tipo; };
 
   // ---- montos según el perfil ----
+  const otroOp = document.getElementById('monto-otro-op') as HTMLInputElement;
+  const otroCampo = document.getElementById('monto-otro-campo') as HTMLInputElement;
+  const otroAyuda = document.getElementById('monto-otro-ayuda')!;
+  const perfilActual = () => perfiles.find((x) => x.id === elegido('perfil'))!;
+  // el monto elegido: uno de los tres o el que la persona escribió en "Otro valor"
+  const montoActual = () => elegido('monto') === 'otro' ? Number(otroCampo.value.replace(/\D/g, '')) : Number(elegido('monto'));
+
   function pintarMontos() {
-    const p = perfiles.find((x) => x.id === elegido('perfil'))!;
+    const p = perfilActual();
+    otroAyuda.textContent = `Desde ${pesos(montoMinimo(p))}`;
+    if (otroOp.checked) return pintarBoton();
     const previo = Number(elegido('monto'));
     const sel = p.montos.includes(previo) ? previo : p.sugerido;
     montosEl.innerHTML = p.montos.map((m) => `
@@ -139,13 +162,23 @@ import { perfiles, pesos } from '../data/aportes.js';
     pintarBoton();
   }
   function pintarBoton() {
-    const m = Number(elegido('monto'));
+    const m = montoActual();
     btn.textContent = m ? `Aportar ${pesos(m)} al mes` : 'Aportar';
   }
+  // escribir en la caja (o tocarla) la deja elegida; el número se muestra con puntos de miles
+  const elegirOtro = () => { if (!otroOp.checked) { otroOp.checked = true; pintarBoton(); } };
+  otroCampo.addEventListener('focus', elegirOtro);
+  document.getElementById('monto-otro')!.addEventListener('click', () => otroCampo.focus());
+  otroCampo.addEventListener('input', () => {
+    const d = otroCampo.value.replace(/\D/g, '').replace(/^0+/, '').slice(0, 7);
+    otroCampo.value = d ? Number(d).toLocaleString('es-CO') : '';
+    elegirOtro();
+    pintarBoton();
+  });
   form.addEventListener('change', (e) => {
     const t = e.target as HTMLInputElement;
     if (t.name === 'perfil') pintarMontos();
-    if (t.name === 'monto') pintarBoton();
+    if (t.name === 'monto') { if (t.value !== 'otro') otroCampo.value = ''; pintarBoton(); }
     if (t.name === 'metodo') form.querySelectorAll<HTMLElement>('[data-metodo]').forEach((el) => { el.hidden = el.dataset.metodo !== t.value; });
   });
   pintarMontos();
@@ -191,6 +224,10 @@ import { perfiles, pesos } from '../data/aportes.js';
 
   function validar(metodo: string) {
     const faltas: string[] = [];
+    const m = montoActual(), min = montoMinimo(perfilActual());
+    if (!m) faltas.push('el valor de tu aporte');
+    else if (m < min) faltas.push(`un valor desde ${pesos(min)} para tu perfil`);
+    else if (m > MONTO_MAXIMO) faltas.push(`un valor hasta ${pesos(MONTO_MAXIMO)} (para un aporte mayor, escríbenos)`);
     if (val('nombre').length < 3) faltas.push('tu nombre');
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('email'))) faltas.push('un correo válido');
     if (metodo === 'CARD') {
@@ -213,7 +250,7 @@ import { perfiles, pesos } from '../data/aportes.js';
 
     btn.disabled = true;
     const base: any = {
-      perfil: elegido('perfil'), monto: Number(elegido('monto')), metodo,
+      perfil: elegido('perfil'), monto: montoActual(), metodo,
       nombre: val('nombre'), email: val('email'), acepta: true,
       acceptance_token: cfg.terminos.token, accept_personal_auth: cfg.datos.token,
     };

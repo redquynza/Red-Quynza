@@ -5,16 +5,22 @@ export interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  image?: string;      // imagen al compartir (ruta en /public); por defecto la de la RED
+  imageAlt?: string;
+  type?: string;       // og:type: website o article
 }
 
 const {
   title = 'RED Quynza · El derecho de la ciudad a la paz',
   noindex = false,
+  image = '/img/og-redquynza.png',
+  imageAlt = 'RED Quynza: la ciudad también tiene derecho a la paz',
+  type = 'website',
   description = 'RED Quynza: más de 80 investigadores e investigadoras de más de 25 universidades que piensan la violencia urbana y la paz desde las ciudades de Colombia. Podcast, publicaciones y datos abiertos, documentales y boletín.',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const ogImage = new URL('/img/og-redquynza.png', Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const nav = [
   { href: '/', label: 'Inicio' },
@@ -40,14 +46,14 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
   <!-- Vista previa al compartir (WhatsApp, Instagram, Facebook, X, LinkedIn…) -->
   <meta property="og:site_name" content="RED Quynza" />
   <meta property="og:locale" content="es_CO" />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content={type} />
   <meta property="og:url" content={canonical} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={ogImage} />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="RED Quynza: la ciudad también tiene derecho a la paz" />
+  {image === '/img/og-redquynza.png' && <meta property="og:image:width" content="1200" />}
+  {image === '/img/og-redquynza.png' && <meta property="og:image:height" content="630" />}
+  <meta property="og:image:alt" content={imageAlt} />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Signup from '../components/Signup.astro';
+import { boletines } from '../data/boletines';
 ---
 <Base
   title="Boletín · RED Quynza"
@@ -29,9 +30,16 @@ import Signup from '../components/Signup.astro';
     <section class="block tint-teal" id="numeros">
       <div class="wrap">
         <div class="sec-head"><p class="kicker">Números</p><h2>Ediciones publicadas</h2></div>
-        <div class="dir-empty">
-          <p>El <b>primer número</b> sale pronto. Suscríbete arriba y te llega apenas se publique; aquí quedará el archivo de todas las ediciones.</p>
-        </div>
+        <ul class="ed-lista">
+          {[...boletines].reverse().map((b) => (
+            <li>
+              <span class="ed-tipo">N.º {b.numero} · {b.mes}</span>
+              <h3><a href={`/boletin/${b.numero}`}>{b.titulo}</a></h3>
+              <p>{b.resumen}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="ed-nota-dial">Los textos completos de cada número quedan en <a href="/textos">Textos</a>.</p>
       </div>
     </section>
   </main>
