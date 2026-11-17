@@ -176,18 +176,25 @@ export const videos: Video[] = [
 
 // Comprueba en Zenodo qué registros ya están publicados (al construir el sitio).
 // Si no hay conexión, se asume que no lo están y la página usa el enlace original.
+// Zenodo responde 403 al agente por defecto de Node: hay que mandar uno propio.
 export async function publicadosEnZenodo(ids: number[]): Promise<Set<number>> {
   const ok = new Set<number>();
-  await Promise.all(
-    ids.map(async (id) => {
+  const consultar = async (id: number) => {
+    for (let intento = 0; intento < 3; intento++) {
       try {
-        const r = await fetch(`https://zenodo.org/api/records/${id}`, { signal: AbortSignal.timeout(8000) });
+        const r = await fetch(`https://zenodo.org/api/records/${id}`, {
+          headers: { 'User-Agent': 'redquynza-site-build/1.0' },
+          signal: AbortSignal.timeout(10000),
+        });
         if (r.ok) ok.add(id);
+        if (r.ok || r.status === 404 || r.status === 410) return;
       } catch {
-        /* sin conexión: se deja como no publicado */
+        /* corte de red: se reintenta */
       }
-    }),
-  );
+      await new Promise((res) => setTimeout(res, 1500 * (intento + 1)));
+    }
+  };
+  for (const id of ids) await consultar(id); // de a uno, para no toparse con el límite de Zenodo
   return ok;
 }
 
