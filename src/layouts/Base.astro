@@ -169,7 +169,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
 
       var quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if ('IntersectionObserver' in window && !quieto) {
-        var sel = '.sec-head, .block > .wrap.sec-grid > *, .convo > *, .thesis .t-item, .pullquote, .pub, .teaser, .faces a, .member, .region-head, .docs li, .fondo li, .moments li, .videos .video, .benefits li, .dir-empty, .big';
+        var sel = '.sec-head, .block > .wrap.sec-grid > *, .convo > *, .thesis .t-item, .pullquote, .pub, .teaser, .faces a, .member, .region-head, .docs li, .moments li, .videos .video, .benefits li, .dir-empty, .big';
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (en) {
             if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
@@ -209,19 +209,20 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
       });
 
       // --- Reproductor de YouTube embebido al hacer clic (si hay videos) ---
-      document.querySelectorAll('.video[data-yt]').forEach(function (a) {
-        a.addEventListener('click', function (e) {
-          var t = a.querySelector('.thumb');
-          if (!t || t.querySelector('iframe')) return;
-          e.preventDefault();
-          var f = document.createElement('iframe');
-          f.src = 'https://www.youtube-nocookie.com/embed/' + a.dataset.yt + '?autoplay=1&rel=0';
-          f.title = 'Video de RED Quynza';
-          f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
-          f.allowFullscreen = true;
-          t.innerHTML = '';
-          t.appendChild(f);
-        });
+      // (delegado en el documento: sirve también para videos que se cargan después, como los del repositorio)
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest && e.target.closest('.video[data-yt]');
+        if (!a) return;
+        var t = a.querySelector('.thumb');
+        if (!t || t.querySelector('iframe')) return;
+        e.preventDefault();
+        var f = document.createElement('iframe');
+        f.src = 'https://www.youtube-nocookie.com/embed/' + a.dataset.yt + '?autoplay=1&rel=0';
+        f.title = a.getAttribute('aria-label') || 'Video de RED Quynza';
+        f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+        f.allowFullscreen = true;
+        t.innerHTML = '';
+        t.appendChild(f);
       });
     })();
   </script>

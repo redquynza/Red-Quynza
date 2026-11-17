@@ -1,22 +1,77 @@
 ---
 import Base from '../layouts/Base.astro';
-import { textos, videos, tipos, publicadosEnZenodo, zenodoUrl } from '../data/repositorio';
+import { cargar, ZENODO, htmlTipos, htmlNodos, htmlTemas, htmlRecientes, htmlVideos } from '../lib/zenodo';
 
-const ZENODO = 'https://zenodo.org/communities/redquynza/records';
-const publicados = await publicadosEnZenodo([...textos, ...videos].map((x) => x.zenodo));
+// El catálogo completo vive en Zenodo; aquí se muestra un resumen que se arma al construir
+// el sitio y se actualiza en el navegador (ver src/lib/zenodo.ts).
+const d = await cargar(fetch, true);
 ---
 <Base
   title="Repositorio · RED Quynza"
-  description="Repositorio de la RED Quynza: libros, artículos, capítulos, informes, videos y las bases de datos de sus investigaciones sobre violencia urbana y paz en Colombia. Acceso abierto."
+  description="Repositorio abierto de la RED Quynza en Zenodo: artículos, capítulos, informes, bases de datos y videos sobre violencia urbana y paz en Colombia, enviados por los nodos de la red."
 >
   <main>
-    <section class="block" id="publicaciones">
+    <section class="block tint-teal" id="repositorio">
       <div class="wrap">
         <div class="sec-grid sec-head">
-          <div><p class="kicker">Repositorio</p><h2>Publicaciones y datos de la red</h2></div>
-          <p class="intro">Libros y artículos propios de la red, y los archivos con los que investigamos: bases de datos, informes y documentos de trabajo. Todo en acceso abierto.</p>
+          <div><p class="kicker">Repositorio abierto</p><h2>Lo que investiga la red, en un solo lugar</h2></div>
+          <div>
+            <p class="intro">Artículos, capítulos, informes, bases de datos y videos que envían los nodos de la red. Están guardados en <b>Zenodo</b>, el repositorio abierto del CERN: cada documento tiene su DOI para citarlo y se descarga gratis.</p>
+            <p class="repo-total"><span id="repo-total">{d ? d.total : '—'}</span> documentos publicados</p>
+          </div>
         </div>
-        <h3 class="sub-head">Libros y documentos</h3>
+        <form class="repo-buscar" action={ZENODO} method="get" target="_blank" role="search">
+          <label class="sr" for="repo-q">Buscar en el repositorio</label>
+          <input id="repo-q" name="q" type="search" placeholder="Busca por tema, autor, ciudad…" autocomplete="off" />
+          <button class="btn solid" type="submit">Buscar en Zenodo</button>
+        </form>
+        <div class="repo-explora">
+          <h3 class="sub-head">Por tipo de documento</h3>
+          <div class="facetas" id="repo-tipos" set:html={d ? htmlTipos(d) : ''}></div>
+          <p class="repo-todo"><a class="text-link" href={ZENODO} target="_blank" rel="noopener">Ver el repositorio completo en Zenodo ↗</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="recientes">
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Lo más reciente</p><h2>Últimos documentos</h2></div>
+          <p class="intro">Lo último que llegó al repositorio. Cada ficha abre el documento en Zenodo.</p>
+        </div>
+        <div class="fichas" id="repo-recientes" set:html={d ? htmlRecientes(d) : ''}></div>
+        {!d && <div class="dir-empty"><p>No pudimos cargar el repositorio. <a href={ZENODO} target="_blank" rel="noopener">Ábrelo directamente en Zenodo</a>.</p></div>}
+      </div>
+    </section>
+
+    <section class="block tint-sand" id="nodos">
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Desde los territorios</p><h2>Por nodo y por tema</h2></div>
+          <p class="intro">La red se organiza en siete macrorregiones. Cada nodo envía lo que investiga en su territorio.</p>
+        </div>
+        <div class="nodos-f" id="repo-nodos" set:html={d ? htmlNodos(d) : ''}></div>
+        <h3 class="sub-head" style="margin-top:clamp(2.5rem,5vw,3.5rem)">Temas frecuentes</h3>
+        <div class="temas" id="repo-temas" set:html={d ? htmlTemas(d) : ''}></div>
+      </div>
+    </section>
+
+    <section class="block" id="videos" hidden={d && d.videos.length === 0 ? true : undefined}>
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Videos</p><h2>Voces y experiencias de paz en video</h2></div>
+          <p class="intro">Entrevistas y procesos de los territorios. Se reproducen aquí mismo; cada uno tiene su ficha en el repositorio.</p>
+        </div>
+        <div class="videos" id="repo-videos" set:html={d ? htmlVideos(d) : ''}></div>
+      </div>
+    </section>
+
+    <section class="block tint-sand" id="publicaciones">
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Documentos de la red</p><h2>Lo que la RED ha publicado</h2></div>
+          <p class="intro">El libro, la propuesta política y el documento que explica quiénes somos.</p>
+        </div>
         <div class="pubs">
           <article class="pub">
             <div class="cover"><img src="/img/libro-construir-la-paz.jpg" alt="Portada del libro Construir la paz y cuidar la vida" /></div>
@@ -48,89 +103,27 @@ const publicados = await publicadosEnZenodo([...textos, ...videos].map((x) => x.
         </div>
       </div>
     </section>
-
-    <section class="block tint-sand" id="articulos">
-      <div class="wrap">
-        <div class="sec-grid sec-head">
-          <div><p class="kicker">Desde los nodos</p><h2>Lo que investigan los integrantes de la red</h2></div>
-          <p class="intro">Artículos, capítulos e informes que los nodos han enviado al repositorio. Cada texto queda guardado en Zenodo, citable y de libre descarga.</p>
-        </div>
-        {Object.entries(tipos).map(([tipo, nombre]) => {
-          const lista = textos.filter((t) => t.tipo === tipo);
-          return lista.length > 0 && (
-            <div class="fondo-grupo">
-              <h3 class="sub-head">{nombre} <span class="n">{lista.length}</span></h3>
-              <ol class="fondo">
-                {lista.map((t) => {
-                  const enZenodo = publicados.has(t.zenodo);
-                  return (
-                    <li>
-                      <div class="meta"><span class="anio">{t.anio}</span><span class="nodo">Nodo {t.nodo}</span></div>
-                      <div class="cuerpo">
-                        <h4>{enZenodo ? <a href={zenodoUrl(t.zenodo)} target="_blank" rel="noopener">{t.titulo}</a> : t.titulo}</h4>
-                        <p class="autores">{t.autores.map((a, i) => <>{i > 0 && ', '}{a.id ? <a href={`/la-red#${a.id}`}>{a.nombre}</a> : a.nombre}</>)}</p>
-                        <p class="de-que">{t.resumen}</p>
-                        <p class="fuente">{t.fuente} · {t.territorio}</p>
-                      </div>
-                      <div class="acc">
-                        {enZenodo
-                          ? <a class="go" href={zenodoUrl(t.zenodo)} target="_blank" rel="noopener">Descargar</a>
-                          : t.original
-                            ? <a class="go" href={t.original.href} target="_blank" rel="noopener">{t.original.label}</a>
-                            : <span class="pronto">Pronto en Zenodo</span>}
-                        <span class="lic">{t.licencia}</span>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
-          );
-        })}
-      </div>
-    </section>
-
-    <section class="block" id="videos">
-      <div class="wrap">
-        <div class="sec-grid sec-head">
-          <div><p class="kicker">Videos</p><h2>Voces y experiencias de paz en video</h2></div>
-          <p class="intro">Entrevistas y procesos de los territorios que la red recomienda ver. Se reproducen aquí mismo; cada uno tiene su ficha en el repositorio.</p>
-        </div>
-        <div class="videos">
-          {videos.map((v) => (
-            <div class="video-item">
-              <a class="video" data-yt={v.yt} href={`https://youtu.be/${v.yt}`} target="_blank" rel="noopener" aria-label={`Ver en YouTube: ${v.titulo}`}>
-                <span class="thumb"><img src={`https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg`} alt="" loading="lazy" /><span class="play" aria-hidden="true"></span></span>
-              </a>
-              <h3>{v.titulo}</h3>
-              <p class="vmeta">{v.canal} · {v.anio} · {v.duracion} · {v.territorio}</p>
-              <p>{v.resumen}</p>
-              {(v.conversan || publicados.has(v.zenodo)) && (
-                <p class="vmeta">
-                  {v.conversan && <>Con {v.conversan.map((a) => a.id ? <a href={`/la-red#${a.id}`}>{a.nombre}</a> : a.nombre)}, integrante de la red.</>}
-                  {publicados.has(v.zenodo) && <> <a href={zenodoUrl(v.zenodo)} target="_blank" rel="noopener">Ficha en Zenodo ↗</a></>}
-                </p>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <section class="block tint-teal" id="repositorio">
-      <div class="wrap sec-grid">
-        <div>
-          <p class="kicker">Datos abiertos</p>
-          <h2>Las bases de datos de nuestras investigaciones</h2>
-        </div>
-        <div>
-          <p class="intro" style="max-width:52ch">La RED publica en <b>Zenodo</b> las bases de datos usadas en sus investigaciones, junto con informes y documentos de trabajo. Acceso libre, citable y con DOI.</p>
-          {ZENODO
-            ? <p style="margin-top:1.4rem"><a class="btn solid" href={ZENODO} target="_blank" rel="noopener">Ver el repositorio en Zenodo</a></p>
-            : <div class="dir-empty" style="margin-top:1.4rem"><p>El repositorio en Zenodo estará enlazado aquí muy pronto.</p></div>
-          }
-        </div>
-      </div>
-    </section>
   </main>
 </Base>
+
+<script>
+  // Trae de Zenodo lo más nuevo para que la página no dependa de volver a desplegar.
+  import { cargar, htmlTipos, htmlTemas, htmlRecientes, htmlVideos } from '../lib/zenodo';
+  const poner = (id: string, html: string) => {
+    const el = document.getElementById(id);
+    if (el && el.innerHTML.trim() !== html.trim()) el.innerHTML = html;
+  };
+  cargar().then((d) => {
+    if (!d) return;
+    const total = document.getElementById('repo-total');
+    if (total) total.textContent = String(d.total);
+    poner('repo-tipos', htmlTipos(d));
+    poner('repo-recientes', htmlRecientes(d));
+    poner('repo-temas', htmlTemas(d)); // los nodos se quedan como vinieron del build
+    // los videos solo se tocan si cambió la lista, para no cortar uno que se esté viendo
+    const v = document.getElementById('repo-videos');
+    if (v && !v.querySelector('iframe')) poner('repo-videos', htmlVideos(d));
+    const sec = document.getElementById('videos');
+    if (sec) sec.hidden = d.videos.length === 0;
+  });
+</script>
