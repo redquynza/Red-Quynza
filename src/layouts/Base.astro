@@ -169,7 +169,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
 
       var quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if ('IntersectionObserver' in window && !quieto) {
-        var sel = '.sec-head, .block > .wrap.sec-grid > *, .convo > *, .thesis .t-item, .pullquote, .pub, .teaser, .faces a, .member, .region-head, .docs li, .moments li, .videos .video, .benefits li, .dir-empty, .big';
+        var sel = '.sec-head, .block > .wrap.sec-grid > *, .convo > *, .thesis .t-item, .pullquote, .pub, .teaser, .faces a, .member, .region-head, .docs li, .fondo li, .moments li, .videos .video, .benefits li, .dir-empty, .big';
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (en) {
             if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }

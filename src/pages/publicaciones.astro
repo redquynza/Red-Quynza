@@ -1,12 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import { textos, videos, tipos, publicadosEnZenodo, zenodoUrl } from '../data/repositorio';
 
-// TODO: pon aquí el enlace a la comunidad/repositorio de la red en Zenodo.
 const ZENODO = 'https://zenodo.org/communities/redquynza/records';
+const publicados = await publicadosEnZenodo([...textos, ...videos].map((x) => x.zenodo));
 ---
 <Base
   title="Repositorio · RED Quynza"
-  description="Repositorio de la RED Quynza: libros, artículos y las bases de datos de sus investigaciones sobre violencia urbana y paz en Colombia. Acceso abierto."
+  description="Repositorio de la RED Quynza: libros, artículos, capítulos, informes, videos y las bases de datos de sus investigaciones sobre violencia urbana y paz en Colombia. Acceso abierto."
 >
   <main>
     <section class="block" id="publicaciones">
@@ -49,14 +50,69 @@ const ZENODO = 'https://zenodo.org/communities/redquynza/records';
     </section>
 
     <section class="block tint-sand" id="articulos">
-      <div class="wrap sec-grid">
-        <div>
-          <p class="kicker">Artículos</p>
-          <h2>Artículos de la red</h2>
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Desde los nodos</p><h2>Lo que investigan los integrantes de la red</h2></div>
+          <p class="intro">Artículos, capítulos e informes que los nodos han enviado al repositorio. Cada texto queda guardado en Zenodo, citable y de libre descarga.</p>
         </div>
-        <div>
-          <p class="intro" style="max-width:52ch">Artículos académicos y de opinión escritos por integrantes de la red.</p>
-          <div class="dir-empty" style="margin-top:1.4rem"><p>Estamos reuniendo los artículos de la red; se publicarán aquí muy pronto.</p></div>
+        {Object.entries(tipos).map(([tipo, nombre]) => {
+          const lista = textos.filter((t) => t.tipo === tipo);
+          return lista.length > 0 && (
+            <div class="fondo-grupo">
+              <h3 class="sub-head">{nombre} <span class="n">{lista.length}</span></h3>
+              <ol class="fondo">
+                {lista.map((t) => {
+                  const enZenodo = publicados.has(t.zenodo);
+                  return (
+                    <li>
+                      <div class="meta"><span class="anio">{t.anio}</span><span class="nodo">Nodo {t.nodo}</span></div>
+                      <div class="cuerpo">
+                        <h4>{enZenodo ? <a href={zenodoUrl(t.zenodo)} target="_blank" rel="noopener">{t.titulo}</a> : t.titulo}</h4>
+                        <p class="autores">{t.autores.map((a, i) => <>{i > 0 && ', '}{a.id ? <a href={`/la-red#${a.id}`}>{a.nombre}</a> : a.nombre}</>)}</p>
+                        <p class="de-que">{t.resumen}</p>
+                        <p class="fuente">{t.fuente} · {t.territorio}</p>
+                      </div>
+                      <div class="acc">
+                        {enZenodo
+                          ? <a class="go" href={zenodoUrl(t.zenodo)} target="_blank" rel="noopener">Descargar</a>
+                          : t.original
+                            ? <a class="go" href={t.original.href} target="_blank" rel="noopener">{t.original.label}</a>
+                            : <span class="pronto">Pronto en Zenodo</span>}
+                        <span class="lic">{t.licencia}</span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+
+    <section class="block" id="videos">
+      <div class="wrap">
+        <div class="sec-grid sec-head">
+          <div><p class="kicker">Videos</p><h2>Voces y experiencias de paz en video</h2></div>
+          <p class="intro">Entrevistas y procesos de los territorios que la red recomienda ver. Se reproducen aquí mismo; cada uno tiene su ficha en el repositorio.</p>
+        </div>
+        <div class="videos">
+          {videos.map((v) => (
+            <div class="video-item">
+              <a class="video" data-yt={v.yt} href={`https://youtu.be/${v.yt}`} target="_blank" rel="noopener" aria-label={`Ver en YouTube: ${v.titulo}`}>
+                <span class="thumb"><img src={`https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg`} alt="" loading="lazy" /><span class="play" aria-hidden="true"></span></span>
+              </a>
+              <h3>{v.titulo}</h3>
+              <p class="vmeta">{v.canal} · {v.anio} · {v.duracion} · {v.territorio}</p>
+              <p>{v.resumen}</p>
+              {(v.conversan || publicados.has(v.zenodo)) && (
+                <p class="vmeta">
+                  {v.conversan && <>Con {v.conversan.map((a) => a.id ? <a href={`/la-red#${a.id}`}>{a.nombre}</a> : a.nombre)}, integrante de la red.</>}
+                  {publicados.has(v.zenodo) && <> <a href={zenodoUrl(v.zenodo)} target="_blank" rel="noopener">Ficha en Zenodo ↗</a></>}
+                </p>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>
