@@ -57,6 +57,32 @@ export const integrantes: Integrante[] = [
     ],
     otras: 'Alcaldía de Barranquilla',
   },
+  {
+    id: 'lorena-mancera',
+    nombre: 'Lorena Cecilia Mancera Panza',
+    rol: 'Docente investigadora, líder del grupo OIDHPAZ',
+    institucion: 'Corporación Universitaria Reformada',
+    ciudad: 'Barranquilla',
+    region: 'caribe',
+    foto: '/img/integrantes/lorena-mancera.webp',
+    resena: [
+      'Socióloga y magíster en Estudios Latinoamericanos, doctoranda en Ciencias Sociales de la Universidad Nacional de La Plata. Docente investigadora de la Corporación Universitaria Reformada (Barranquilla), donde lidera el grupo OIDHPAZ y dirige el semillero REMEFES.',
+      'Investiga juventudes, violencias y género en América Latina, con énfasis en el juvenicidio como práctica necropolítica y en la violencia homicida. Combina la investigación con la gestión de políticas públicas y la coordinación de proyectos.',
+    ],
+    otras: 'Alcaldía Distrital de Barranquilla',
+  },
+  {
+    id: 'andres-miranda',
+    nombre: 'Andrés Eduardo Miranda Pacheco',
+    rol: 'Sociólogo, investigador en violencias e investigación acción participativa',
+    institucion: 'Universidad del Atlántico',
+    ciudad: 'Barranquilla',
+    region: 'caribe',
+    foto: '/img/integrantes/andres-miranda.webp',
+    resena: [
+      'Sociólogo egresado de la Universidad del Atlántico, formado en el estudio de las violencias y en la investigación acción participativa (IAP). Sus intereses investigativos son la sociología latinoamericana, la sociología de la violencia y la musicología.',
+    ],
+  },
 
   // ---------- Zona Centro ----------
   {
@@ -121,6 +147,18 @@ export const integrantes: Integrante[] = [
       'Filósofo e investigador social (1961). Master of Arts de la Universidad St. Kliment Ojridski de Sofía, Bulgaria (1986), cursó la maestría en Ciencia Política de la Universidad de los Andes (1994) y es doctor en Filosofía Social y Política de la Universidad Kliment Ojridski (2020). Profesor asociado del Departamento de Ciencia Política de la Universidad Nacional de Colombia y director del Observatorio de Juventud de la misma institución (OBJUN).',
       'Sus campos de interés son la filosofía social y política, la economía política, la teoría política, la sociología, la antropología y los estudios sociales enfocados en jóvenes y juventud.',
     ],
+  },
+  {
+    id: 'lenin-giraldo',
+    nombre: 'Lenin Alberto Giraldo',
+    rol: 'Filósofo y analista de datos',
+    institucion: 'Escuela Superior de Administración Pública (ESAP)',
+    ciudad: 'Bogotá',
+    region: 'centro',
+    resena: [
+      'Filósofo y analista de datos. Experto del Observatorio Nacional de Política Pública y del Laboratorio de Innovación de la Escuela Superior de Administración Pública (ESAP).',
+    ],
+    otras: 'Colectivo Ewcha',
   },
   {
     id: 'andres-tafur',
@@ -280,6 +318,71 @@ export const integrantes: Integrante[] = [
       'Doctoranda en Sociología de la Universitat de Barcelona, magíster en Estudios Políticos e Internacionales y profesional en Relaciones Internacionales de la Universidad del Rosario. Actualmente es profesora e investigadora de la Facultad de Estudios Internacionales, Políticos y Urbanos de esa universidad.',
       'Especialista en la violencia asociada a las pandillas, que vincula especialmente a niños y jóvenes, en las carencias sociales que reproducen este y otros fenómenos, y en las dinámicas de acción colectiva y movilización social, particularmente en el Chocó. Ganadora del premio UNESCO-Juan Bosch a la mejor tesis de un joven investigador en América Latina y el Caribe.',
     ],
+  },
+
+  {
+    id: 'gloria-montoya',
+    nombre: 'Gloria Inés Montoya Duque',
+    rol: 'Docente investigadora del Programa de Sociología',
+    institucion: 'Universidad del Pacífico',
+    ciudad: 'Buenaventura',
+    region: 'pacifico',
+    foto: '/img/integrantes/gloria-montoya.webp',
+    resena: [
+      'Doctora en Ciencias Sociales, magíster en Sociología, especialista en Teorías y Métodos en Sociología y socióloga de la Universidad del Valle. Docente investigadora del Programa de Sociología de la Universidad del Pacífico, donde coordina el grupo de investigación Huellas del Pacífico. Sus líneas de investigación son el conflicto y la violencia urbana, las acciones colectivas y los movimientos sociales.',
+      'Ha estudiado la Ruta Pacífica de las Mujeres como movimiento feminista y pacifista en Colombia entre 1996 y 2016, tema de su capítulo «La Ruta Pacífica de las Mujeres y el Acuerdo de Paz 2016» en el libro «Lo común como horizonte» (CLACSO, 2025). Es coautora del artículo «Homicidio selectivo: modalidad de violencia urbana en Buenaventura 2000-2015» (revista Territorios, 2024) y coordinó el libro «Acciones colectivas y conflicto en Buenaventura 2008-2012» (Universidad del Pacífico, 2015).',
+    ],
+    enlaces: [{ label: 'ORCID', href: 'https://orcid.org/0000-0001-7605-6885' }],
+  },
+  {
+    id: 'alejandra-gutierrez',
+    nombre: 'Alejandra Gutiérrez Gómez',
+    rol: 'Docente investigadora, grupo Humanidades y Estudios Socioculturales',
+    institucion: 'Fundación Universitaria Claretiana',
+    ciudad: 'Quibdó',
+    region: 'pacifico',
+    foto: '/img/integrantes/alejandra-gutierrez.webp',
+    resena: [
+      'Antropóloga y magíster en Estudios Afrocolombianos de la Pontificia Universidad Javeriana. Docente investigadora de la Fundación Universitaria Claretiana, en Quibdó, e integrante del grupo de investigación Humanidades y Estudios Socioculturales.',
+      'Tiene experiencia en investigación etnográfica en el Pacífico colombiano sobre territorialidades campesinas y procesos organizativos. En los últimos años sus intereses se han centrado en las dinámicas de conflictividad urbana en Quibdó y sus efectos en la vida cotidiana, especialmente de los jóvenes afrocolombianos e indígenas.',
+    ],
+  },
+  {
+    id: 'maria-elena-erazo',
+    nombre: 'María Elena Erazo Coral',
+    rol: 'Decana de la Facultad de Ciencias Humanas y Sociales',
+    institucion: 'Universidad de Nariño',
+    ciudad: 'Pasto',
+    region: 'pacifico',
+    foto: '/img/integrantes/maria-elena-erazo.webp',
+    resena: [
+      'Licenciada en Ciencias Sociales de la Universidad de Nariño (1988), magíster en Estudios Latinoamericanos con énfasis en Historia de la Universidad Nacional Autónoma de México (1992) y doctora en Ciencias de la Educación de la Universidad de Nariño – RUDECOLOMBIA (2012). Docente de tiempo completo de la Universidad de Nariño desde 2004, donde ha sido elegida decana de la Facultad de Ciencias Humanas y Sociales (2017-2020 y 2025-2028) e integra la Comisión de Género y Diversidades. Presidió la mesa directiva de la Asamblea Universitaria entre 2014 y 2020.',
+      'Coordina el grupo de investigación Edu-multiverso, en la línea de estudios regionales. Lideró el proyecto «Mujeres posicionando la paz en los territorios del Centro y Cordillera», ganador de la convocatoria de la Fundación WWB Colombia en 2022, y es coautora del Protocolo de Atención de Casos de Violencia de Género y Población LGTBIQ+ de la Universidad de Nariño, reconocido por el Ministerio de Educación Nacional en 2025. Entre sus publicaciones está el libro «Representaciones de nación desde la región: una generación docente, dos campos de poder» (Universidad de Nariño, 2015).',
+    ],
+  },
+  {
+    id: 'carmen-ceron',
+    nombre: 'Carmen Patricia Cerón Rengifo',
+    rol: 'Antropóloga, docente del Departamento de Ciencias Sociales',
+    institucion: 'Universidad de Nariño',
+    ciudad: 'Pasto',
+    region: 'pacifico',
+    foto: '/img/integrantes/carmen-ceron.webp',
+    resena: ['Antropóloga. Docente del Departamento de Ciencias Sociales de la Universidad de Nariño.'],
+  },
+  {
+    id: 'alvaro-dorado',
+    nombre: 'Álvaro Darío Dorado Martínez',
+    rol: 'Psicólogo, docente investigador del Programa de Psicología',
+    institucion: 'Universidad de Nariño',
+    ciudad: 'Pasto',
+    region: 'pacifico',
+    foto: '/img/integrantes/alvaro-dorado.webp',
+    resena: [
+      'Psicólogo de la Universidad de Nariño y magíster en Psicología de la Universidad Autónoma del Estado de Morelos (México), con formación en Derechos de los Autores Internacionales en la Universidad Complutense de Madrid. Docente investigador de los programas de Psicología de la Universidad de Nariño y de la Universidad Antonio Nariño, y conciliador en equidad del Ministerio de Justicia.',
+      'Es miembro del Grupo de Investigación Psicología y Salud de la Universidad de Nariño y de la Asociación Latinoamericana de Psicología de la Salud (ALAPSA).',
+    ],
+    otras: 'Universidad Antonio Nariño',
   },
 
   // ---------- Orinoquía ----------
