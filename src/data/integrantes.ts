@@ -307,6 +307,17 @@ export const integrantes: Integrante[] = [
     enlaces: [{ label: 'ORCID', href: 'https://orcid.org/0000-0003-0915-6653' }],
   },
   {
+    id: 'mauricio-sedano',
+    nombre: 'Mauricio Sedano',
+    rol: 'Ingeniero electrónico y científico de datos',
+    institucion: 'Fiscalía General de la Nación',
+    ciudad: 'Cali',
+    region: 'pacifico',
+    resena: [
+      'Ingeniero electrónico, científico de datos y magíster en Sociología. Investiga la construcción de paz ambiental en las huertas desde la sociología y la geografía, con métodos mediados por inteligencia artificial.',
+    ],
+  },
+  {
     id: 'karen-ceron',
     nombre: 'Karen Nathalia Cerón Steevens',
     rol: 'Profesora e investigadora, Facultad de Estudios Internacionales, Políticos y Urbanos',
