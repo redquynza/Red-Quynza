@@ -29,7 +29,7 @@ const ld = {
   datePublished: d.fecha.toISOString(),
   author: { '@type': 'Person', name: d.autor },
   publisher: { '@id': new URL('/#red', Astro.site).href },
-  mainEntityOfPage: new URL(`/textos/${texto.id}`, Astro.site).href,
+  mainEntityOfPage: new URL(`/textos/${texto.id}/`, Astro.site).href,
   image: new URL(d.imagenCompartir ?? d.imagen ?? '/img/boletin/n1-portada.jpg', Astro.site).href,
   inLanguage: 'es-CO',
   ...(d.tema ? { about: d.tema } : {}),

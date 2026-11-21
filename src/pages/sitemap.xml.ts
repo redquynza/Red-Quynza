@@ -4,14 +4,14 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { integrantes } from '../data/integrantes';
 
-const FIJAS = ['/', '/podcast', '/publicaciones', '/videos', '/documentales', '/textos', '/boletin', '/boletin/1', '/la-red', '/aportar'];
+const FIJAS = ['/', '/podcast/', '/publicaciones/', '/videos/', '/documentales/', '/textos/', '/boletin/', '/boletin/1/', '/la-red/', '/aportar/'];
 
 export const GET: APIRoute = async ({ site }) => {
   const textos = await getCollection('textos');
   const urls: { loc: string; lastmod?: string }[] = [
     ...FIJAS.map((r) => ({ loc: new URL(r, site).href })),
-    ...textos.map((t) => ({ loc: new URL(`/textos/${t.id}`, site).href, lastmod: t.data.fecha.toISOString().slice(0, 10) })),
-    ...integrantes.map((m) => ({ loc: new URL(`/la-red/${m.id}`, site).href })),
+    ...textos.map((t) => ({ loc: new URL(`/textos/${t.id}/`, site).href, lastmod: t.data.fecha.toISOString().slice(0, 10) })),
+    ...integrantes.map((m) => ({ loc: new URL(`/la-red/${m.id}/`, site).href })),
   ];
   const cuerpo =
     '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +

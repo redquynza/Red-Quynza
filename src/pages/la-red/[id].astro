@@ -11,7 +11,7 @@ const { m } = Astro.props as { m: Integrante };
 const region = regiones.find((r) => r.id === m.region)?.nombre ?? '';
 const vecinos = porRegion(m.region).filter((x) => x.id !== m.id);
 const iniciales = (n: string) => n.split(' ').filter(Boolean).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
-const url = new URL(`/la-red/${m.id}`, Astro.site).href;
+const url = new URL(`/la-red/${m.id}/`, Astro.site).href;
 
 const resumen = `${m.nombre}: ${m.rol.charAt(0).toLowerCase() + m.rol.slice(1)}, ${m.institucion} (${m.ciudad}). Integrante de la RED Quynza, red de investigación sobre violencia urbana y paz en Colombia.`;
 const descripcion = resumen.length > 200 ? resumen.slice(0, 197).replace(/\s+\S*$/, '') + '…' : resumen;
@@ -38,7 +38,7 @@ const ld = {
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Inicio', item: new URL('/', Astro.site).href },
-        { '@type': 'ListItem', position: 2, name: 'La RED', item: new URL('/la-red', Astro.site).href },
+        { '@type': 'ListItem', position: 2, name: 'La RED', item: new URL('/la-red/', Astro.site).href },
         { '@type': 'ListItem', position: 3, name: m.nombre, item: url },
       ],
     },
