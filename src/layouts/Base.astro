@@ -8,16 +8,47 @@ export interface Props {
   image?: string;      // imagen al compartir (ruta en /public); por defecto la de la RED
   imageAlt?: string;
   type?: string;       // og:type: website o article
+  ld?: Record<string, unknown>; // datos estructurados propios de la página
 }
 
 const {
-  title = 'RED Quynza · El derecho de la ciudad a la paz',
+  title = 'RED Quynza · Investigación sobre violencia urbana y paz en Colombia',
   noindex = false,
   image = '/img/og-redquynza.png',
   imageAlt = 'RED Quynza: la ciudad también tiene derecho a la paz',
   type = 'website',
   description = 'RED Quynza: más de 80 investigadores e investigadoras de más de 25 universidades que piensan la violencia urbana y la paz desde las ciudades de Colombia. Podcast, publicaciones y datos abiertos, documentales y boletín.',
+  ld,
 } = Astro.props;
+
+// Datos estructurados (SEO, 21 nov 2026): la RED como organización de investigación, y el sitio.
+const ldRed = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': ['Organization', 'ResearchOrganization'],
+      '@id': new URL('/#red', Astro.site).href,
+      name: 'RED Quynza',
+      alternateName: ['Red Quynza', 'RED Quynza · Paz y Cuidado de la Vida'],
+      slogan: 'El derecho de la ciudad a la paz',
+      description: 'Red de más de 80 investigadores e investigadoras de más de 25 universidades que estudian la violencia urbana y la paz en las ciudades de Colombia.',
+      url: new URL('/', Astro.site).href,
+      logo: new URL('/img/logo-q.png', Astro.site).href,
+      image: new URL('/img/og-redquynza.png', Astro.site).href,
+      email: 'redquynza@gmail.com',
+      areaServed: { '@type': 'Country', name: 'Colombia' },
+      knowsAbout: ['Violencia urbana', 'Paz urbana', 'Construcción de paz', 'Seguridad ciudadana', 'Conflicto armado en Colombia', 'Derechos humanos', 'Cuidado de la vida', 'Datos abiertos'],
+      sameAs: [
+        'https://www.youtube.com/@REDQuynza',
+        'https://www.instagram.com/redquynza/',
+        'https://www.tiktok.com/@red.quynza',
+        'https://www.facebook.com/profile.php?id=61591393226166',
+        'https://zenodo.org/communities/redquynza/records',
+      ],
+    },
+    { '@type': 'WebSite', '@id': new URL('/#sitio', Astro.site).href, name: 'RED Quynza', url: new URL('/', Astro.site).href, inLanguage: 'es-CO', publisher: { '@id': new URL('/#red', Astro.site).href } },
+  ],
+};
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(image, Astro.site).href;
@@ -35,7 +66,7 @@ const nav = [
 const isActive = (href: string) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
 ---
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-CO">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -59,6 +90,9 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
   <link rel="apple-touch-icon" href="/img/logo-q.png" />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+  <script type="application/ld+json" set:html={JSON.stringify(ldRed)} />
+  {ld && <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', ...ld })} />}
   <link rel="icon" type="image/png" href="/img/pajaro.png" />
   <meta name="theme-color" content="#0E3A42" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />

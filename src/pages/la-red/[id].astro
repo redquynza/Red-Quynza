@@ -1,0 +1,116 @@
+---
+// Perfil de cada integrante en su propia página (SEO, 21 nov 2026): así Google encuentra a cada
+// investigador o investigadora por su nombre. La ficha en <dialog> de /la-red sigue igual y enlaza aquí.
+import Base from '../../layouts/Base.astro';
+import { integrantes, regiones, porRegion, type Integrante } from '../../data/integrantes';
+
+export function getStaticPaths() {
+  return integrantes.map((m) => ({ params: { id: m.id }, props: { m } }));
+}
+const { m } = Astro.props as { m: Integrante };
+const region = regiones.find((r) => r.id === m.region)?.nombre ?? '';
+const vecinos = porRegion(m.region).filter((x) => x.id !== m.id);
+const iniciales = (n: string) => n.split(' ').filter(Boolean).slice(0, 2).map((p) => p[0]).join('').toUpperCase();
+const url = new URL(`/la-red/${m.id}`, Astro.site).href;
+
+const resumen = `${m.nombre}: ${m.rol.charAt(0).toLowerCase() + m.rol.slice(1)}, ${m.institucion} (${m.ciudad}). Integrante de la RED Quynza, red de investigación sobre violencia urbana y paz en Colombia.`;
+const descripcion = resumen.length > 200 ? resumen.slice(0, 197).replace(/\s+\S*$/, '') + '…' : resumen;
+
+const ld = {
+  '@graph': [
+    {
+      '@type': 'ProfilePage',
+      url,
+      name: `${m.nombre} · RED Quynza`,
+      mainEntity: {
+        '@type': 'Person',
+        name: m.nombre,
+        jobTitle: m.rol,
+        description: m.resena[0],
+        ...(m.foto ? { image: new URL(m.foto, Astro.site).href } : {}),
+        affiliation: { '@type': 'Organization', name: m.institucion },
+        memberOf: { '@id': new URL('/#red', Astro.site).href },
+        address: { '@type': 'PostalAddress', addressLocality: m.ciudad, addressCountry: 'CO' },
+        ...(m.enlaces?.length ? { sameAs: m.enlaces.map((e) => e.href) } : {}),
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: new URL('/', Astro.site).href },
+        { '@type': 'ListItem', position: 2, name: 'La RED', item: new URL('/la-red', Astro.site).href },
+        { '@type': 'ListItem', position: 3, name: m.nombre, item: url },
+      ],
+    },
+  ],
+};
+---
+<Base
+  title={`${m.nombre} · ${m.institucion} · RED Quynza`}
+  description={descripcion}
+  image={m.foto ?? '/img/og-redquynza.png'}
+  imageAlt={m.foto ? `Fotografía de ${m.nombre}` : 'RED Quynza'}
+  type="profile"
+  ld={ld}
+>
+  <main>
+    <section class="block perfil-pag">
+      <div class="wrap">
+        <p class="migas"><a href="/">Inicio</a> / <a href="/la-red">La RED</a> / <a href={`/la-red#region-${m.region}`}>{region}</a></p>
+        <div class="pq-perfil">
+          <div class="foto">
+            {m.foto ? <img src={m.foto} alt={`Fotografía de ${m.nombre}`} width="640" height="800" /> : <span class="initials">{iniciales(m.nombre)}</span>}
+          </div>
+          <div>
+            <p class="kicker">{m.ciudad} · {region}</p>
+            <h1 class="como-h2">{m.nombre}</h1>
+            <p class="rol">{m.rol} · <span>{m.institucion}</span></p>
+            {m.resena.map((p) => <p>{p}</p>)}
+            {m.otras && <p class="otras"><b>También trabaja con</b> {m.otras}</p>}
+            {m.enlaces && (
+              <p class="enlaces">
+                {m.enlaces.map((e) => <a href={e.href} target="_blank" rel="noopener">{e.label} ↗</a>)}
+              </p>
+            )}
+            <p class="nota-red">Integrante de la <a href="/la-red">RED Quynza</a>, más de 80 investigadores e investigadoras que piensan la violencia urbana y la paz desde las ciudades de Colombia.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {vecinos.length > 0 && (
+      <section class="block tint-sand">
+        <div class="wrap">
+          <p class="kicker">También en {region}</p>
+          <ul class="vecinos">
+            {vecinos.map((v) => (
+              <li><a href={`/la-red/${v.id}`}><b>{v.nombre}</b><span>{v.institucion} · {v.ciudad}</span></a></li>
+            ))}
+          </ul>
+          <p><a class="text-link" href="/la-red#integrantes">Ver todo el directorio →</a></p>
+        </div>
+      </section>
+    )}
+  </main>
+</Base>
+
+<style>
+  .migas { font-size: .9rem; color: var(--muted, #7A9499); margin: 0 0 2rem; }
+  .migas a { color: inherit; }
+  .pq-perfil { display: grid; gap: 2rem 3.5rem; align-items: start; }
+  @media (min-width: 820px) { .pq-perfil { grid-template-columns: minmax(220px, 340px) 1fr; } }
+  .foto { aspect-ratio: 4 / 5; border-radius: 14px; overflow: hidden; background: var(--teal, #03BEC0); display: grid; place-items: center; max-width: 340px; width: 100%; justify-self: start; }
+  .foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .initials { font-family: var(--serif); font-size: 4rem; color: #fff; }
+  .rol { font-weight: 600; margin: -.4rem 0 1.4rem; }
+  .rol span { font-weight: 400; }
+  .pq-perfil p { max-width: 42rem; }
+  .otras, .nota-red { font-size: .95rem; }
+  .enlaces { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; }
+  .vecinos { list-style: none; margin: 0 0 1.5rem; padding: 0; display: grid; gap: 0 2rem; }
+  @media (min-width: 760px) { .vecinos { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .vecinos { grid-template-columns: repeat(3, 1fr); } }
+  .vecinos a { display: grid; gap: .2rem; padding: .9rem 0; border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent); color: inherit; text-decoration: none; }
+  .vecinos a:hover b { text-decoration: underline; }
+  .vecinos span { font-size: .9rem; opacity: .8; }
+</style>

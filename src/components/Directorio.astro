@@ -49,6 +49,7 @@ const iniciales = (n: string) =>
         <p class="perfil-rol">{m.rol} · <span>{m.institucion}</span></p>
         {m.resena.map((p) => <p>{p}</p>)}
         {m.otras && <p class="perfil-otras"><b>También trabaja con</b> {m.otras}</p>}
+        <p class="perfil-links"><a href={`/la-red/${m.id}`}>Página de perfil →</a></p>
         {m.enlaces && (
           <p class="perfil-links">
             {m.enlaces.map((e) => <a href={e.href} target="_blank" rel="noopener">{e.label} ↗</a>)}

@@ -20,6 +20,21 @@ const fotos = d.galeria ? galerias[`../../data/galerias/${d.galeria}.json`] : un
 const GRUPOS = { campana: 'La campaña en los muros', monumentos: 'Dos monumentos', ciudad: '' };
 const conFigura = d.imagen && !fotos;
 
+// Datos estructurados del texto (SEO, 21 nov 2026)
+const ld = {
+  '@type': 'Article',
+  headline: d.titulo,
+  description: d.bajada,
+  articleSection: d.tipo,
+  datePublished: d.fecha.toISOString(),
+  author: { '@type': 'Person', name: d.autor },
+  publisher: { '@id': new URL('/#red', Astro.site).href },
+  mainEntityOfPage: new URL(`/textos/${texto.id}`, Astro.site).href,
+  image: new URL(d.imagenCompartir ?? d.imagen ?? '/img/boletin/n1-portada.jpg', Astro.site).href,
+  inLanguage: 'es-CO',
+  ...(d.tema ? { about: d.tema } : {}),
+};
+
 // otros textos del mismo número del boletín
 const otros = d.boletin
   ? (await getCollection('textos', (t) => t.data.boletin === d.boletin && t.id !== texto.id))
@@ -32,6 +47,7 @@ const otros = d.boletin
   image={d.imagenCompartir ?? d.imagen ?? '/img/boletin/n1-portada.jpg'}
   imageAlt={d.imagenAlt ?? d.titulo}
   type="article"
+  ld={ld}
 >
   <main>
     <article class="block articulo">

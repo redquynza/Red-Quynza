@@ -7,14 +7,14 @@ import { cargar, ZENODO, htmlTipos, htmlNodos, htmlTemas, htmlRecientes, htmlVid
 const d = await cargar(fetch, true);
 ---
 <Base
-  title="Repositorio · RED Quynza"
+  title="Repositorio abierto sobre violencia urbana y paz: artículos y datos · RED Quynza"
   description="Repositorio abierto de la RED Quynza en Zenodo: artículos, capítulos, informes, bases de datos y videos sobre violencia urbana y paz en Colombia, enviados por los nodos de la red."
 >
   <main>
     <section class="block tint-teal" id="repositorio">
       <div class="wrap">
         <div class="sec-grid sec-head">
-          <div><p class="kicker">Repositorio abierto</p><h2>Lo que investiga la red, en un solo lugar</h2></div>
+          <div><p class="kicker">Repositorio abierto</p><h1 class="como-h2">Lo que investiga la red, en un solo lugar</h1></div>
           <div>
             <p class="intro">Artículos, capítulos, informes, bases de datos y videos que envían los nodos de la red. Están guardados en <b>Zenodo</b>, el repositorio abierto del CERN: cada documento tiene su DOI para citarlo y se descarga gratis.</p>
             <p class="repo-total"><span id="repo-total">{d ? d.total : '—'}</span> documentos publicados</p>
