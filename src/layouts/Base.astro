@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import WhatsApp from '../components/WhatsApp.astro';
 
 export interface Props {
   title?: string;
@@ -142,6 +143,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path === href 
       <span class="note">© 2026 RED Quynza</span>
     </div>
   </footer>
+
+  <WhatsApp />
 
   <script is:inline>
     (function () {
