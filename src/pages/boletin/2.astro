@@ -1,0 +1,275 @@
+---
+import Base from '../../layouts/Base.astro';
+import Signup from '../../components/Signup.astro';
+import { getCollection } from 'astro:content';
+import { boletines, proximo, CANAL_WHATSAPP, CORREO_CONVOCATORIA } from '../../data/boletines';
+
+const ed = boletines.find((b) => b.numero === 2)!;
+
+// >>> Archivos que faltan. Mientras estén vacíos, la página muestra un recuadro "Falta" (no publicar así). <<<
+const NOTA_TOLIMA_PDF = '';      // /docs/np01-tolima-2003-2026.pdf  (PDF de Andrés Tafur)
+const MONICA_FOTO = '';          // /img/boletin/n2-monica-zuluaga.jpg (foto que mandó Gloria Naranjo)
+const FISAS_AFICHE = '';         // /img/boletin/n2-fisas-afiche.jpg  (afiche que mandó Luis Celis)
+
+const SERIE_PAZ = 'https://www.instagram.com/reel/DgDiglzzm1r/';
+
+const textos = await getCollection('textos', (t) => t.data.boletin === 2);
+const t = (id: string) => textos.find((x) => x.id === id)!;
+const expedientes = [
+  { x: t('expediente-22'), etiqueta: 'N.º 22 · 3 de noviembre', titulo: 'La promesa de los 90 días' },
+  { x: t('expediente-24'), etiqueta: 'N.º 24 · 10 de noviembre', titulo: 'La Corte salva las APPA' },
+  { x: t('expediente-100-dias'), etiqueta: 'Especial · 15 de noviembre', titulo: '100 días: lo que sigue en veremos' },
+  { x: t('expediente-27'), etiqueta: 'N.º 27 · 20 de noviembre', titulo: 'El paro del 19 de noviembre' },
+  { x: t('expediente-28'), etiqueta: 'N.º 28 · 24 de noviembre', titulo: 'La política de la fachada' },
+];
+const medina = t('medina-guerra-total');
+
+// Cifras de Indepaz, «100 días: el costo humano de la violencia» (7 de agosto al 15 de noviembre de 2026)
+const cifras = [
+  { n: '45', que: 'líderes sociales y defensores de derechos humanos asesinados', nota: 'uno cada 2,2 días' },
+  { n: '26', que: 'masacres, con 87 víctimas', nota: 'cinco eran menores de edad' },
+  { n: '8', que: 'firmantes del Acuerdo de Paz asesinados', nota: '' },
+  { n: '262', que: 'integrantes de la Fuerza Pública muertos o heridos', nota: '43 asesinados y 219 heridos' },
+];
+
+const lecturas = [
+  {
+    tipo: 'Documental · Cambio',
+    titulo: 'El Acuerdo de Paz desde los territorios: 10 años después',
+    href: 'https://youtu.be/bkgOaqNTups',
+    texto: 'Un documental de la revista Cambio sobre cómo se vive el Acuerdo en los territorios, diez años después de la firma. Carlos Mario Perea lo llamó «muy conmovedor».',
+    comparte: 'Lo compartieron Luis Celis y Yusmidia Solano',
+  },
+  {
+    tipo: 'Artículo · CESJUL',
+    titulo: 'Del sometimiento al acogimiento a la justicia',
+    href: 'https://cesjul.org/del-sometimiento-al-acogimiento-a-la-justicia/',
+    texto: 'Rubén Darío Acosta Ortiz revisa la experiencia colombiana desde 1990 y propone 18 bases para una ley que lleve a las estructuras armadas a dejar de existir, justo cuando el gobierno anuncia su propia ley de sometimiento.',
+    comparte: 'Lo compartió Gloria Naranjo',
+  },
+  {
+    tipo: 'Columna',
+    titulo: 'La trampa de la batalla cultural',
+    href: 'https://victordecurrealugo.com/trampa-batalla-cultural/',
+    texto: 'Víctor de Currea-Lugo advierte el riesgo de exagerar el enfoque diferencial y quedarse en la retórica, lejos de los temas de fondo de la lucha política.',
+    comparte: 'Lo compartió Ildefonso Henao',
+  },
+  {
+    tipo: 'Conferencia · Observatorio de Construcción de Paz, UJTL',
+    titulo: 'Posibilidades de diálogo y negociación en Colombia',
+    href: 'https://youtu.be/W8ku5UhXAoE',
+    texto: 'Vicenç Fisas, que ha acompañado procesos de paz en medio mundo, habla de lo que todavía es posible negociar en Colombia. Su libro nuevo se presenta en Bogotá este 25 de noviembre.',
+    comparte: 'Lo compartió Luis Celis',
+  },
+];
+---
+<Base
+  title={`Boletín N.º 2 · ${ed.titulo} · RED Quynza`}
+  description={ed.resumen}
+  image={ed.imagen}
+  imageAlt="Boletín N.º 2 de la RED Quynza, noviembre de 2026"
+  type="article"
+>
+  <main>
+    <section class="block ed-hero">
+      <div class="wrap">
+        <p class="kicker">Boletín N.º 2 · {ed.mes}</p>
+        <h1>La seguridad se mide en <em>vidas</em></h1>
+        <div class="ed-presenta">
+          <p>Noviembre terminó con un carro bomba frente a la Gobernación del Meta, en pleno centro de Villavicencio. La guerra volvió a la ciudad, y con ella la pregunta que atraviesa este número: cómo se mide la seguridad cuando las cifras de operaciones crecen y las de víctimas también.</p>
+          <p>Andrés Tafur estrena un formato de notas de política con un recorrido por la seguridad en el Tolima desde 2003. Carlos Medina Gallego hace el balance de los primeros cien días de la «guerra total». Gloria Naranjo nos cuenta de Mónica Zuluaga, firmante de paz que acaba de graduarse como psicóloga social en Medellín. Recogemos el Expediente De la Espriella de noviembre, algunas lecturas que circularon en la red y la agenda de cierre del año.</p>
+          <p>El boletín se hace con lo que ustedes envían. La convocatoria para el próximo número ya está abierta.</p>
+        </div>
+        <nav class="ed-indice" aria-label="En este número">
+          <a href="#investigacion">Investigación</a>
+          <a href="#analisis">Análisis</a>
+          <a href="#historias">Historias de paz</a>
+          <a href="#expediente">Expediente De la Espriella</a>
+          <a href="#lecturas">Otros artículos</a>
+          <a href="#agenda">Agenda</a>
+          <a href="#aporta">Aporta</a>
+          <a href="#convocatoria">Convocatoria</a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="block" id="investigacion">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Investigación de la RED · Sur del Tolima</p>
+          <h2>Seguridad en el Tolima, <em>2003–2026</em></h2>
+        </div>
+        <div>
+          <p class="ed-destacado-tit">Nota de política N.º 1</p>
+          <p class="intro" style="max-width:none"><a href="/la-red/andres-tafur">Andrés Tafur</a>, de la Universidad del Tolima, empieza a publicar notas de política: documentos cortos que ordenan los datos de un territorio para quien tiene que decidir. La primera recorre la seguridad en el Tolima en los últimos veintitrés años. La próxima será sobre Ibagué.</p>
+          <div class="actions" style="margin-top:1.6rem">
+            {NOTA_TOLIMA_PDF
+              ? <a class="btn solid" href={NOTA_TOLIMA_PDF} download>Descargar la nota (PDF)</a>
+              : <span class="ed-falta">Falta: el PDF de la nota (NP01_Tol2003-2026.pdf)</span>}
+            <a class="text-link" href="/la-red/andres-tafur">Perfil de Andrés</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="sep-tejido" aria-hidden="true"></div>
+    <section class="block ink" id="analisis">
+      <div class="wrap">
+        <div class="sec-head sec-grid">
+          <div>
+            <p class="kicker">Otros artículos · Análisis</p>
+            <h2>La «guerra total», <em>a los cien días</em></h2>
+          </div>
+          <div>
+            <p class="intro ed-claro" style="max-width:none">{medina.data.bajada}</p>
+            <p class="ed-autor-claro">Carlos Medina Gallego · lo compartió Luis Celis</p>
+          </div>
+        </div>
+        <ul class="ed-cifras">
+          {cifras.map((c) => (
+            <li><b>{c.n}</b><span>{c.que}</span>{c.nota && <small>{c.nota}</small>}</li>
+          ))}
+        </ul>
+        <p class="ed-fuente-cifras">Primeros 100 días de gobierno, del 7 de agosto al 15 de noviembre de 2026. Fuente: Indepaz, <i>100 días: el costo humano de la violencia</i>.</p>
+        <div class="actions" style="margin-top:1.8rem">
+          <a class="btn solid ed-btn-claro" href={`/textos/${medina.id}`}>Leer el análisis completo</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="historias">
+      <div class="wrap ed-agenda">
+        {MONICA_FOTO
+          ? <figure class="ed-foto"><img src={MONICA_FOTO} alt="Mónica Zuluaga el día de su grado como psicóloga social" loading="lazy" /></figure>
+          : <span class="ed-falta ed-falta-foto">Falta: la foto de Mónica que mandó Gloria (IMG-20261122-WA0002.jpg) y su permiso</span>}
+        <div>
+          <p class="kicker">Historias de paz · Medellín</p>
+          <h2>Mónica Zuluaga, <em>psicóloga social</em></h2>
+          <p class="intro" style="max-width:none">El 22 de noviembre se graduó como psicóloga social Mónica Zuluaga, firmante del Acuerdo de Paz. Hace parte de lo que en Medellín se llama la reincorporación urbana y trabaja en procesos comunitarios donde se encuentran víctimas, firmantes y comunidades populares.</p>
+          <p class="ed-nota-dial" style="margin-top:1rem">Nos lo contó <a href="/la-red/gloria-naranjo">Gloria Naranjo</a>, de la Universidad de Antioquia.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="sep-tejido" aria-hidden="true"></div>
+    <section class="block tint-teal" id="expediente">
+      <div class="wrap">
+        <div class="sec-head sec-grid">
+          <div><p class="kicker">Seguimiento al gobierno</p><h2>Expediente De la Espriella</h2></div>
+          <p class="intro">Andrés hace el seguimiento a las decisiones del gobierno, con fuente y fecha. Estos son los números de noviembre, completos.</p>
+        </div>
+        <ul class="ed-lista">
+          {expedientes.map(({ x, etiqueta, titulo }) => (
+            <li>
+              <span class="ed-tipo">{etiqueta}</span>
+              <h3><a href={`/textos/${x.id}`}>{titulo}</a></h3>
+              <p>{x.data.bajada}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="block" id="lecturas">
+      <div class="wrap">
+        <div class="sec-head sec-grid">
+          <div><p class="kicker">Otros artículos</p><h2>Lo que circuló <em>en la red</em></h2></div>
+          <p class="intro">Textos y videos que no son de la RED pero tocan la paz y la vida en las ciudades, compartidos este mes por sus integrantes.</p>
+        </div>
+        <ul class="ed-lista ed-lista-2">
+          {lecturas.map((l) => (
+            <li>
+              <span class="ed-tipo">{l.tipo}</span>
+              <h3><a href={l.href} target="_blank" rel="noopener">{l.titulo}</a></h3>
+              <p>{l.texto}</p>
+              <p class="ed-autor">{l.comparte}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="ed-nota-dial">Y desde la RED: salió el primer video de una serie que le pregunta a la gente <a href={SERIE_PAZ}>¿qué es la paz?</a>, y el <a href="/la-red#integrantes">directorio de integrantes</a> ya tiene 29 perfiles.</p>
+      </div>
+    </section>
+
+    <section class="block tint-sand" id="agenda">
+      <div class="wrap">
+        <div class="sec-head sec-grid">
+          <div><p class="kicker">Agenda</p><h2>Cierre de <em>año</em></h2></div>
+          <p class="intro">Lo que viene en la RED y en los espacios donde participan sus integrantes.</p>
+        </div>
+        <div class="ed-agenda">
+          {FISAS_AFICHE
+            ? <span class="ed-afiche"><img src={FISAS_AFICHE} alt="Afiche de la presentación del libro de Vicenç Fisas" loading="lazy" /></span>
+            : <span class="ed-falta ed-falta-foto">Falta: el afiche de la presentación que mandó Luis Celis</span>}
+          <div>
+            <p class="kicker">Bogotá · Presentación de libro</p>
+            <h3 class="ed-agenda-tit">Los retos de la paz en Colombia, por Vicenç Fisas</h3>
+            <p class="ed-fecha">Miércoles 25 de noviembre · 6:00 p. m.<br />Biblioteca del Colegio Gimnasio Moderno</p>
+            <p>Luis Celis presenta el libro más reciente de Vicenç Fisas Armengol, sobre lo que le pide hoy a Colombia construir la paz.</p>
+          </div>
+        </div>
+        <ul class="ed-agenda-lista">
+          <li>
+            <span class="ed-fecha">Jueves 26 y viernes 27 de noviembre</span>
+            <div><b>Cumbre de Paz y País.</b> <a href="/la-red/carlos-mario-perea">Carlos Mario Perea</a> participa el viernes en la mañana. La RED buscará estar presente.</div>
+          </li>
+          <li>
+            <span class="ed-fecha">Viernes 4 de diciembre · 8:00 a. m.</span>
+            <div><b>Seminario interno de la RED, última sesión del año.</b> De 8 a 10, el Pacífico en clave metodológica: <a href="/la-red/gildardo-vanegas">Gildardo Vanegas</a> (Popayán), <a href="/la-red/karen-ceron">Karen Cerón</a> (Puerto Tejada) y Bairon Otálvaro (Cali). Después, el documental sobre el terremoto de Pereira, como discusión del Centro de Pensamiento Digital, y la programación de la RED para 2027.</div>
+          </li>
+          <li>
+            <span class="ed-fecha">2027</span>
+            <div><b>Encuentros regionales.</b> Están en preparación los de Barranquilla y Medellín. El de Villa de Leyva se pensará con tiempo para marzo.</div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="block" id="aporta">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Aporta</p>
+          <h2>Sostén la <em>RED</em></h2>
+        </div>
+        <div>
+          <p class="intro" style="max-width:none">La RED Quynza se sostiene con el aporte de sus integrantes y de quienes creen en su trabajo. El podcast, el boletín y el repositorio abierto existen gracias a ese aporte. Puedes aportar cada mes desde la página, por ahora con Nequi.</p>
+          <div class="actions" style="margin-top:1.6rem">
+            <a class="btn solid" href="/aportar">Aportar cada mes</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block ink" id="convocatoria">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Convocatoria · N.º {proximo.numero}</p>
+          <h2>El próximo boletín <em>lo escribes tú</em></h2>
+        </div>
+        <div>
+          <ul class="ed-envios">
+            <li><b>Columnas de opinión</b> sobre la actualidad política, de 600 a 1.000 palabras.</li>
+            <li><b>Avances de investigación</b>, tesis o trabajos de grado, de 1.000 a 1.500 palabras.</li>
+            <li><b>Historias de paz</b> en las regiones: personas, organizaciones, procesos.</li>
+            <li><b>Fotografías, ilustraciones, audios o videos</b>, con su autor.</li>
+            <li><b>Eventos, convocatorias y publicaciones</b> que la red deba conocer.</li>
+          </ul>
+          <p class="ed-como">Envíalo a <a href={`mailto:${CORREO_CONVOCATORIA}`}>{CORREO_CONVOCATORIA}</a> hasta el <b>{proximo.cierre}</b>, con el asunto <i>Boletín – tipo de envío – tu apellido</i>. Incluye el título, tu nombre, tu universidad u organización, tu región y una reseña de dos líneas. Por las fiestas, el N.º {proximo.numero} sale el {proximo.sale}.</p>
+          <p class="ed-como">Y síguenos en el <a href={CANAL_WHATSAPP}>canal de WhatsApp de la RED</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="block band-teal">
+      <div class="wrap sec-grid">
+        <div>
+          <p class="kicker">Boletín</p>
+          <h2>¿Te lo reenviaron?</h2>
+        </div>
+        <div>
+          <p class="intro" style="margin-bottom:1.4rem">Suscríbete y recíbelo el último martes de cada mes.</p>
+          <Signup id="signup-n2" />
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
