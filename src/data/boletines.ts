@@ -19,7 +19,7 @@ export const boletines = [
     fecha: '2026-11-24',
     mes: 'Noviembre de 2026',
     titulo: 'La seguridad se mide en vidas',
-    resumen: 'Una nota de política sobre la seguridad en el Tolima, el análisis de Carlos Medina Gallego sobre la «guerra total», una firmante que se gradúa en Medellín, el Expediente de noviembre y la agenda de fin de año.',
+    resumen: 'Una nota de política sobre la seguridad en el Tolima, una firmante de paz que se gradúa como psicóloga social en Medellín, el Expediente De la Espriella de noviembre y otras lecturas sobre paz y ciudad.',
     imagen: '/img/boletin/n2-portada.jpg',
   },
 ];
